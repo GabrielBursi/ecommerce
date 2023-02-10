@@ -1,8 +1,15 @@
+import { BrowserRouter } from "react-router-dom";
+import { ThemeContextProvider } from "./contexts";
+import { RoutesApp } from "./routes";
 
 function App() {
 
   return (
-    <h1>Ola!</h1>
+    <ThemeContextProvider>
+      <BrowserRouter>
+        <RoutesApp/>
+      </BrowserRouter>
+    </ThemeContextProvider>
   );
 }
 
