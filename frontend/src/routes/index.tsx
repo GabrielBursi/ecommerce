@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Route, Routes } from "react-router";
 import { TabBarProductsContext } from "../contexts";
 import { HomePage } from "../pages";
+import ProductPage from "../pages/ProductPage";
 
 export function RoutesApp() {
 
@@ -9,11 +10,11 @@ export function RoutesApp() {
 
     setProducts([
         {
-            name: "celulares",
+            name: "celular",
             to: '/products/celulares'
         },
         {
-            name: "computadores",
+            name: "computador",
             to: '/products/computadores'
         },
         {
@@ -21,15 +22,15 @@ export function RoutesApp() {
             to: '/products/TV'
         },
         {
-            name: "livros",
+            name: "livro",
             to: '/products/livros'
         },
         {
-            name: "esportes",
+            name: "esporte",
             to: '/products/esportes'
         },
         {
-            name: "roupas",
+            name: "roupa",
             to: '/products/roupas'
         },
         {
@@ -37,15 +38,15 @@ export function RoutesApp() {
             to: '/products/games'
         },
         {
-            name: "bebês",
+            name: "bebê",
             to: '/products/bebes'
         },
         {
-            name: "brinquedos",
+            name: "brinquedo",
             to: '/products/brinquedos'
         },
         {
-            name: "comidas",
+            name: "comida",
             to: '/products/comidas'
         },
     ])
@@ -53,7 +54,7 @@ export function RoutesApp() {
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products/:product" element={<h1>Ola</h1>} />
+            <Route path="/products/:product" element={<ProductPage/>} />
         </Routes>
     );
 }

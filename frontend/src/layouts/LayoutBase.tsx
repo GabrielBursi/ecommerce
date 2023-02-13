@@ -1,20 +1,23 @@
 import { Box, Icon, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Actions, ListProducts, ResearchInput, UserInfo } from "../components";
+import { useNavigate } from "react-router-dom";
 
 interface LayoutProps {
     children: React.ReactNode,
-    title: string,
     showResearchInput?: boolean,
     showActions?: boolean,
     showUserInfo? : boolean,
+    showTabBar?: boolean,
 }
 
-export function LayoutBase({ children, title, showResearchInput = false, showActions = false, showUserInfo = false}: LayoutProps) {
+export function LayoutBase({ children, showResearchInput = false, showActions = false, showUserInfo = false, showTabBar = true}: LayoutProps) {
 
     const theme = useTheme()
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+
+    const navigate = useNavigate()
 
     const isLogged = false
 
@@ -24,7 +27,7 @@ export function LayoutBase({ children, title, showResearchInput = false, showAct
 
                 <Box width='auto' height='50%' display='flex' alignItems='center'>
                     {smDown ? 
-                        <Icon color="primary">fitbit</Icon>
+                        <Icon color="primary" onClick={() => navigate('/')}>fitbit</Icon>
                         :
                         <Typography
                             variant={mdDown ? 'h5' : 'h4'}
@@ -34,6 +37,7 @@ export function LayoutBase({ children, title, showResearchInput = false, showAct
                             color="primary"
                             noWrap
                             sx={{cursor:'pointer'}}
+                            onClick={() => navigate('/')}
                         >
                             <Icon color="primary">fitbit</Icon> R-commerce
                         </Typography>
@@ -65,10 +69,8 @@ export function LayoutBase({ children, title, showResearchInput = false, showAct
                 
 
             </Box>    
-            
-            <Box component={Paper} width="100%" height='4%' square elevation={4} bgcolor='#4527a0' >
-                <ListProducts />
-            </Box>
+
+                {showTabBar && <ListProducts />}
 
             <Box flex={1} overflow="auto">
                 {children}

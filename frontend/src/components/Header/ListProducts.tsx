@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
-import { AppBar, Tab, Tabs } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { AppBar, Tab, Tabs, useMediaQuery, useTheme } from "@mui/material";
 import { TabBarProductsContext } from "../../contexts";
 import { TabBarProducts } from "../../types";
-import { useNavigate } from "react-router-dom";
 
 export function ListProducts() {
+
+    const theme = useTheme()
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     const { products } = useContext(TabBarProductsContext)
 
@@ -27,11 +30,12 @@ export function ListProducts() {
                 onChange={handleChange}
                 indicatorColor="secondary"
                 textColor="inherit"
-                variant="fullWidth"
-                aria-label="full width tabs example"
+                variant={mdDown ? "scrollable" : "fullWidth"}
+                scrollButtons={mdDown ? true : false}
+                allowScrollButtonsMobile
             >
                 {products.map((item: TabBarProducts) => (
-                    <Tab key={item.name} label={item.name} onClick={() => handleClick(item.to)}/>
+                    <Tab key={item.name} label={item.name} onClick={() => handleClick(item.to)} sx={{fontSize:'0.8rem'}}/>
                 ))}
             </Tabs>
         </AppBar>
