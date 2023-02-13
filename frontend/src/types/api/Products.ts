@@ -1,6 +1,11 @@
 export interface IProducts {
-    title: string,
+    name: string,
     price:string,
     rating:number,
     img: string
+}
+
+export interface TabBarProducts {
+    name:string,
+    to: string
 }
