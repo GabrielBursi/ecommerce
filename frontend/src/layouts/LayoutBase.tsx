@@ -1,8 +1,7 @@
-import { Avatar, Box, InputAdornment, Paper, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Box, Divider, Icon, InputAdornment, Paper, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import InfoIcon from '@mui/icons-material/Info';
 import { deepOrange } from "@mui/material/colors";
 
 
@@ -20,24 +19,30 @@ export function LayoutBase({ children, title }: LayoutProps) {
 
     return (
         <Box height="100%" display="flex" flexDirection="column" gap={1}>
-            <Box component={Paper} elevation={0} square  padding={1} height={theme.spacing(smDown ? 10 : mdDown ? 12 : 14)} display="flex" alignItems="center" justifyContent="space-between" gap={2}>
+            <Box component={Paper} elevation={0} square  padding={2} height={theme.spacing(smDown ? 10 : mdDown ? 12 : 14)} display="flex" alignItems="center" justifyContent="space-evenly" gap={2}>
 
-                <Box width='20%' height='50%' display='flex' alignItems='center'>
-                    <Typography
-                        variant={smDown ? 'h5' : mdDown ? 'h4' : 'h3'}
-                        component="h1"
-                        whiteSpace="nowrap"
-                        overflow="ellipses"
-                        color="primary"
-                    >
-                        R-eact Store
-                    </Typography>
+                <Box width='auto' height='50%' display='flex' alignItems='center'>
+                    {smDown ? 
+                        <Icon color="primary">fitbit</Icon>
+                        :
+                        <Typography
+                            variant={mdDown ? 'h5' : 'h4'}
+                            component="h1"
+                            whiteSpace="nowrap"
+                            overflow="ellipses"
+                            color="primary"
+                            noWrap
+                            sx={{cursor:'pointer'}}
+                        >
+                            <Icon color="primary">fitbit</Icon> R-commerce
+                        </Typography>
+                    }
                 </Box>
                 
-                <Box width='40%' height='50%'  display='flex' alignItems='center'>
+                <Box width='50%' height='50%'  display='flex' alignItems='center'>
                     <TextField
                         id="standard-search"
-                        label="Pesquise o produto aqui"
+                        label="Pesquise aqui"
                         variant="standard"
                         fullWidth
                         InputProps={{
@@ -50,31 +55,53 @@ export function LayoutBase({ children, title }: LayoutProps) {
                     />
                 </Box>
 
-                <Box width='30%' height='50%' display='flex' alignItems='center'>
-                    <Box width='auto' height='100%' display='flex' alignItems='center' gap={1} mr={4}>
-                        {/* //! mudar cor dinamicamente */}
-                        <Avatar sx={{ bgcolor: deepOrange[500] }}>G</Avatar>  
-                        <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
-                            <Typography
-                                variant="body2"
-                                noWrap
-                            >
-                                Olá Nome,
-                            </Typography>
-                            <Typography
-                                variant="caption"
-                                noWrap
-                            >
-                                MINHA CONTA | SAIR
-                            </Typography>
+                {smDown ? 
+                    <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={2}>
+                        <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} />
+                        <Icon>menu</Icon>
+                    </Box>
+                    : 
+                    <>
+                        <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
+                            {/* //! mudar cor dinamicamente */}
+                            <Avatar sx={{ bgcolor: deepOrange[500]}} >G</Avatar>
+                            {!mdDown && 
+
+                                <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
+                                    <Typography
+                                        variant="body2"
+                                        fontWeight='bold'
+                                        noWrap
+                                    >
+                                        Olá Nome,
+                                    </Typography>
+                                    <Box display='flex' width='auto' height='30%' gap={1} alignItems='center'>
+                                        <Typography
+                                            variant="caption"
+                                            noWrap
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            MINHA CONTA
+                                        </Typography>
+                                        <Divider orientation="vertical" variant="middle"  />
+                                        <Typography
+                                            variant="caption"
+                                            noWrap
+                                            sx={{ cursor: 'pointer' }}
+                                        >
+                                            SAIR
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            }  
                         </Box>
-                    </Box>
-                    <Box flex={1} height='100%' pl={1} display='flex' alignItems='center' justifyContent="center" gap={2} >
-                        <ShoppingCartIcon color="primary"/>
-                        <FavoriteIcon color="primary"/>
-                        <InfoIcon color="primary"/>
-                    </Box>
-                </Box>
+                        <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={3} >
+                            <FavoriteIcon color="primary" sx={{cursor: "pointer"}}/>
+                            <ShoppingCartIcon color="primary" sx={{cursor: "pointer"}}/>
+                        </Box>
+                    </>
+                }
+                
 
             </Box>    
 
