@@ -1,6 +1,7 @@
-import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
-import { Box, Button, Grid, IconButton, InputAdornment, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 interface LoginPageProps {
     title: string,
@@ -14,6 +15,8 @@ export function Form({ title, textButton, create }: LoginPageProps) {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
+
+    const navigate = useNavigate()
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -30,7 +33,7 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                 flexDirection: 'column',
                 width: lgDown ? '100%' : '65%',
                 height: '80%',
-                alignItems: "center"
+                alignItems: "center",
             }}
         >
 
@@ -48,10 +51,11 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                 sx={{
                     marginTop: 5,
                     width: mdDown ? '90%' : '55%',
-                    height: '50%',
+                    height: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 2
+                    alignItems:'center',
+                    gap: 2,
                 }}
             >
                 {create &&
@@ -135,9 +139,25 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                         }}
                     />
                 }
-                <Button variant="contained" size="large" startIcon={textButton === 'criar' ? '' : <LoginOutlined />}>
+                <Button variant="contained" size="large" fullWidth startIcon={textButton === 'criar' ? '' : <LoginOutlined />}>
                     {textButton}
                 </Button>
+                <Box
+                    sx={{
+                        display:'flex',
+                        justifyContent:'center',
+                        alignItems:'center',
+                        width:'100%',
+                        gap:1,
+                    }}
+                >   
+                    <Typography color="black" variant={ smDown ? "body2" : "subtitle1"} noWrap>
+                        {create ? 'Já possui um cadastro?' : 'Novo por aqui?'}
+                    </Typography>
+                    <Typography variant={ smDown ? "body2" : "subtitle1"} noWrap>
+                        <Link underline="hover" fontWeight='bold' sx={{ cursor: 'pointer' }} onClick={() => { navigate(create ? '/login' : '/login/create')}}>{create ? 'FAZER LOGIN' : 'CRIAR CONTA'}</Link>
+                    </Typography>
+                </Box>
             </Box>
         </Box>
     );

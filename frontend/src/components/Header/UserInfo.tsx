@@ -2,7 +2,7 @@ import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/
 import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
-export function UserInfo({}) {
+export function UserInfo (){
 
     const isLogged = false
 

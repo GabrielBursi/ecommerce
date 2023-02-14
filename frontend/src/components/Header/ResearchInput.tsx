@@ -1,7 +1,7 @@
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-export function ResearchInput({}) {
+export function ResearchInput(){
     return (
         <TextField
             id="standard-search"
