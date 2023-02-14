@@ -9,10 +9,10 @@ import '../TraducoesYup'
 import * as yup from 'yup'
 
 interface YupSchemaLogin {
-    name?: string,
+    name: string,
     email: string,
     password: string,
-    confirmPassword?: string,
+    confirmPassword: string,
 }
 
 export function Login() {
@@ -21,7 +21,13 @@ export function Login() {
 
     const { name, email, password, confirmPassword, setErrorName, setErrorEmail, setErrorPassword, setErrorConfirmPassword } = useContext(LoginContext)
 
-    const loginSchema: yup.ObjectSchema<YupSchemaLogin> = yup.object({
+    //!temporário
+    const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
+        email: yup.string().email().required(),
+        password: yup.string().required().min(6),
+    })
+
+    const createLoginSchema: yup.ObjectSchema<YupSchemaLogin> = yup.object({
         name: yup.string().required().min(2),
         email: yup.string().email().required(),
         password: yup.string().required().min(6),
@@ -30,41 +36,48 @@ export function Login() {
 
     function handleSubmit() {
 
-        loginSchema.validate({name, email, password, confirmPassword}, {abortEarly: false})
-            .then(valid => console.log('passou'))
+        const userDataCreate = { name, email, password, confirmPassword }
+        const userDataLogin = { email, password }
+
+        //! melhorar código
+        if (create) {
+            createLoginSchema.validate(userDataCreate, {abortEarly: false})
+                .then(valid => {console.log('passou')})
+                .catch((errors: yup.ValidationError) => {
+                    errors.inner.forEach(error => {
+                        switch (error.path) {
+                            case 'name':
+                                setErrorName(error.message);
+                                break
+                            case 'email':
+                                setErrorEmail(error.message);
+                                break
+                            case 'password':
+                                setErrorPassword(error.message);
+                                break
+                            case 'confirmPassword':
+                                setErrorConfirmPassword(error.message);
+                                break
+                        }
+                    });
+                })
+            return
+        }
+
+        loginSchema.validate(userDataLogin, { abortEarly: false })
+            .then(valid => { console.log('passou') })
             .catch((errors: yup.ValidationError) => {
                 errors.inner.forEach(error => {
                     switch (error.path) {
-                        case 'name':
-                            setErrorName(error.message);
-
-                            break
                         case 'email':
                             setErrorEmail(error.message);
-
                             break
                         case 'password':
                             setErrorPassword(error.message);
-
-                            break
-                        case 'confirmPassword':
-                            setErrorConfirmPassword(error.message);
-
-                            break
-                        default:
-                            console.log('nenhum erro')
                             break
                     }
                 });
             })
-
-        if(create){
-            console.log('criar conta');
-            return
-        }
-
-        console.log('logar');
-        
     }
 
     return (
