@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../contexts";
 
 interface LoginPageProps {
     title: string,
     textButton: string,
     create: boolean,
+    handleSubmit: () => void,
 }
 
-export function Form({ title, textButton, create }: LoginPageProps) {
+export function Form({ title, textButton, create, handleSubmit }: LoginPageProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -20,6 +22,37 @@ export function Form({ title, textButton, create }: LoginPageProps) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const { 
+            setName, 
+            setConfirmPassword, 
+            setEmail, 
+            setPassword, 
+            name, 
+            email, 
+            password, 
+            confirmPassword, 
+            setErrorName,
+            setErrorEmail,
+            setErrorPassword,
+            setErrorConfirmPassword,
+            errorName, 
+            errorEmail, 
+            errorPassword, 
+            errorConfirmPassword
+        } = useContext(LoginContext)
+
+    function handleChangePage(){
+        setErrorName('')
+        setErrorEmail('')
+        setErrorPassword('')
+        setErrorConfirmPassword('')
+        setName('')
+        setEmail('')
+        setPassword('')
+        setConfirmPassword('')
+        navigate(create ? '/login' : '/login/create')
+    }
 
     useEffect(() => {
         setShowPassword(false)
@@ -61,9 +94,14 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                 {create &&
                     <TextField
                         required
-                        id="email"
+                        id="name"
                         label="Nome"
                         fullWidth
+                        onChange={(e) => setName(e.target.value)}
+                        onKeyDown={() => setErrorName('')}
+                        value={name}
+                        error={!!errorName}
+                        helperText={errorName}
                     />
                 }
                 <TextField
@@ -72,6 +110,11 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                     label="Email"
                     type="email"
                     fullWidth
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={() => setErrorEmail('')}
+                    value={email}
+                    error={!!errorEmail}
+                    helperText={errorEmail}
                 />
                 {create ?
                     <Grid container spacing={2}>
@@ -82,6 +125,11 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 label="Senha"
                                 fullWidth
+                                onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={() => setErrorPassword('')}
+                                value={password}
+                                error={!!errorPassword}
+                                helperText={errorPassword}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -103,6 +151,11 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                                 type={showPassword ? 'text' : 'password'}
                                 label="Confirme sua senha"
                                 fullWidth
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onKeyDown={() => setErrorConfirmPassword('')}
+                                value={confirmPassword}
+                                error={!!errorConfirmPassword}
+                                helperText={errorConfirmPassword}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -125,6 +178,11 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                         type={showPassword ? 'text' : 'password'}
                         label="Senha"
                         fullWidth
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={() => setErrorPassword('')}
+                        value={password}
+                        error={!!errorPassword}
+                        helperText={errorPassword}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -139,7 +197,13 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                         }}
                     />
                 }
-                <Button variant="contained" size="large" fullWidth startIcon={textButton === 'criar' ? '' : <LoginOutlined />}>
+                <Button 
+                    variant="contained" 
+                    size="large" 
+                    fullWidth 
+                    startIcon={textButton === 'criar' ? '' : <LoginOutlined />}
+                    onClick={handleSubmit}
+                >
                     {textButton}
                 </Button>
                 <Box
@@ -155,7 +219,13 @@ export function Form({ title, textButton, create }: LoginPageProps) {
                         {create ? 'Já possui um cadastro?' : 'Novo por aqui?'}
                     </Typography>
                     <Typography variant={ smDown ? "body2" : "subtitle1"} noWrap>
-                        <Link underline="hover" fontWeight='bold' sx={{ cursor: 'pointer' }} onClick={() => { navigate(create ? '/login' : '/login/create')}}>{create ? 'FAZER LOGIN' : 'CRIAR CONTA'}</Link>
+                        <Link 
+                        underline="hover" 
+                        fontWeight='bold' 
+                        sx={{ cursor: 'pointer' }} 
+                        onClick={handleChangePage}>
+                            {create ? 'FAZER LOGIN' : 'CRIAR CONTA'}
+                        </Link>
                     </Typography>
                 </Box>
             </Box>

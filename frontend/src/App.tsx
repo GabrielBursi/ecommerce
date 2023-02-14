@@ -1,17 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
-import { TabBarProductsProvider, ThemeContextProvider } from "./contexts";
+import { ContextProvider } from "./contexts";
 import { RoutesApp } from "./routes";
 
 function App() {
 
   return (
-    <ThemeContextProvider>
-      <TabBarProductsProvider>
+    <ContextProvider>
         <BrowserRouter>
           <RoutesApp/>
         </BrowserRouter>
-      </TabBarProductsProvider>
-    </ThemeContextProvider>
+    </ContextProvider>
   );
 }
 
