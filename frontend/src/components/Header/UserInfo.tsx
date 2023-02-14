@@ -1,5 +1,6 @@
 import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { deepOrange, deepPurple } from "@mui/material/colors";
+import { deepPurple } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 export function UserInfo({}) {
 
@@ -7,6 +8,8 @@ export function UserInfo({}) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+
+    const navigate = useNavigate()
 
     if (!isLogged) 
     return (
@@ -27,6 +30,7 @@ export function UserInfo({}) {
                             noWrap
                             fontWeight='bold'
                             sx={{ cursor: 'pointer' }}
+                            onClick = {() => navigate('/login')}
                         >
                             LOGIN
                         </Typography>
@@ -36,6 +40,7 @@ export function UserInfo({}) {
                             noWrap
                             fontWeight='bold'
                             sx={{ cursor: 'pointer' }}
+                            onClick={() => navigate('/login/create')}
                         >
                             CRIAR CONTA
                         </Typography>
@@ -47,8 +52,7 @@ export function UserInfo({}) {
 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
-            {/* //! mudar cor dinamicamente */}
-            <Avatar sx={{ bgcolor: deepOrange[500] }} >G</Avatar>
+            <Avatar sx={{ bgcolor: deepPurple[700] }} >G</Avatar>
             {!mdDown &&
 
                 <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>

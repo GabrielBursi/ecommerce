@@ -23,7 +23,18 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
     return (
         <Box height="100%" display="flex" flexDirection="column">
-            <Box component={Paper} elevation={0} square  padding={2} height={theme.spacing(smDown ? 10 : mdDown ? 12 : 14)} display="flex" alignItems="center" justifyContent="space-evenly" gap={2}>
+            <Box 
+                component={Paper} 
+                elevation={0} 
+                square  
+                padding={2} 
+                height={theme.spacing(smDown ? 10 : mdDown ? 12 : 14)} 
+                display="flex"
+                alignItems="center" 
+                justifyContent="space-evenly" 
+                gap={2}
+                sx={{ borderBottom: showTabBar ? '' : '2px solid #512da8'}}    
+            >
 
                 <Box width='auto' height='50%' display='flex' alignItems='center'>
                     {smDown ? 
