@@ -3,6 +3,8 @@ import { SideBar } from "./components";
 import { ContextProvider } from "./contexts";
 import { RoutesApp } from "./routes";
 
+import './index.css'
+
 function App() {
 
   return (

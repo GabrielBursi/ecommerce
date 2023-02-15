@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
-import { HomePage, Login, ProductPage } from "../pages";
+import { FavoritePage, HomePage, Login, ProductPage } from "../pages";
 
 export function RoutesApp() {
 
@@ -90,7 +90,8 @@ export function RoutesApp() {
             <Route path="/" element={<HomePage />} />
             <Route path="/products/:product" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
-            <Route path="/login/:create" element={<Login/>}/>
+            <Route path="/login/:create" element={<Login />} />
+            <Route path="/favorite" element={<FavoritePage />} />
         </Routes>
     );
 }

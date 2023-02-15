@@ -19,18 +19,27 @@ export function Login() {
 
     const { create } = useParams<'create'>();
 
-    const { name, email, password, confirmPassword, setErrorName, setErrorEmail, setErrorPassword, setErrorConfirmPassword } = useContext(LoginContext)
+    const { 
+            name, 
+            email, 
+            password, 
+            confirmPassword, 
+            setErrorName, 
+            setErrorEmail, 
+            setErrorPassword, 
+            setErrorConfirmPassword 
+        } = useContext(LoginContext)
 
     //!temporário
     const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
         email: yup.string().email().required(),
-        password: yup.string().required().min(6),
+        password: yup.string().min(6).required(),
     })
 
     const createLoginSchema: yup.ObjectSchema<YupSchemaLogin> = yup.object({
-        name: yup.string().required().min(2),
+        name: yup.string().min(2).required(),
         email: yup.string().email().required(),
-        password: yup.string().required().min(6),
+        password: yup.string().min(6).required(),
         confirmPassword: yup.string().oneOf([yup.ref('password')]).required(),
     })
 
