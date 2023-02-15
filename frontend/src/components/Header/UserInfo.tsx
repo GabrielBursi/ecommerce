@@ -1,10 +1,12 @@
 import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../contexts";
 
 export function UserInfo (){
 
-    const isLogged = false
+    const { isLogged } = useContext(LoginContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -14,8 +16,7 @@ export function UserInfo (){
     if (!isLogged) 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
-            {/* //! mudar cor dinamicamente */}
-            <Avatar sx={{ bgcolor: deepPurple[700] }}/>
+            <Avatar sx={{ bgcolor: deepPurple[700] }} onClick={() => { navigate('/login') }} />
             {!mdDown && 
                 <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
                     <Typography

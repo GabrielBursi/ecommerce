@@ -1,14 +1,16 @@
-import { LoginContextProvider, TabBarProductsProvider, ThemeContextProvider } from './'
+import { DrawerContextProvider, LoginContextProvider, TabBarProductsProvider, ThemeContextProvider } from './'
 import { ChildrenProp } from "../types";
 
 export function ContextProvider({children}: ChildrenProp) {
     return (
         <ThemeContextProvider>
-            <TabBarProductsProvider>
+            <DrawerContextProvider>
                 <LoginContextProvider>
-                    {children}
+                    <TabBarProductsProvider>
+                            {children}
+                    </TabBarProductsProvider>
                 </LoginContextProvider>
-            </TabBarProductsProvider>
+            </DrawerContextProvider>
         </ThemeContextProvider>
     );
 }

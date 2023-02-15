@@ -1,7 +1,9 @@
+import { useContext } from "react";
 import { Box, Icon, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Actions, ListProducts, ResearchInput, UserInfo } from "../components";
 import { useNavigate } from "react-router-dom";
+import { DrawerContext, LoginContext } from "../contexts";
 
 interface LayoutProps {
     children: React.ReactNode,
@@ -19,7 +21,8 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
     const navigate = useNavigate()
 
-    const isLogged = false
+    const { isLogged } = useContext(LoginContext)
+    const { toggleDrawer } = useContext(DrawerContext)
 
     return (
         <Box height="100%" display="flex" flexDirection="column">
@@ -65,7 +68,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
                         {isLogged ? 
                             <>
                                 <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} /> 
-                                <Icon>menu</Icon>
+                                <Icon onClick={toggleDrawer}>menu</Icon>
                             </>
                             : 
                             <UserInfo/>
