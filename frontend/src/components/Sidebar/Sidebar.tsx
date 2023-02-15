@@ -1,16 +1,19 @@
 import { useContext } from 'react';
-import { Box, Divider, Drawer, List, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, Drawer, Icon, Link, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { ChildrenProp } from '../../types';
-import { DrawerContext } from '../../contexts';
+import { DrawerContext, ThemeContext } from '../../contexts';
 import { ListItem } from './ListItem';
 
 
 export function SideBar({ children }: ChildrenProp) {
 
     const { drawerOptions, toggleDrawer, isDrawerOpen } = useContext(DrawerContext)
+    const { themeName, toggleTheme } = useContext(ThemeContext)
 
     const theme = useTheme();
-    const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
+
+    const navigate = useNavigate()
 
     return (
         <>
@@ -20,16 +23,48 @@ export function SideBar({ children }: ChildrenProp) {
                     <Divider />
 
                     <Box flex={1}>
-                        <List component='nav'>
+                        <List component='nav'>  
                             {drawerOptions.map(option => (
                                 <ListItem
                                     key={option.path}
                                     icon={option.icon}
                                     label={option.label}
                                     to={option.path}
-                                    onClick={lgDown ? toggleDrawer : undefined}
+                                    onClick={toggleDrawer}
                                 />
                             ))}
+                        </List>
+                    </Box>
+
+                    <Divider />
+
+                    <Box>
+                        <List component='nav'>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <Icon color='primary'>open_in_new</Icon>
+                                </ListItemIcon>
+                                <Link
+                                    href='https://github.com/GabrielBursi/ecommerce'
+                                    underline='none'
+                                    rel="noreferrer"
+                                    target='_blank'
+                                >
+                                    <ListItemText primary='GitHub' />
+                                </Link>
+                            </ListItemButton>
+                            <ListItemButton onClick={() => { navigate('/sobre'); toggleDrawer()  }}>
+                                <ListItemIcon>
+                                    <Icon color='primary'>help</Icon>
+                                </ListItemIcon>
+                                <ListItemText primary='Sobre o projeto' />
+                            </ListItemButton>
+                            <ListItemButton onClick={toggleTheme}>
+                                <ListItemIcon>
+                                    <Icon color='primary'>{themeName === 'light' ? 'dark' : 'light'}_mode</Icon>
+                                </ListItemIcon>
+                                <ListItemText primary='Mudar tema' />
+                            </ListItemButton>
                         </List>
                     </Box>
                 </Box>

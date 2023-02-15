@@ -16,7 +16,7 @@ export function UserInfo (){
     if (!isLogged) 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
-            <Avatar sx={{ bgcolor: deepPurple[700] }} onClick={() => { navigate('/login') }} />
+            <Avatar sx={{ bgcolor: deepPurple[700], cursor: 'pointer' }} onClick={() => { navigate('/login') }} />
             {!mdDown && 
                 <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
                     <Typography

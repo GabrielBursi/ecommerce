@@ -1,11 +1,13 @@
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { TabBarProductsContext } from "../contexts";
+import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
 import { HomePage, Login, ProductPage } from "../pages";
 
 export function RoutesApp() {
 
     const { setProducts } = useContext(TabBarProductsContext)
+    const { toggleDrawerOptions } = useContext(DrawerContext)
+    const { isLogged } = useContext(LoginContext)
 
     useEffect(() => {
         setProducts([
@@ -50,6 +52,37 @@ export function RoutesApp() {
                 to: '/products/comidas'
             },
         ])
+        if(isLogged){
+            toggleDrawerOptions([
+                {
+                    icon: "home",
+                    label: "Página inicial",
+                    path: "/"
+                },
+                {
+                    icon: 'person',
+                    path: '/conta/:id',
+                    label: 'Minha conta',
+                },
+                {
+                    icon: "favorite",
+                    label: "Favoritos",
+                    path: "/favorite"
+                }
+                ,
+                {
+                    icon: "shopping_cart",
+                    label: "Carrinho",
+                    path: "/cart"
+                },
+                {
+                    icon: "shopping_basket",
+                    label: "Meus pedidos",
+                    path: "/requests"
+                }
+                
+            ])
+        }
     }, []);
 
     return (

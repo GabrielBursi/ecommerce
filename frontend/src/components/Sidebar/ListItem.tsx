@@ -24,7 +24,7 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
             <ListItemIcon>
                 <Icon color='primary'>{icon}</Icon>
             </ListItemIcon>
-            <ListItemText primary={label} sx={{ color: '#1976d2' }} />
+            <ListItemText primary={label}/>
         </ListItemButton>
     );
 }
