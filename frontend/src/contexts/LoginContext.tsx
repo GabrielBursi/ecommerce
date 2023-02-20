@@ -21,6 +21,7 @@ interface LoginContextData{
     setErrorConfirmPassword: React.Dispatch<React.SetStateAction<string>>,
 
     isLogged: boolean,
+    setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const LoginContext = createContext({} as LoginContextData)
@@ -37,7 +38,7 @@ function LoginContextProvider({children}:ChildrenProp) {
     const [errorPassword, setErrorPassword] = useState<string>('');
     const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>('');
 
-    const isLogged = true
+    const [isLogged, setIsLogged] = useState<boolean>(true);
 
     return (
         <LoginContext.Provider value={{ 
@@ -57,7 +58,8 @@ function LoginContextProvider({children}:ChildrenProp) {
             setErrorEmail, 
             setErrorPassword, 
             setErrorConfirmPassword,
-            isLogged
+            isLogged,
+            setIsLogged
         }}>
             {children}
         </LoginContext.Provider>

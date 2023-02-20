@@ -2,18 +2,18 @@ import { createContext, useState } from "react";
 import { ChildrenProp, TabBarProducts } from "../types";
 
 interface TabBarProductsContextData {
-    products: TabBarProducts[],
-    setProducts: React.Dispatch<React.SetStateAction<TabBarProducts[]>>
+    productsTabBar: TabBarProducts[],
+    setProductsTabBar: React.Dispatch<React.SetStateAction<TabBarProducts[]>>
 }
 
 const TabBarProductsContext = createContext({} as TabBarProductsContextData)
 
 function TabBarProductsProvider({ children }: ChildrenProp) {
 
-    const [products, setProducts] = useState<TabBarProducts[]>([]);
+    const [productsTabBar, setProductsTabBar] = useState<TabBarProducts[]>([]);
 
     return (
-        <TabBarProductsContext.Provider value={{ products, setProducts }}>
+        <TabBarProductsContext.Provider value={{ productsTabBar, setProductsTabBar }}>
             {children}
         </TabBarProductsContext.Provider>
     );

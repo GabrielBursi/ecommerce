@@ -1,9 +1,9 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Icon, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Actions, ListProducts, ResearchInput, UserInfo } from "../components";
-import { useNavigate } from "react-router-dom";
-import { DrawerContext, LoginContext } from "../contexts";
+import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
+import { Actions, TabBar, ResearchInput, UserInfo } from "../components";
 
 interface LayoutProps {
     children: React.ReactNode,
@@ -23,6 +23,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
+    const { productsTabBar } = useContext(TabBarProductsContext)
 
     return (
         <Box height="100%" display="flex" flexDirection="column">
@@ -84,7 +85,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
             </Box>    
 
-                {showTabBar && <ListProducts />}
+            {showTabBar && <TabBar productsTabBar={productsTabBar}/>}
 
             <Box flex={1} overflow="auto">
                 {children}

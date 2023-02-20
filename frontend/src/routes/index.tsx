@@ -5,19 +5,19 @@ import { FavoritePage, HomePage, Login, ProductPage } from "../pages";
 
 export function RoutesApp() {
 
-    const { setProducts } = useContext(TabBarProductsContext)
+    const { setProductsTabBar } = useContext(TabBarProductsContext)
     const { toggleDrawerOptions } = useContext(DrawerContext)
     const { isLogged } = useContext(LoginContext)
 
     useEffect(() => {
-        setProducts([
+        setProductsTabBar([
             {
                 name: "celular",
-                to: '/products/celulares'
+                to: '/products/celular'
             },
             {
                 name: "computador",
-                to: '/products/computadores'
+                to: '/products/computador'
             },
             {
                 name: "TV",
@@ -25,31 +25,31 @@ export function RoutesApp() {
             },
             {
                 name: "livro",
-                to: '/products/livros'
+                to: '/products/livro'
             },
             {
                 name: "esporte",
-                to: '/products/esportes'
+                to: '/products/esporte'
             },
             {
                 name: "roupa",
-                to: '/products/roupas'
+                to: '/products/roupa'
             },
             {
                 name: "games",
-                to: '/products/games'
+                to: '/products/game'
             },
             {
                 name: "bebê",
-                to: '/products/bebes'
+                to: '/products/bebe'
             },
             {
                 name: "brinquedo",
-                to: '/products/brinquedos'
+                to: '/products/brinquedo'
             },
             {
                 name: "comida",
-                to: '/products/comidas'
+                to: '/products/comida'
             },
         ])
         if(isLogged){

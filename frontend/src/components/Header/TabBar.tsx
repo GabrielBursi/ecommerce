@@ -1,24 +1,21 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar, Tab, Tabs, useMediaQuery, useTheme } from "@mui/material";
-import { TabBarProductsContext } from "../../contexts";
 import { TabBarProducts } from "../../types";
 
-export function ListProducts() {
+interface TabBarProps {
+    productsTabBar: TabBarProducts[]
+}
+
+export function TabBar({productsTabBar}: TabBarProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-    const { products } = useContext(TabBarProductsContext)
-
-    const [value, setValue] = useState(0);
-
     const navigate = useNavigate()
-
-    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
+    
+    const [value, setValue] = useState<number | boolean>();
+    
     const handleClick = (to: string) => {
         navigate(to)
     }
@@ -27,15 +24,20 @@ export function ListProducts() {
         <AppBar position="static">
             <Tabs
                 value={value}
-                onChange={handleChange}
+                onChange={(_: React.SyntheticEvent, newValue: number) => { setValue(newValue)}}
                 indicatorColor="secondary"
-                textColor="inherit"
+                textColor='inherit'
                 variant={mdDown ? "scrollable" : "fullWidth"}
                 scrollButtons={mdDown ? true : false}
                 allowScrollButtonsMobile
             >
-                {products.map((item: TabBarProducts) => (
-                    <Tab key={item.name} label={item.name} onClick={() => handleClick(item.to)} sx={{fontSize:'0.8rem'}}/>
+                {productsTabBar.map((product: TabBarProducts) => (
+                    <Tab 
+                        key={product.name} 
+                        label={product.name} 
+                        onClick={() => handleClick(product.to)} 
+                        sx={{ fontSize: '0.8rem' }}
+                    />
                 ))}
             </Tabs>
         </AppBar>
