@@ -5,7 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Images/MyImage";
 
-export function ListFavorites({ title, img, price, rating }: IProducts) {
+export function ListFavorites({ title, img, price, rating, smDown }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -15,6 +15,50 @@ export function ListFavorites({ title, img, price, rating }: IProducts) {
 
     const brand = title.split(' ')[0]
     const nameWithoutBrand = title.replace(title.split(' ')[0], '')
+
+    if(smDown) 
+    return (
+        <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>
+            <Box display='flex' justifyContent='space-between' alignItems='center' width='100%' height='15%'>
+                <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary"/>
+                <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
+                    <IconButton size="medium">
+                        <FavoriteIcon color="primary" fontSize="medium" />
+                    </IconButton>
+                    <IconButton size="medium">
+                        <ShoppingCartIcon color="primary" fontSize="medium" />
+                    </IconButton>
+                </Box>
+            </Box>
+            <Box flex={1} display='flex' alignItems='center' gap={2}>
+                <Box display='flex' alignItems='center' justifyContent='center' width='110px' height='110px'>
+                    <MyImage alt={title} src={img} height='auto' width='110px'/>
+                </Box>
+                <Box flex={1} display='flex' flexDirection='column' gap={2} height='100%'>
+                    <Box width='100%'>
+                        <Typography
+                            component='h1'
+                            variant='body1'
+                            sx={{ cursor: 'pointer', wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                            onMouseOver={() => setColor(true)}
+                            onMouseLeave={() => setColor(false)}
+                            color={color ? 'primary' : 'black'}
+                            fontWeight="bold"
+                            overflow='hidden'
+                            textOverflow="ellipsis"
+                        >
+                            {title}
+                        </Typography>
+                    </Box>
+                    <Box width='100%'>
+                        <Typography color='primary' variant='h6' fontWeight='bold'>
+                            {price}
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+    )
 
     return (
         <Box component={Paper} display='flex' alignItems='center' width='100%' height={mdDown ? '185px' : '220px'} padding={2} gap={1} elevation={2}>
@@ -30,8 +74,8 @@ export function ListFavorites({ title, img, price, rating }: IProducts) {
                         </Typography>
                         <Typography 
                             component='h1' 
-                            variant={ lgDown ? 'body1' : 'h5'} 
-                            sx={{ cursor: 'pointer', wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical" }} 
+                            variant={ lgDown ? 'h6' : 'h5'} 
+                            sx={{ cursor: 'pointer', wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }} 
                             onMouseOver={() => setColor(true)} 
                             onMouseLeave={() => setColor(false)} 
                             color={color ? 'primary' : 'black'}
@@ -50,7 +94,7 @@ export function ListFavorites({ title, img, price, rating }: IProducts) {
             <Divider orientation="vertical" flexItem />
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
-                    <IconButton size="large">
+                    <IconButton size="medium">
                         <FavoriteIcon color="primary" fontSize="large"/>
                     </IconButton>
                 </Box>

@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { LayoutBase } from "../layouts";
 import { ListFavorites } from "../components";
 import { IProducts } from "../types";
@@ -9,6 +11,8 @@ export function FavoritePage() {
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const navigate = useNavigate()
 
     const arrayDeFavoritos: IProducts[] = [{
             id: Math.random(),
@@ -59,13 +63,11 @@ export function FavoritePage() {
                 <Box display='flex' flexDirection='column' width='95%' height='100%' paddingY={2} gap={2}>
                     <Box  height="10%" display='flex' alignItems='center'>
                         <Typography variant={smDown ? 'h4' : mdDown ? 'h3' : 'h2'} color='primary'>
-                            <FavoriteIcon sx={{fontSize:40}}/> FAVORITOS
+                            {smDown ? <ArrowBackIosNewIcon onClick={() => {navigate('/')}}/> : <FavoriteIcon fontSize="large"/>} FAVORITOS
                         </Typography>
                     </Box>
                     <Box flex={1} display='flex' flexDirection='column' gap={2}>
-                        { smDown ? 
-                            <h1>Ola</h1>
-                            :
+                        { 
                             arrayDeFavoritos.map(product => (
                                 <ListFavorites
                                     key={product.id}
@@ -73,6 +75,7 @@ export function FavoritePage() {
                                     title={product.title}
                                     price={product.price}
                                     rating={product.rating}
+                                    smDown={smDown}
                                 />
                             ))
                         }

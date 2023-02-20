@@ -4,7 +4,8 @@ export interface IProducts {
     description?: string,
     price:string,
     rating:number,
-    img: string
+    img: string,
+    smDown? : boolean
 }
 
 export interface TabBarProducts {
