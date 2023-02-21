@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
-import { FavoritePage, HomePage, Login, ProductPage } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ProductPage } from "../pages";
 
 export function RoutesApp() {
 
@@ -91,7 +91,18 @@ export function RoutesApp() {
             <Route path="/products/:product" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
-            <Route path="/favorite" element={<FavoritePage />} />
+            <Route path="/favorite" element={<FavoritePage />} /> //!privado
+            <Route path="/cart" element={<CartPage />} /> //!privado
+            <Route 
+                path="/precart/:id" 
+                element={
+                        <PreCartPage 
+                            img="https://m.media-amazon.com/images/I/61bK6PMOC3L._AC_UY654_QL65_.jpg" 
+                            price="$698.97" 
+                            title="Apple iPhone 14, 128GB, Blue - Unlocked (Renewed)" 
+                        />
+                    } 
+            /> //!privado
         </Routes>
     );
 }

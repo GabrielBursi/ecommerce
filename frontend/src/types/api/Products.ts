@@ -3,7 +3,7 @@ export interface IProducts {
     title: string,
     description?: string,
     price:string,
-    rating:number,
+    rating?:number,
     img: string,
     smDown? : boolean
 }

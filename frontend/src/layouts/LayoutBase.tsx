@@ -68,7 +68,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
                     <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={2}>
                         {isLogged ? 
                             <>
-                                <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} /> 
+                                <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} onClick={() => navigate('/cart')}/> 
                                 <Icon onClick={toggleDrawer}>menu</Icon>
                             </>
                             : 

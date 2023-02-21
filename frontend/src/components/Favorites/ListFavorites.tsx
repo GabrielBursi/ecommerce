@@ -4,12 +4,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Images/MyImage";
+import { useNavigate } from "react-router-dom";
 
 export function ListFavorites({ title, img, price, rating, smDown }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
+
+    const navigate = useNavigate()
 
     const [color, setColor] = useState(false);
 
@@ -26,7 +29,7 @@ export function ListFavorites({ title, img, price, rating, smDown }: IProducts) 
                         <FavoriteIcon color="primary" fontSize="medium" />
                     </IconButton>
                     <IconButton size="medium">
-                        <ShoppingCartIcon color="primary" fontSize="medium" />
+                        <ShoppingCartIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')}/>
                     </IconButton>
                 </Box>
             </Box>
@@ -104,7 +107,7 @@ export function ListFavorites({ title, img, price, rating, smDown }: IProducts) 
                     </Typography>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
-                    <Button  variant="contained" startIcon={<ShoppingCartIcon/>} fullWidth size="large">COMPRAR</Button>
+                    <Button  variant="contained" startIcon={<ShoppingCartIcon/>} fullWidth size="large" onClick={() => navigate('/cart')}>COMPRAR</Button>
                 </Box>
             </Box>
         </Box>
