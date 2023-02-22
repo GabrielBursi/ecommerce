@@ -6,7 +6,11 @@ import { IProducts } from "../../types";
 import { MyImage } from "../Images/MyImage";
 import { useNavigate } from "react-router-dom";
 
-export function ListFavorites({ title, img, price, rating, smDown }: IProducts) {
+interface ListFavoritesProps extends IProducts {
+    smDown: boolean
+}
+
+export function ListFavorites({ title, img, price, rating, smDown }: ListFavoritesProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))

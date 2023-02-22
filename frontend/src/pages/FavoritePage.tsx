@@ -14,7 +14,7 @@ export function FavoritePage() {
 
     const navigate = useNavigate()
 
-    const arrayDeFavoritos: IProducts[] = [{
+    const arrayDeProdutosTESTE: IProducts[] = [{
             id: Math.random(),
             title: 'Apple iPhone 14, 128GB, Blue - Unlocked (Renewed)',
             description: 'dsdsd',
@@ -68,7 +68,7 @@ export function FavoritePage() {
                     </Box>
                     <Box flex={1} display='flex' flexDirection='column' gap={2}>
                         { 
-                            arrayDeFavoritos.map(product => (
+                            arrayDeProdutosTESTE.map(product => (
                                 <ListFavorites
                                     key={product.id}
                                     img={product.img}

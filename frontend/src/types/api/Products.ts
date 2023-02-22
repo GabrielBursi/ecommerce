@@ -5,7 +5,6 @@ export interface IProducts {
     price:string,
     rating?:number,
     img: string,
-    smDown? : boolean
 }
 
 export interface TabBarProducts {
