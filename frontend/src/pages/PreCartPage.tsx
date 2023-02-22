@@ -3,7 +3,7 @@ import { Alert, Box, Divider, Grid, Paper, Typography, useMediaQuery, useTheme }
 import { LoginContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { IProducts } from "../types";
-import { MyImage } from "../components";
+import { Carousel, MyImage } from "../components";
 
 export function PreCartPage({ img, price, title }: IProducts) {
 
@@ -67,6 +67,7 @@ export function PreCartPage({ img, price, title }: IProducts) {
                             <Typography color='primary' variant={smDown ? 'subtitle2' : mdDown ? 'subtitle1' : 'h5'} noWrap>
                                 PRODUTOS RELACIONADOS
                             </Typography>
+                            <Carousel/>
                         </Box>
                     </Grid>
                     <Grid item xs height='50%'>
