@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
+import { DrawerContext, LoginContext, ProductsContext, TabBarProductsContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ProductPage } from "../pages";
 
 export function RoutesApp() {
@@ -8,6 +9,7 @@ export function RoutesApp() {
     const { setProductsTabBar } = useContext(TabBarProductsContext)
     const { toggleDrawerOptions } = useContext(DrawerContext)
     const { isLogged } = useContext(LoginContext)
+    const { arrayTeste, setProducts } = useContext(ProductsContext)
 
     useEffect(() => {
         setProductsTabBar([
@@ -52,6 +54,7 @@ export function RoutesApp() {
                 to: '/products/comida'
             },
         ])
+        setProducts(arrayTeste)
         if(isLogged){
             toggleDrawerOptions([
                 {
@@ -83,6 +86,7 @@ export function RoutesApp() {
                 
             ])
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -91,18 +95,12 @@ export function RoutesApp() {
             <Route path="/products/:product" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
-            <Route path="/favorite" element={<FavoritePage />} /> //!privado
-            <Route path="/cart" element={<CartPage />} /> //!privado
-            <Route 
-                path="/precart/:id" 
-                element={
-                        <PreCartPage 
-                            img="https://m.media-amazon.com/images/I/61bK6PMOC3L._AC_UY654_QL65_.jpg" 
-                            price="$698.97" 
-                            title="Apple iPhone 14, 128GB, Blue - Unlocked (Renewed)" 
-                        />
-                    } 
-            /> //!privado
+            //!privado
+            <Route path="/favorite" element={<FavoritePage />} /> 
+            //!privado
+            <Route path="/cart" element={<CartPage />} /> 
+            //!privado
+            <Route path="/precart/:id" element={<PreCartPage/>}/> 
         </Routes>
     );
 }

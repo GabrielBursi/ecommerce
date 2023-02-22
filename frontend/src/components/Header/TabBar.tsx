@@ -14,7 +14,7 @@ export function TabBar({productsTabBar}: TabBarProps) {
 
     const navigate = useNavigate()
     
-    const [value, setValue] = useState<number | boolean>();
+    const [value, setValue] = useState<number>();
     
     const handleClick = (to: string) => {
         navigate(to)

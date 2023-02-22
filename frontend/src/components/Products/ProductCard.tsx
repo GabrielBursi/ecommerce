@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, IconButton, Rating, Typography } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
+import { ProductsContext } from "../../contexts";
 
 interface ProductCardProps extends IProducts{
     width?: number | string,
@@ -17,10 +18,24 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     const [hover, setHover] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
+    const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+
     const navigate = useNavigate()
 
     function addProductInCart(id: number | string){
+        setProductsInCart([...productsInCart, { img, price, title, rating, id }])
         navigate(`/precart/${id}`)
+    }
+
+    function addProductInLiked(){
+        setIsFavorite(oldIsFavorite => !oldIsFavorite)
+        if(!isFavorite){
+            
+            setProductsLiked([...productsLiked, {img, price, title, rating, id}])
+        }else{
+            const productsLikedWithout = productsLiked.filter(product => product.id !== id)
+            setProductsLiked(productsLikedWithout)
+        }
     }
 
     if(mdDown)
@@ -38,7 +53,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                             }}
                         >
                             <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
-                            <IconButton size="small" onClick={() => setIsFavorite(oldIsFavorite => !oldIsFavorite)}>
+                            <IconButton size="small" onClick={addProductInLiked}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                             </IconButton>
                         </Box>
@@ -105,7 +120,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                     <CardHeader 
                         action={
                             hover ? 
-                            <IconButton size="small" onClick={() => setIsFavorite(oldIsFavorite => !oldIsFavorite)}>
+                            <IconButton size="small" onClick={addProductInLiked}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                             </IconButton>
                             :

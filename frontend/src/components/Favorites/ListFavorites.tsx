@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
-import { MyImage } from "../Images/MyImage";
+import { MyImage } from "../Products/MyImage";
 import { useNavigate } from "react-router-dom";
+import { ProductsContext } from "../../contexts";
 
 interface ListFavoritesProps extends IProducts {
     smDown: boolean
 }
 
-export function ListFavorites({ title, img, price, rating, smDown }: ListFavoritesProps) {
+export function ListFavorites({ title, img, price, rating, smDown, id }: ListFavoritesProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -20,8 +21,20 @@ export function ListFavorites({ title, img, price, rating, smDown }: ListFavorit
 
     const [color, setColor] = useState(false);
 
+    const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+
     const brand = title.split(' ')[0]
     const nameWithoutBrand = title.replace(title.split(' ')[0], '')
+
+    function addProductInCart(id: number | string) {
+        setProductsInCart([...productsInCart, { img, price, title, rating, id }])
+        navigate(`/precart/${id}`)
+    }
+
+    function removeProductLiked(){
+        const productsLikedWithout = productsLiked.filter(product => product.id !== id)
+        setProductsLiked(productsLikedWithout)
+    }
 
     if(smDown) 
     return (
@@ -30,10 +43,10 @@ export function ListFavorites({ title, img, price, rating, smDown }: ListFavorit
                 <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary"/>
                 <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" />
+                        <FavoriteIcon color="primary" fontSize="medium" onClick={removeProductLiked}/>
                     </IconButton>
                     <IconButton size="medium">
-                        <ShoppingCartIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')}/>
+                        <ShoppingCartIcon color="primary" fontSize="medium" onClick={() => id && addProductInCart(id)}/>
                     </IconButton>
                 </Box>
             </Box>
@@ -102,7 +115,7 @@ export function ListFavorites({ title, img, price, rating, smDown }: ListFavorit
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={removeProductLiked}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -111,7 +124,7 @@ export function ListFavorites({ title, img, price, rating, smDown }: ListFavorit
                     </Typography>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
-                    <Button  variant="contained" startIcon={<ShoppingCartIcon/>} fullWidth size="large" onClick={() => navigate('/cart')}>COMPRAR</Button>
+                    <Button  variant="contained" startIcon={<ShoppingCartIcon/>} fullWidth size="large" onClick={() => id && addProductInCart(id)}>COMPRAR</Button>
                 </Box>
             </Box>
         </Box>
