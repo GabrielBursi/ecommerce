@@ -1,9 +1,18 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Icon, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Badge, BadgeProps, Box, Icon, Paper, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { DrawerContext, LoginContext, TabBarProductsContext } from "../contexts";
+import { DrawerContext, LoginContext, ProductsContext, TabBarProductsContext } from "../contexts";
 import { Actions, TabBar, ResearchInput, UserInfo } from "../components";
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: -1,
+        top: 5,
+        border: `2px solid ${theme.palette.background.paper}`,
+        padding: '0 4px',
+    },
+}));
 
 interface LayoutProps {
     children: React.ReactNode,
@@ -24,6 +33,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
     const { productsTabBar } = useContext(TabBarProductsContext)
+    const { productsInCart } = useContext(ProductsContext)
 
     return (
         <Box height="100%" display="flex" flexDirection="column">
@@ -68,7 +78,9 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
                     <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={2}>
                         {isLogged ? 
                             <>
-                                <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} onClick={() => navigate('/cart')}/> 
+                                <StyledBadge badgeContent={productsInCart.length} color="info">
+                                    <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} onClick={() => navigate('/cart')}/> 
+                                </StyledBadge>
                                 <Icon onClick={toggleDrawer}>menu</Icon>
                             </>
                             : 

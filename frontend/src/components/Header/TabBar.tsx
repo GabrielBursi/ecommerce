@@ -23,7 +23,7 @@ export function TabBar({productsTabBar}: TabBarProps) {
     return (
         <AppBar position="static">
             <Tabs
-                value={value}
+                value={1}
                 onChange={(_: React.SyntheticEvent, newValue: number) => { setValue(newValue)}}
                 indicatorColor="secondary"
                 textColor='inherit'

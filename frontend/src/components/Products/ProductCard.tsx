@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, IconButton, Rating, Typography } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -16,11 +16,25 @@ interface ProductCardProps extends IProducts{
 export function ProductCard({ img, price, title, rating, width = 270, height = 400, id, mdDown }: ProductCardProps) {
 
     const [hover, setHover] = useState<boolean>(false);
-    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const [isFavorite, setIsFavorite] = useState<boolean>();
+    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>();
+
 
     const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const productLiked = productsLiked.filter(product => product.id === id)
+        productLiked.forEach(() => {
+            setIsFavorite(true)
+        })
+        const productLikedInCart = productsInCart.filter(product => product.id === id)
+        productLikedInCart.forEach(() => {
+            setIsAlreadyInCart(true)
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productsLiked, productsInCart]);
 
     function addProductInCart(id: number | string){
         setProductsInCart([...productsInCart, { img, price, title, rating, id }])
@@ -30,7 +44,6 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     function addProductInLiked(){
         setIsFavorite(oldIsFavorite => !oldIsFavorite)
         if(!isFavorite){
-            
             setProductsLiked([...productsLiked, {img, price, title, rating, id}])
         }else{
             const productsLikedWithout = productsLiked.filter(product => product.id !== id)
@@ -100,7 +113,16 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                 </CardContent>
             </CardActionArea>
             <CardActions disableSpacing>
-                <Button variant="contained" startIcon={<ShoppingCartIcon />} fullWidth size="medium" onClick={() => { id && addProductInCart(id) }}>COMPRAR</Button>
+                <Button 
+                    variant="contained" 
+                    startIcon={<ShoppingCartIcon />} 
+                    fullWidth 
+                    size="medium" 
+                    onClick={() => { id && addProductInCart(id) }}
+                    disabled={isAlreadyInCart}
+                >
+                    { isAlreadyInCart ? 'JÁ ESTÁ NO CARRINHO' : 'COMPRAR'}
+                </Button>
             </CardActions>
         </Card>
     )
@@ -156,10 +178,19 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                         {price}
                     </Typography>
                 </CardContent>
+                <CardActions disableSpacing>
+                    <Button
+                        variant="contained"
+                        startIcon={<ShoppingCartIcon />}
+                        fullWidth
+                        size="large"
+                        onClick={() => { id && addProductInCart(id) }}
+                        disabled={isAlreadyInCart}
+                        >
+                        {isAlreadyInCart ? 'JÁ ESTÁ NO CARRINHO' : 'COMPRAR'}
+                    </Button>
+                </CardActions>
             </CardActionArea>
-            <CardActions disableSpacing>
-                <Button variant="contained" startIcon={<ShoppingCartIcon />} fullWidth size="large" onClick={() => { id && addProductInCart(id)}}>COMPRAR</Button>
-            </CardActions>
         </Card>
     );
 }   

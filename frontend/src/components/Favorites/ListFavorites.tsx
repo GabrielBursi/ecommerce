@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -20,11 +20,20 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
     const navigate = useNavigate()
 
     const [color, setColor] = useState(false);
+    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>();
 
     const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
 
     const brand = title.split(' ')[0]
     const nameWithoutBrand = title.replace(title.split(' ')[0], '')
+
+    useEffect(() => {
+        const productLikedInCart = productsInCart.filter(product => product.id === id)
+        productLikedInCart.forEach(() => {
+            setIsAlreadyInCart(true)    
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productsLiked]);
 
     function addProductInCart(id: number | string) {
         setProductsInCart([...productsInCart, { img, price, title, rating, id }])
@@ -45,8 +54,8 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
                     <IconButton size="medium">
                         <FavoriteIcon color="primary" fontSize="medium" onClick={removeProductLiked}/>
                     </IconButton>
-                    <IconButton size="medium">
-                        <ShoppingCartIcon color="primary" fontSize="medium" onClick={() => id && addProductInCart(id)}/>
+                    <IconButton size="medium" disabled={isAlreadyInCart}>
+                        <ShoppingCartIcon color={ isAlreadyInCart ? "disabled" : "primary"} fontSize="medium" onClick={() => id && addProductInCart(id)}/>
                     </IconButton>
                 </Box>
             </Box>
@@ -124,7 +133,16 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
                     </Typography>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
-                    <Button  variant="contained" startIcon={<ShoppingCartIcon/>} fullWidth size="large" onClick={() => id && addProductInCart(id)}>COMPRAR</Button>
+                    <Button 
+                        variant="contained" 
+                        startIcon={<ShoppingCartIcon/>} 
+                        fullWidth 
+                        size="large" 
+                        disabled = {isAlreadyInCart} 
+                        onClick={() => id && addProductInCart(id)}
+                    >
+                        { isAlreadyInCart ? 'JÁ ESTÁ NO CARRINHO' : 'COMPRAR'}
+                    </Button>
                 </Box>
             </Box>
         </Box>

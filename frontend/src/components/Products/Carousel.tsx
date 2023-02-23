@@ -49,6 +49,7 @@ export function Carousel() {
                         }}
                     >
                         <ProductCard
+                            id={product.id}
                             key={product.id}
                             img={product.img}
                             price={product.price}
