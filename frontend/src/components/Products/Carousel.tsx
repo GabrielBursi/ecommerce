@@ -25,7 +25,7 @@ export function Carousel() {
             sx={{
                 height: '90%',
                 cursor: 'grab',
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}
         >
             <Box
@@ -43,9 +43,9 @@ export function Carousel() {
                     <Box
                         key={product.id}
                         sx={{
-                            minHeight: '200px',
-                            minWidth: '400px',
-                            padding: 1,
+                            height: 'auto',
+                            width: 'auto',
+                            padding:2,
                         }}
                     >
                         <ProductCard

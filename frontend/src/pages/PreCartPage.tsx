@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Grid, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import { Box, Button, Grid, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { LoginContext, ProductsContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { Carousel, PreCartInfo } from "../components";
@@ -14,10 +14,12 @@ export function PreCartPage() {
     const [productAddInCart, setProductAddInCart] = useState<IProducts>();
 
     const { id } = useParams<'id'>();
+    const navigate = useNavigate()
 
     useEffect(() => {
         const productAdded = productsInCart.find(product => product.id === id);
         setProductAddInCart(productAdded)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const theme = useTheme()
@@ -26,23 +28,36 @@ export function PreCartPage() {
 
     return (
         <LayoutBase showActions = {isLogged} showResearchInput showUserInfo>
-            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%'>
-                <Grid container rowGap={2} columnGap={2} width='80%' height='80%'>
-                    <Grid item xs={12} height='50%'>
-                        {productAddInCart && <PreCartInfo img={productAddInCart?.img} price={productAddInCart?.price} title={productAddInCart?.title} />}
+            <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
+                <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
+                    <Grid item xs={12} height={mdDown ? '35%' : '55%'}>
+                        {productAddInCart && <PreCartInfo img={productAddInCart?.img} price={productAddInCart?.price} title={productAddInCart?.title} id={id} />}
                     </Grid>
-                    <Grid item xs={8} height='50%'>
-                        <Box height='100%' padding={2} component={Paper}>
-                            <Typography color='primary' variant={smDown ? 'subtitle2' : mdDown ? 'subtitle1' : 'h5'} noWrap>
-                                PRODUTOS RELACIONADOS
-                            </Typography>
-                            <Carousel/>
-                        </Box>
-                    </Grid>
-                    <Grid item xs height='50%'>
-                        <Box height='100%' padding={2} component={Paper}>
-                            serviços
-                        </Box>
+                        { mdDown &&
+                            <Grid item xs={12} height='auto'>
+                                <Box component={Paper} height='100%' display='flex' flexDirection={ smDown ? 'column-reverse' : 'row'}  justifyContent='space-center' alignItems='center' gap={2} padding={2}>
+                                <Button variant="outlined" size="large" fullWidth sx={{ fontSize: 15 }} onClick={() => navigate(-1)}>CONTINUAR COMPRANDO</Button>
+                                    <Button variant="contained" size="large" fullWidth sx={{ fontSize: 15 }} onClick={() => navigate('/cart')}>IR PARA O CARRINHO</Button>
+                                </Box>
+                            </Grid>
+                        }
+                    
+                    <Grid item xs={12} height='55%'>
+                        { smDown ? 
+                            <>
+                                <Typography color='primary' variant='h6' noWrap>
+                                    PRODUTOS RELACIONADOS
+                                </Typography>
+                                <Carousel/>
+                            </>
+                            :
+                            <Box height='100%' padding={2} component={Paper} elevation={10}>
+                                <Typography color='primary' variant={mdDown ? 'subtitle1' : 'h5'} noWrap>
+                                    PRODUTOS RELACIONADOS
+                                </Typography>
+                                <Carousel/>
+                            </Box>
+                        }
                     </Grid>
                 </Grid>
             </Box>
