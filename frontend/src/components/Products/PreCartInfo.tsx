@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Divider, Paper, Snackbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { MyImage } from "./MyImage";
@@ -13,6 +14,8 @@ export function PreCartInfo({ img, price, title, id }: IProducts) {
 
     const [color, setColor] = useState(false);
     const [open, setOpen] = useState(false);
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if(smDown){
@@ -106,8 +109,8 @@ export function PreCartInfo({ img, price, title, id }: IProducts) {
                 </Box>
                 { !mdDown &&
                     <Box width='100%' display='flex' justifyContent='center' alignItems='center' gap={2}>
-                        <Button variant="outlined" size="large" sx={{fontSize: lgDown ? 15 : 20}}>CONTINUAR COMPRANDO</Button>
-                        <Button variant="contained" size="large" sx={{fontSize: lgDown ? 15 : 20}}>IR PARA O CARRINHO</Button>
+                        <Button variant="outlined" size="large" sx={{ fontSize: lgDown ? 15 : 20 }} onClick={() => navigate('/')}>CONTINUAR COMPRANDO</Button>
+                        <Button variant="contained" size="large" sx={{fontSize: lgDown ? 15 : 20}} onClick={() => navigate('/cart')}>IR PARA O CARRINHO</Button>
                     </Box>
                 }
             </Box>

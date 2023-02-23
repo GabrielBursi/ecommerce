@@ -36,7 +36,7 @@ export function PreCartPage() {
                         { mdDown &&
                             <Grid item xs={12} height='auto'>
                                 <Box component={Paper} height='100%' display='flex' flexDirection={ smDown ? 'column-reverse' : 'row'}  justifyContent='space-center' alignItems='center' gap={2} padding={2}>
-                                <Button variant="outlined" size="large" fullWidth sx={{ fontSize: 15 }} onClick={() => navigate(-1)}>CONTINUAR COMPRANDO</Button>
+                                <Button variant="outlined" size="large" fullWidth sx={{ fontSize: 15 }} onClick={() => navigate('/')}>CONTINUAR COMPRANDO</Button>
                                     <Button variant="contained" size="large" fullWidth sx={{ fontSize: 15 }} onClick={() => navigate('/cart')}>IR PARA O CARRINHO</Button>
                                 </Box>
                             </Grid>
