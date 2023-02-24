@@ -1,11 +1,5 @@
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-
-interface MyImageProps {
-    alt: string,
-    height?: number | string,
-    width?: number | string,
-    src: string
-}
+import { MyImageProps } from '../../types';
 
 export const MyImage = ({ alt, height, width, src }: MyImageProps) => (
         <LazyLoadImage
