@@ -20,20 +20,21 @@ export function TabBar({productsTabBar}: TabBarProps) {
     const nameProductsTabBar = (productsTabBar.map(product => product.to.replace('/products/', '')))
     
     useEffect(() => {
-        if(product){
-            const index = nameProductsTabBar.indexOf(product)
-            setValue(index);
-        }else{
-            setValue(false)
-        }
+        if(product) return handleChange()
+        
+        setValue(oldValue => oldValue = false)
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product]);
 
-    
+    function handleChange(){
+        const index = nameProductsTabBar.indexOf(product || '')
+        if (index === -1) return setValue(oldValue => oldValue = false)
+        setValue(oldValue => oldValue = index);
+    }
     
     const handleClick = (to: string) => {
         navigate(to)
-        
     }
 
     return (
