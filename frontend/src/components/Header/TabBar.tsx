@@ -22,15 +22,15 @@ export function TabBar({productsTabBar}: TabBarProps) {
     useEffect(() => {
         if(product) return handleChange()
         
-        setValue(oldValue => oldValue = false)
+        setValue(false)
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product]);
 
     function handleChange(){
         const index = nameProductsTabBar.indexOf(product || '')
-        if (index === -1) return setValue(oldValue => oldValue = false)
-        setValue(oldValue => oldValue = index);
+        if (index === -1) return setValue(false)
+        setValue(index)
     }
     
     const handleClick = (to: string) => {

@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { Badge, BadgeProps, Box, Icon, Paper, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { DrawerContext, LoginContext, ProductsContext, TabBarProductsContext } from "../contexts";
-import { Actions, TabBar, ResearchInput, UserInfo } from "../components";
+import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
+import { Actions, TabBar, ResearchInput, UserInfo, Banner } from "../components";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -20,19 +20,21 @@ interface LayoutProps {
     showActions?: boolean,
     showUserInfo? : boolean,
     showTabBar?: boolean,
+    showBanner?: boolean,
 }
 
-export function LayoutBase({ children, showResearchInput = false, showActions = false, showUserInfo = false, showTabBar = true}: LayoutProps) {
+export function LayoutBase({ children, showResearchInput = false, showActions = false, showUserInfo = false, showTabBar = true, showBanner = false}: LayoutProps) {
 
     const theme = useTheme()
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     const navigate = useNavigate()
+    const match = useMatch('/');
 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
-    const { productsTabBar } = useContext(TabBarProductsContext)
+    const { productsTabBar } = useContext(HeaderContext)
     const { productsInCart } = useContext(ProductsContext)
 
     return (
@@ -99,7 +101,8 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
             {showTabBar && <TabBar productsTabBar={productsTabBar}/>}
 
-            <Box flex={1} overflow="auto">
+            <Box flex={1} overflow="auto">    
+                {showBanner && <Banner title="Nome Página" showCarousel={match?.pathname === '/'}/>}
                 {children}
             </Box>
         </Box>

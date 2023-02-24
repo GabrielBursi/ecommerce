@@ -14,7 +14,7 @@ export function HomePage() {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
-        <LayoutBase showResearchInput showUserInfo showActions = {isLogged}>
+        <LayoutBase showResearchInput showUserInfo showBanner showActions = {isLogged}>
             <h1>Home Page</h1>
             <Button variant="contained" color="primary" onClick={toggleTheme}>Mudar tema</Button>
             <Button variant="contained" color="primary" onClick={() => setIsLogged(!isLogged)}>{isLogged ? 'Logout' : 'Login'}</Button>

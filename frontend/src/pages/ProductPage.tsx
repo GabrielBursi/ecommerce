@@ -7,8 +7,8 @@ export function ProductPage() {
     const { isLogged } = useContext(LoginContext)
 
     return (
-        <LayoutBase showResearchInput showUserInfo showActions = {isLogged}>
-            <h1>Product Page</h1>
+        <LayoutBase showResearchInput showUserInfo showBanner showActions = {isLogged}>
+            
         </LayoutBase>
     );
 }
