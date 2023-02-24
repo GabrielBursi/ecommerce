@@ -1,5 +1,5 @@
 export * from './ThemeContext'
-export * from './TabBarProductsContext'
+export * from './HeaderContext'
 export * from './LoginContext'
 export * from './DrawerContext'
 export * from './ProductsContext'

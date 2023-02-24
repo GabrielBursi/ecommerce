@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { DrawerContext, LoginContext, ProductsContext, TabBarProductsContext } from "../contexts";
+import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ProductPage } from "../pages";
 
 export function RoutesApp() {
 
-    const { setProductsTabBar } = useContext(TabBarProductsContext)
+    const { setProductsTabBar, setArrImgBanner } = useContext(HeaderContext)
     const { toggleDrawerOptions } = useContext(DrawerContext)
     const { isLogged } = useContext(LoginContext)
     const { arrayTeste, setProducts } = useContext(ProductsContext)
@@ -54,11 +54,29 @@ export function RoutesApp() {
                 to: '/products/comida'
             },
         ])
+        setArrImgBanner([
+            { 
+                alt: 'Oferta do dia',
+                src: 'https://www.kabum.com.br/core/_next/image?url=https://themes.kabum.com.br/conteudo/layout/3061/banner_img.jpg&w=1920&h=400&q=100',
+                to: '/' 
+            },
+            { 
+                alt: 'Vem pro play',
+                src: 'https://www.kabum.com.br/core/_next/image?url=https://themes.kabum.com.br/conteudo/layout/3141/banner_img.jpg&w=1920&h=400&q=100',
+                to: '/products/games' },
+            { 
+                alt: 'Hora do buff',
+                src: 'https://www.kabum.com.br/core/_next/image?url=https://themes.kabum.com.br/conteudo/layout/3140/banner_img.jpg&w=1920&h=400&q=100',
+                to: '/products/computador' 
+            },
+
+        ])
         setProducts(arrayTeste)
         if(isLogged){
             toggleDrawerOptions([
                 {
                     icon: "home",
+
                     label: "Página inicial",
                     path: "/"
                 },
