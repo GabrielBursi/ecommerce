@@ -25,23 +25,51 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
     const resolvedPath = useResolvedPath(to)
     const match = useMatch({ path: resolvedPath.pathname, end: true })
 
-    const { productsLiked } = useContext(ProductsContext)
+    const { productsLiked, productsInCart } = useContext(ProductsContext)
 
     function handleClick() {
         navigate(to)
         onClick?.()
     }
 
+    if(icon === 'favorite') 
     return (
         <ListItemButton selected={!!match} onClick={handleClick}>
             <ListItemIcon>
-                { icon === 'favorite' ?
                     <StyledBadge badgeContent={productsLiked.length} color="info">
                         <Icon color='primary'>{icon}</Icon>
                     </StyledBadge>
-                    :
+            </ListItemIcon>
+            <ListItemText primary={label} />
+        </ListItemButton>
+    )
+
+    if (icon === 'shopping_cart')
+    return (
+        <ListItemButton selected={!!match} onClick={handleClick}>
+            <ListItemIcon>
+                <StyledBadge badgeContent={productsLiked.length} color="info">
                     <Icon color='primary'>{icon}</Icon>
-                }   
+                </StyledBadge>
+            </ListItemIcon>
+            <ListItemText primary={label} />
+        </ListItemButton>
+    )
+
+    return (
+        <ListItemButton selected={!!match} onClick={handleClick}>
+            <ListItemIcon>
+                { icon === 'favorite' && 
+                    <StyledBadge badgeContent={productsLiked.length} color="info">
+                        <Icon color='primary'>{icon}</Icon>
+                    </StyledBadge>
+                } 
+                { icon === 'shopping_cart' && 
+                    <StyledBadge badgeContent={productsInCart.length} color="info">
+                        <Icon color='primary'>{icon}</Icon>
+                    </StyledBadge>
+                }
+                <Icon color='primary'>{icon}</Icon>
             </ListItemIcon>
             <ListItemText primary={label}/>
         </ListItemButton>

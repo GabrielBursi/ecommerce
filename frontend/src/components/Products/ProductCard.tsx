@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, IconButton, Rating, Typography } from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
@@ -37,6 +38,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     }, [productsLiked, productsInCart]);
 
     function addProductInCart(id: number | string){
+        if (isAlreadyInCart) return navigate('/cart')
         setProductsInCart([...productsInCart, { img, price, title, rating, id }])
         navigate(`/precart/${id}`)
     }
@@ -115,13 +117,12 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
             <CardActions disableSpacing>
                 <Button 
                     variant="contained" 
-                    startIcon={<ShoppingCartIcon />} 
+                    startIcon={ isAlreadyInCart ? <ShoppingCartCheckoutIcon/> : <AddShoppingCartIcon /> } 
                     fullWidth 
                     size="medium" 
                     onClick={() => { id && addProductInCart(id) }}
-                    disabled={isAlreadyInCart}
                 >
-                    { isAlreadyInCart ? 'JÁ ESTÁ NO CARRINHO' : 'COMPRAR'}
+                    { isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
                 </Button>
             </CardActions>
         </Card>
@@ -181,13 +182,12 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                 <CardActions disableSpacing>
                     <Button
                         variant="contained"
-                        startIcon={<ShoppingCartIcon />}
+                        startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         fullWidth
                         size="large"
                         onClick={() => { id && addProductInCart(id) }}
-                        disabled={isAlreadyInCart}
                         >
-                        {isAlreadyInCart ? 'JÁ ESTÁ NO CARRINHO' : 'COMPRAR'}
+                        {isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
                     </Button>
                 </CardActions>
             </CardActionArea>

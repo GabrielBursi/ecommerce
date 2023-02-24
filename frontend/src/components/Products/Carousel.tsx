@@ -23,9 +23,10 @@ export function Carousel() {
             component={motion.div}
             whileTap={{ cursor: 'grabbing' }}
             sx={{
-                height: '90%',
+                height: 'auto',
                 cursor: 'grab',
                 overflow: 'hidden',
+                mt:2
             }}
         >
             <Box

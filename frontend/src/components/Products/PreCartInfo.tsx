@@ -60,10 +60,13 @@ export function PreCartInfo({ img, price, title, id }: IProducts) {
             </Box>
             <Snackbar
                 open={open}
-                autoHideDuration={4000}
+                autoHideDuration={3000}
                 onClose={() => setOpen(false)}
+                sx={{
+                    mb:4.5
+                }}
             >
-                <Alert severity="success" variant="filled" sx={{ width: '100%' }}>
+                <Alert severity="success" variant="filled" sx={{ width: '100%' }} onClick={() => setOpen(false)}>
                     Produto adicionado ao carrinho!
                 </Alert>
             </Snackbar>
