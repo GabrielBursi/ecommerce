@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppBar, Tab, Tabs, useMediaQuery, useTheme } from "@mui/material";
 import { TabBarProducts } from "../../types";
 
@@ -13,18 +13,33 @@ export function TabBar({productsTabBar}: TabBarProps) {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     const navigate = useNavigate()
+    const { product } = useParams<'product'>();
+
+    const [value, setValue] = useState<number | boolean>(false);
     
-    const [value, setValue] = useState<number>();
+    const nameProductsTabBar = (productsTabBar.map(product => product.to.replace('/products/', '')))
+    
+    useEffect(() => {
+        if(product){
+            const index = nameProductsTabBar.indexOf(product)
+            setValue(index);
+        }else{
+            setValue(false)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [product]);
+
+    
     
     const handleClick = (to: string) => {
         navigate(to)
+        
     }
 
     return (
         <AppBar position="static">
             <Tabs
-                value={1}
-                onChange={(_: React.SyntheticEvent, newValue: number) => { setValue(newValue)}}
+                value={value}
                 indicatorColor="secondary"
                 textColor='inherit'
                 variant={mdDown ? "scrollable" : "fullWidth"}
