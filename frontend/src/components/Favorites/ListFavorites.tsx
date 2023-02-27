@@ -6,7 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
 import { useNavigate } from "react-router-dom";
-import { ProductsContext } from "../../contexts";
+import { LoginContext, ProductsContext } from "../../contexts";
 
 interface ListFavoritesProps extends IProducts {
     smDown: boolean
@@ -24,6 +24,7 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>();
 
     const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+    const { isLogged } = useContext(LoginContext)
 
     const brand = title.split(' ')[0]
     const nameWithoutBrand = title.replace(title.split(' ')[0], '')
@@ -37,6 +38,10 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
     }, [productsLiked]);
 
     function addProductInCart(id: number | string) {
+
+        if (!isLogged)
+        return navigate('/login')
+
         setProductsInCart([...productsInCart, { img, price, title, rating, id }])
         navigate(`/precart/${id}`)
     }

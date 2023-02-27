@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ProductPage } from "../pages";
+import { ChildrenProp } from '../types/children'
 
 export function RoutesApp() {
 
@@ -114,11 +115,21 @@ export function RoutesApp() {
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
             //!privado
-            <Route path="/favorite" element={<FavoritePage />} /> 
+            <Route path="/favorite" element={<PrivateRoute><FavoritePage /></PrivateRoute>} /> 
             //!privado
-            <Route path="/cart" element={<CartPage />} /> 
+            <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} /> 
             //!privado
-            <Route path="/precart/:id" element={<PreCartPage/>}/> 
+            <Route path="/precart/:id" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
         </Routes>
     );
+
+}
+function PrivateRoute({ children }: ChildrenProp){
+
+    const { isLogged } = useContext(LoginContext)
+    
+    if (!isLogged) 
+    return <Navigate to='/login'/>
+
+    return children
 }

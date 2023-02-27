@@ -6,7 +6,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
-import { ProductsContext } from "../../contexts";
+import { LoginContext, ProductsContext } from "../../contexts";
 
 interface ProductCardProps extends IProducts{
     width?: number | string,
@@ -22,6 +22,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
 
 
     const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+    const { isLogged } = useContext(LoginContext)
 
     const navigate = useNavigate()
 
@@ -38,12 +39,19 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     }, [productsLiked, productsInCart]);
 
     function addProductInCart(id: number | string){
+        if (!isLogged)
+        return navigate('/login')
+
         if (isAlreadyInCart) return navigate('/cart')
         setProductsInCart([...productsInCart, { img, price, title, rating, id }])
         navigate(`/precart/${id}`)
     }
 
     function addProductInLiked(){
+
+        if (!isLogged)
+        return navigate('/login')
+
         setIsFavorite(oldIsFavorite => !oldIsFavorite)
         if(!isFavorite){
             setProductsLiked([...productsLiked, {img, price, title, rating, id}])

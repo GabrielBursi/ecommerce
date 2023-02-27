@@ -1,3 +1,3 @@
 export type ChildrenProp = {
-    children: React.ReactNode
+    children: JSX.Element
 }
