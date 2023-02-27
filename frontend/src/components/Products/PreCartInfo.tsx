@@ -4,7 +4,7 @@ import { Box, Button, Divider, Paper, Typography, useMediaQuery, useTheme } from
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
-import { PreCartInfoMobile } from "../mobile/PreCartInfoMobile";
+import { PreCartInfoMobile } from "../mobile";
 
 export function PreCartInfo({ img, price, title, id }: IProducts) {
 

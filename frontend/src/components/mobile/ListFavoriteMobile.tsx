@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -10,10 +11,9 @@ interface ListFavoriteMobileProps extends IProducts {
     addProductInCart: (id: number | string) => void
     removeProductLiked: () => void,
     isAlreadyInCart: boolean,
-    setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function ListFavoriteMobile({ title, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, setIsAlreadyInCart }: ListFavoriteMobileProps) {
+function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart  }: ListFavoriteMobileProps) {
 
     const navigate = useNavigate()
 
@@ -62,3 +62,5 @@ export function ListFavoriteMobile({ title, img, price, rating, id, addProductIn
         </Box>
     );
 }
+
+export const ListFavoriteMobile =  memo(ListFavoriteMobileMemo);

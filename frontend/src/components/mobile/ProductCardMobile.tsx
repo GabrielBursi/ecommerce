@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -16,7 +17,7 @@ interface ProductCardProps extends IProducts {
     isAlreadyInCart: boolean
 }
 
-export function ProductCardMobile({ img, price, title, rating, id, addProductInCart, addProductInLiked, seeProduct, isAlreadyInCart, isFavorite }: ProductCardProps) {
+function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart, addProductInLiked, seeProduct, isAlreadyInCart, isFavorite }: ProductCardProps) {
     return (
         <Card sx={{ width: 290, height: 220 }} elevation={2}>
             <CardActionArea onClick={seeProduct}>
@@ -91,3 +92,5 @@ export function ProductCardMobile({ img, price, title, rating, id, addProductInC
         </Card>
     );
 }
+
+export const ProductCardMobile = memo(ProductCardMobileMemo)

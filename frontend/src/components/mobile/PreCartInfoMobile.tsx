@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Alert, Box, Paper, Snackbar, Typography } from "@mui/material";
 import { MyImage } from "../Products/MyImage";
 import { IProducts } from "../../types";
@@ -8,7 +8,7 @@ interface PreCartInfoMobileProps extends IProducts {
     nameWithoutBrand: string
 }
 
-export function PreCartInfoMobile({ img, price, title, id, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
+function PreCartInfoMobileMemo({ img, price, title, id, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
 
     const [open, setOpen] = useState(false);
 
@@ -61,3 +61,5 @@ export function PreCartInfoMobile({ img, price, title, id, brand, nameWithoutBra
         </Box>
     );
 }
+
+export const PreCartInfoMobile = memo(PreCartInfoMobileMemo)

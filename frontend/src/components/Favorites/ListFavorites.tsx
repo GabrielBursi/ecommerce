@@ -7,7 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
 import { LoginContext, ProductsContext } from "../../contexts";
-import { ListFavoriteMobile } from "../mobile/ListFavoriteMobile";
+import { ListFavoriteMobile } from "../mobile";
 
 export function ListFavorites({ title, img, price, rating, id }: IProducts) {
 
@@ -60,7 +60,6 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
             addProductInCart={addProductInCart}
             removeProductLiked={removeProductLiked}
             isAlreadyInCart={isAlreadyInCart}
-            setIsAlreadyInCart={setIsAlreadyInCart}
         />
 
     return (

@@ -7,7 +7,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
 import { LoginContext, ProductsContext } from "../../contexts";
-import { ProductCardMobile } from "../mobile/ProductCardMobile";
+import { ProductCardMobile } from "../mobile";
 
 interface ProductCardProps extends IProducts{
     width?: number | string,
