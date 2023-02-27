@@ -36,7 +36,6 @@ export function FavoritePage() {
                                     title={product.title}
                                     price={product.price}
                                     rating={product.rating}
-                                    smDown={smDown}
                                 />
                             ))
                         }

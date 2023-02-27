@@ -36,7 +36,6 @@ export function CartPage() {
                                     title={product.title}
                                     price={product.price}
                                     rating={product.rating}
-                                    smDown={smDown}
                                 />
                             ))
                         }

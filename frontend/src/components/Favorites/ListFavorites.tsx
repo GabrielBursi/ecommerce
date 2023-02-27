@@ -1,27 +1,25 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
-import { useNavigate } from "react-router-dom";
 import { LoginContext, ProductsContext } from "../../contexts";
+import { ListFavoriteMobile } from "../mobile/ListFavoriteMobile";
 
-interface ListFavoritesProps extends IProducts {
-    smDown: boolean
-}
-
-export function ListFavorites({ title, img, price, rating, smDown, id }: ListFavoritesProps) {
+export function ListFavorites({ title, img, price, rating, id }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
     const navigate = useNavigate()
 
     const [color, setColor] = useState(false);
-    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>();
+    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
     const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
@@ -52,52 +50,18 @@ export function ListFavorites({ title, img, price, rating, smDown, id }: ListFav
     }
 
     if(smDown) 
-    return (
-        <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>
-            <Box display='flex' justifyContent='space-between' alignItems='center' width='100%' height='15%'>
-                <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary"/>
-                <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
-                    <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" onClick={removeProductLiked}/>
-                    </IconButton>
-                    <IconButton size="medium" >
-                        {isAlreadyInCart ?
-                            <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
-                            :
-                            <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => id && addProductInCart(id)}/>
-                        }
-                    </IconButton>
-                </Box>
-            </Box>
-            <Box flex={1} display='flex' alignItems='center' gap={2}>
-                <Box display='flex' alignItems='center' justifyContent='center' width='110px' height='110px'>
-                    <MyImage alt={title} src={img} height='auto' width='110px'/>
-                </Box>
-                <Box flex={1} display='flex' flexDirection='column' gap={2} height='100%'>
-                    <Box width='100%'>
-                        <Typography
-                            component='h1'
-                            variant='body1'
-                            sx={{ cursor: 'pointer', wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
-                            onMouseOver={() => setColor(true)}
-                            onMouseLeave={() => setColor(false)}
-                            color={color ? 'primary' : 'black'}
-                            fontWeight="bold"
-                            overflow='hidden'
-                            textOverflow="ellipsis"
-                        >
-                            {title}
-                        </Typography>
-                    </Box>
-                    <Box width='100%'>
-                        <Typography color='primary' variant='h6' fontWeight='bold'>
-                            {price}
-                        </Typography>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-    )
+    return <ListFavoriteMobile
+            id={id}
+            key={id}
+            img={img}
+            title={title}
+            price={price}
+            rating={rating}
+            addProductInCart={addProductInCart}
+            removeProductLiked={removeProductLiked}
+            isAlreadyInCart={isAlreadyInCart}
+            setIsAlreadyInCart={setIsAlreadyInCart}
+        />
 
     return (
         <Box component={Paper} display='flex' alignItems='center' width='100%' height={mdDown ? '185px' : '220px'} padding={2} gap={1} elevation={2}>

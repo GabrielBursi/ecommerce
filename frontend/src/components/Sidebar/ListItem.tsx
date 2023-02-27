@@ -48,7 +48,7 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
     return (
         <ListItemButton selected={!!match} onClick={handleClick}>
             <ListItemIcon>
-                <StyledBadge badgeContent={productsLiked.length} color="info">
+                <StyledBadge badgeContent={productsInCart.length} color="info">
                     <Icon color='primary'>{icon}</Icon>
                 </StyledBadge>
             </ListItemIcon>
