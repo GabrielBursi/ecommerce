@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useMatch, useNavigate, useParams } from "react-router-dom";
 import { Badge, BadgeProps, Box, Icon, Paper, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
@@ -31,6 +31,8 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
 
     const navigate = useNavigate()
     const match = useMatch('/');
+    const { product } = useParams<'product'>()
+    const productUpperCase = `${product?.charAt(0)?.toUpperCase()}${product?.slice(1)}`
 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
@@ -102,7 +104,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
             {showTabBar && <TabBar productsTabBar={productsTabBar}/>}
 
             <Box flex={1} overflow="auto">    
-                {showBanner && <Banner title="Nome Página" showCarousel={match?.pathname === '/'}/>}
+                {showBanner && <Banner title={match?.pathname === '/' ? 'Home' : productUpperCase } showCarousel={match?.pathname === '/'}/>}
                 {children}
             </Box>
         </Box>

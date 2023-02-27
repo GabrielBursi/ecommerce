@@ -11,3 +11,9 @@ export interface TabBarProducts {
     name:string,
     to: string
 }
+
+export interface DepartmentCardProps {
+    title: string,
+    src: string,
+    to: string
+}

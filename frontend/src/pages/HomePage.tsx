@@ -1,35 +1,52 @@
 import { useContext } from "react";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import ViewListIcon from '@mui/icons-material/ViewList';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { LoginContext, ProductsContext, ThemeContext } from "../contexts";
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import {LayoutBase} from "../layouts";
-import { ProductCard } from "../components";
+import { Carousel, DepartmentCard } from "../components";
 
 export function HomePage() {
 
     const { toggleTheme } = useContext(ThemeContext)
     const { isLogged, setIsLogged } = useContext(LoginContext)
-    const { products } = useContext(ProductsContext)
-
-    const theme = useTheme()
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+    const { productsDepartments } = useContext(ProductsContext)
 
     return (
         <LayoutBase showResearchInput showUserInfo showBanner showActions = {isLogged}>
-            <h1>Home Page</h1>
             <Button variant="contained" color="primary" onClick={toggleTheme}>Mudar tema</Button>
             <Button variant="contained" color="primary" onClick={() => setIsLogged(!isLogged)}>{isLogged ? 'Logout' : 'Login'}</Button>
-            <Box display='flex' flexDirection='column' width='100%' gap={2}>
-                {products.map(product => (
-                    <ProductCard
-                        id={product.id}
-                        key={product.id}
-                        img={product.img}
-                        rating={product.rating}
-                        price={product.price}
-                        title={product.title}
-                        mdDown={mdDown}
-                    />
-                ))}
+            <Box display='flex' flexDirection='column' width='100%' height='100%' gap={2}>
+                <Box>
+                    <Box display='flex' alignItems='center' gap={2} ml={2}>
+                        <AutoAwesomeIcon color="primary" sx={{ fontSize: '2.2rem' }} />
+                        <Typography color='primary' variant='h4' noWrap >
+                            EM DESTAQUE
+                        </Typography>
+                    </Box>
+                    <Carousel />
+                </Box>
+                <Box
+                    sx={{
+                        flex: 1,
+                    }}
+                >
+                    <Box display='flex' alignItems='center' gap={2} ml={2}>
+                        <ViewListIcon color="primary" sx={{ fontSize: '2.2rem' }} />
+                        <Typography color='primary' variant='h4' noWrap >
+                            DEPARTAMENTOS
+                        </Typography>
+                    </Box>
+                    <Box m={2}>
+                        <Grid container columnSpacing={10} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {productsDepartments.map((product) => (
+                                <Grid item xs={3} key={product.title}>
+                                    <DepartmentCard title={product.title} src={product.src} to={product.to}/>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                </Box>
             </Box>
         </LayoutBase>
     );

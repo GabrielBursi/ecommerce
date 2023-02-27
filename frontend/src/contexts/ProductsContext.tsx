@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import * as uuid from 'uuid';
-import { ChildrenProp, IProducts } from "../types";
+import { ChildrenProp, DepartmentCardProps, IProducts } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -10,6 +10,9 @@ interface ProductsContextData {
     setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
     setProductsLiked: React.Dispatch<React.SetStateAction<IProducts[]>>,
     setProductsInCart: React.Dispatch<React.SetStateAction<IProducts[]>>,
+
+    productsDepartments: DepartmentCardProps[],
+    setProductsDepartments: React.Dispatch<React.SetStateAction<DepartmentCardProps[]>>,
 
     arrayTeste: IProducts[]
 }
@@ -22,6 +25,8 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [products, setProducts] = useState<IProducts[]>([]); //!temporario 
     const [productsLiked, setProductsLiked] = useState<IProducts[]>([]); //!temporario
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); //!temporario
+
+    const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
 
     const arrayTeste: IProducts[] = [
         {
@@ -99,7 +104,17 @@ function ProductsProvider({ children }: ChildrenProp) {
     ]
 
     return (
-        <ProductsContext.Provider value={{ products, setProducts, productsLiked, setProductsLiked, productsInCart, setProductsInCart, arrayTeste }}>
+        <ProductsContext.Provider value={{ 
+            products, 
+            setProducts, 
+            productsLiked, 
+            setProductsLiked, 
+            productsInCart, 
+            setProductsInCart, 
+            arrayTeste, 
+            productsDepartments, 
+            setProductsDepartments 
+        }}>
             {children}
         </ProductsContext.Provider>
     );

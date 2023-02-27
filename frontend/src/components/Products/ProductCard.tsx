@@ -61,10 +61,14 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
         }
     }
 
+    function seeProduct(){
+        alert('Mostrar página do produto')
+    }
+
     if(mdDown)
     return (
         <Card sx={{ width: 290, height: 220 }} elevation={hover ? 10 : 2} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <CardActionArea>
+            <CardActionArea onClick={seeProduct}>
                         <Box
                             sx={{
                                 width: '100%',
@@ -138,7 +142,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
 
     return (
         <Card sx={{ width: width, height: height }} elevation={hover ? 10 : 2} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <CardActionArea>
+            <CardActionArea onClick={seeProduct}>
                 <Box
                     sx={{
                         width:'100%',
