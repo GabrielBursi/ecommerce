@@ -20,7 +20,7 @@ interface ProductCardProps extends IProducts {
 function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart, addProductInLiked, seeProduct, isAlreadyInCart, isFavorite }: ProductCardProps) {
     return (
         <Card sx={{ width: 290, height: 220 }} elevation={2}>
-            <CardActionArea onClick={seeProduct}>
+            <CardActionArea>
                 <Box
                     sx={{
                         width: '100%',
@@ -36,47 +36,49 @@ function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>
                 </Box>
-                <CardContent
-                    sx={{
-                        paddingY: 0,
-                        height: "130px",
-                        display: 'flex',
-                        gap: 1
-                    }}
-                >
-                    <Box
+                <Box  onClick={seeProduct}>
+                    <CardContent
                         sx={{
-                            width: '110px',
-                            height: '100%',
+                            paddingY: 0,
+                            height: "130px",
                             display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            gap: 1
                         }}
                     >
-                        <MyImage alt="123" src={img} width='90px' height='auto' />
-                    </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 2
-                        }}
-                    >
-                        <Typography
-                            variant="subtitle2"
-                            color="black"
-                            overflow='hidden'
-                            textOverflow='ellipsis'
-                            fontWeight='bold'
-                            sx={{ wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                        <Box
+                            sx={{
+                                width: '110px',
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
                         >
-                            {title}
-                        </Typography>
-                        <Typography variant="h6" color="primary" fontWeight='bold'>
-                            {price}
-                        </Typography>
-                    </Box>
-                </CardContent>
+                            <MyImage alt="123" src={img} width='90px' height='auto' />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2
+                            }}
+                        >
+                            <Typography
+                                variant="subtitle2"
+                                color="black"
+                                overflow='hidden'
+                                textOverflow='ellipsis'
+                                fontWeight='bold'
+                                sx={{ wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                            >
+                                {title}
+                            </Typography>
+                            <Typography variant="h6" color="primary" fontWeight='bold'>
+                                {price}
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Box>
             </CardActionArea>
             <CardActions disableSpacing>
                 <Button

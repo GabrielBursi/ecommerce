@@ -63,7 +63,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     }
 
     function seeProduct(){
-        alert('Mostrar página do produto')
+        navigate(`/product/${id}`)
     }
 
     if(mdDown)
@@ -82,7 +82,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
 
     return (
         <Card sx={{ width: width, height: height }} elevation={hover ? 10 : 2} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <CardActionArea onClick={seeProduct}>
+            <CardActionArea>
                 <Box
                     sx={{
                         width:'100%',
@@ -103,45 +103,47 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                         }
                     />
                 </Box>
-                <Box 
-                    sx={{
-                        width: '100%', 
-                        height:'160px',
-                        display:'flex',
-                        justifyContent:'center',
-                        alignItems:'center'
-                    }}
-                >
-                    <MyImage alt="123" src={img} width='110px' height='auto'/>
-                </Box>
-                <CardContent sx={{ paddingY: 0, height: 90 }}>
-                    <Typography 
-                        variant="body1" 
-                        color="black" 
-                        overflow='hidden' 
-                        textOverflow='ellipsis'
-                        fontWeight='bold' 
-                        sx={{wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                <Box onClick={seeProduct}>
+                    <Box 
+                        sx={{
+                            width: '100%', 
+                            height:'160px',
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center'
+                        }}
                     >
-                        {title}
-                    </Typography>
-                </CardContent>
-                <CardContent sx={{paddingY: 0}}>
-                    <Typography variant="h5" color="primary" fontWeight='bold'>
-                        {price}
-                    </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                    <Button
-                        variant="contained"
-                        startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
-                        fullWidth
-                        size="large"
-                        onClick={() => { id && addProductInCart(id) }}
+                        <MyImage alt="123" src={img} width='110px' height='auto'/>
+                    </Box>
+                    <CardContent sx={{ paddingY: 0, height: 90 }}>
+                        <Typography 
+                            variant="body1" 
+                            color="black" 
+                            overflow='hidden' 
+                            textOverflow='ellipsis'
+                            fontWeight='bold' 
+                            sx={{wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
                         >
-                        {isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
-                    </Button>
-                </CardActions>
+                            {title}
+                        </Typography>
+                    </CardContent>
+                    <CardContent sx={{paddingY: 0}}>
+                        <Typography variant="h5" color="primary" fontWeight='bold'>
+                            {price}
+                        </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                        <Button
+                            variant="contained"
+                            startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
+                            fullWidth
+                            size="large"
+                            onClick={() => { id && addProductInCart(id) }}
+                            >
+                            {isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
+                        </Button>
+                    </CardActions>
+                </Box>
             </CardActionArea>
         </Card>
     );
