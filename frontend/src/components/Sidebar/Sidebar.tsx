@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import { Box, Divider, Drawer, Icon, Link, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
+import { memo, useContext } from 'react';
+import { Box, Divider, Drawer, Icon, Link, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ChildrenProp } from '../../types';
 import { DrawerContext, ThemeContext } from '../../contexts';
 import { ListItem } from './ListItem';
 
 
-export function SideBar({ children }: ChildrenProp) {
+function SideBarMemo({ children }: ChildrenProp) {
 
     const { drawerOptions, toggleDrawer, isDrawerOpen } = useContext(DrawerContext)
     const { themeName, toggleTheme } = useContext(ThemeContext)
@@ -76,3 +76,5 @@ export function SideBar({ children }: ChildrenProp) {
         </>
     );
 }
+
+export const SideBar = memo(SideBarMemo)

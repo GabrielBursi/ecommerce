@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { MyImageProps } from '../../types';
 
-export const MyImage = ({ alt, height, width, src }: MyImageProps) => (
+const MyImageMemo = ({ alt, height, width, src }: MyImageProps) => (
         <LazyLoadImage
             alt={alt}
             src={src}
@@ -9,3 +10,5 @@ export const MyImage = ({ alt, height, width, src }: MyImageProps) => (
             width={width}
         />
 );
+
+export const MyImage = memo(MyImageMemo)

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Badge, BadgeProps, Icon, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import { ProductsContext } from '../../contexts';
@@ -32,46 +32,30 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
         onClick?.()
     }
 
-    if(icon === 'favorite') 
-    return (
-        <ListItemButton selected={!!match} onClick={handleClick}>
-            <ListItemIcon>
-                    <StyledBadge badgeContent={productsLiked.length} color="info">
-                        <Icon color='primary'>{icon}</Icon>
-                    </StyledBadge>
-            </ListItemIcon>
-            <ListItemText primary={label} />
-        </ListItemButton>
-    )
-
-    if (icon === 'shopping_cart')
-    return (
-        <ListItemButton selected={!!match} onClick={handleClick}>
-            <ListItemIcon>
+    const badge = useMemo(() => {
+        if (icon === 'favorite') {
+            return (
+                <StyledBadge badgeContent={productsLiked.length} color="info">
+                    <Icon color='primary'>{icon}</Icon>
+                </StyledBadge>
+            );
+        } else if (icon === 'shopping_cart') {
+            return (
                 <StyledBadge badgeContent={productsInCart.length} color="info">
                     <Icon color='primary'>{icon}</Icon>
                 </StyledBadge>
-            </ListItemIcon>
-            <ListItemText primary={label} />
-        </ListItemButton>
-    )
+            );
+        } else {
+            return <Icon color='primary'>{icon}</Icon>;
+        }
+    }, [icon, productsLiked.length, productsInCart.length]);
 
     return (
         <ListItemButton selected={!!match} onClick={handleClick}>
             <ListItemIcon>
-                { icon === 'favorite' && 
-                    <StyledBadge badgeContent={productsLiked.length} color="info">
-                        <Icon color='primary'>{icon}</Icon>
-                    </StyledBadge>
-                } 
-                { icon === 'shopping_cart' && 
-                    <StyledBadge badgeContent={productsInCart.length} color="info">
-                        <Icon color='primary'>{icon}</Icon>
-                    </StyledBadge>
-                }
-                <Icon color='primary'>{icon}</Icon>
+                {badge}
             </ListItemIcon>
-            <ListItemText primary={label}/>
+            <ListItemText primary={label} />
         </ListItemButton>
     );
 }
