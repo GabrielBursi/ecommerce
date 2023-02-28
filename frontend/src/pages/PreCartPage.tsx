@@ -17,8 +17,10 @@ export function PreCartPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const productAdded = productsInCart.find(product => product.id === id);
-        setProductAddInCart(productAdded)
+        if(id){
+            const productAdded = productsInCart.find(product => product.id === id);
+            setProductAddInCart(productAdded)
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
@@ -31,7 +33,7 @@ export function PreCartPage() {
             <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
                 <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
                     <Grid item xs={12} height={mdDown ? '35%' : '55%'}>
-                        {productAddInCart && <PreCartInfo img={productAddInCart?.img} price={productAddInCart?.price} title={productAddInCart?.title} id={id} />}
+                        {productAddInCart && <PreCartInfo img={productAddInCart?.img} price={productAddInCart?.price} title={productAddInCart?.title} id={id || ''} />}
                     </Grid>
                         { mdDown &&
                             <Grid item xs={12} height='auto'>

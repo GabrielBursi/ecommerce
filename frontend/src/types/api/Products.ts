@@ -1,5 +1,5 @@
 export interface IProducts {
-    id?:number | string, //! a api tem uma propriedade asin que é única e string
+    id: number | string, //! a api tem uma propriedade asin que é única e string
     title: string,
     description?: string,
     price:string,

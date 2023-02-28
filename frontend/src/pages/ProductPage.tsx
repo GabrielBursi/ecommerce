@@ -13,13 +13,15 @@ export function ProductPage() {
 
     const { id } =useParams<'id'>()
 
-    const [productInfo, setProductInfo] = useState<IProducts[]>();
+    const [productInfo, setProductInfo] = useState<IProducts>();
 
     const { products } = useContext(ProductsContext)
 
     useEffect(() => {
-        const productSelected = products.filter(product => product.id ===id)
-        setProductInfo(productSelected)
+        if(id){
+            const productSelected = products.find(product => product.id === id)
+            setProductInfo(productSelected)
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
@@ -36,7 +38,7 @@ export function ProductPage() {
                             textOverflow='ellipsis'
                             sx={{ wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
                         >
-                            {productInfo?.[0]?.title}
+                            {productInfo?.title}
                         </Typography>
                     </Box>
                     <Box flex={1} width='100%' display='flex'> 
@@ -45,12 +47,12 @@ export function ProductPage() {
                                 <Box width='100%' height='10%' display='flex' justifyContent='space-between'>
                                     <Box width='30%'display='flex' justifyContent='center' alignItems='center'>
                                         <Typography variant="subtitle1" color='black' fontWeight='bold'>
-                                            {productInfo?.[0]?.title.split(' ')[0]}
+                                            {productInfo?.title.split(' ')[0]}
                                         </Typography>
                                     </Box>
                                     <Divider orientation="vertical" flexItem/>
                                     <Box width='30%' display='flex' justifyContent='center' alignItems='center'>
-                                        <Rating value={productInfo?.[0]?.rating || 4} precision={0.5} readOnly max={5} size='large' />
+                                        <Rating value={productInfo?.rating} precision={0.5} readOnly max={5} size='large' />
                                     </Box>
                                     <Divider orientation="vertical" flexItem/>
                                     <Box width='30%' display='flex' justifyContent='center' alignItems='center' gap={2}>
@@ -67,7 +69,7 @@ export function ProductPage() {
 
                                     </Box> 
                                     <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
-                                        <MyImage alt={productInfo?.[0]?.title || 'teste'} src={productInfo?.[0]?.img || 'teste'} width='290px' />
+                                        <MyImage alt={productInfo?.title || ''} src={productInfo?.img || ''} width='290px' />
                                     </Box>
                                 </Box>
                             </Box>
@@ -105,7 +107,8 @@ export function ProductPage() {
                                 </Box>
                             </Box>
                             <Box width='100%' height='25%'>
-                                {/* < iCard/> */} </Box>
+                                {/* <Carousel showMiniCard /> */} 
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
