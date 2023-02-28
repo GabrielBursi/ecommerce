@@ -3,8 +3,13 @@ import { Box } from "@mui/material";
 import { motion } from "framer-motion";
 import { ProductCard } from "./ProductCard";
 import { ProductsContext } from "../../contexts";
+import { MiniCardProduct } from "./MiniCardProduct";
 
-export function Carousel() {
+interface CarouselProps{
+    showMiniCard?: boolean
+}
+
+export function Carousel({showMiniCard = false}: CarouselProps) {
 
     const carousel = useRef<HTMLElement>()
     const [width, setWidth] = useState<number | string>(0);
@@ -49,17 +54,28 @@ export function Carousel() {
                             padding:2,
                         }}
                     >
-                        <ProductCard
-                            id={product.id}
-                            key={product.id}
-                            img={product.img}
-                            price={product.price}
-                            rating={product.rating}
-                            title={product.title}
-                            mdDown={true}
-                            width='100%'
-                            height='90%'
-                        />
+                        { showMiniCard ?
+                            <MiniCardProduct
+                                id={product.id}
+                                key={product.id}
+                                img={product.img}
+                                price={product.price}
+                                rating={product.rating}
+                                title={product.title}
+                            />
+                            :
+                            <ProductCard
+                                id={product.id}
+                                key={product.id}
+                                img={product.img}
+                                price={product.price}
+                                rating={product.rating}
+                                title={product.title}
+                                mdDown={true}
+                                width='100%'
+                                height='90%'
+                            />
+                        }
                     </Box>
                 ))}
             </Box>

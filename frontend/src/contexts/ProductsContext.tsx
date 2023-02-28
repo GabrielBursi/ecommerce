@@ -95,12 +95,20 @@ function ProductsProvider({ children }: ChildrenProp) {
         },
         {
             id: uuid.v4(),
-            title: 'SpaghettiOs Canned Pasta with Meatballs, Healthy Snack for Kids and Adults, 15.6 OZ Can (Pack of 12)',
+            title: 'PlayStation®5 + God of War Ragnarök',
             description: 'teste',
-            img: 'https://m.media-amazon.com/images/I/71uYB-oQXpL._AC_UL960_QL65_.jpg',
-            price: '$11.44',
-            rating: 4.6
-        }
+            img: 'https://m.media-amazon.com/images/I/61kD52KblYL._AC_UL960_QL65_.jpg',
+            price: 'R$ 4.499,90',
+            rating: 4
+        },
+        {
+            id: uuid.v4(),
+            title: 'Console PlayStation 5',
+            description: 'teste',
+            img: 'https://m.media-amazon.com/images/I/51+qnZm7V7L._AC_UL960_QL65_.jpg',
+            price: 'R$ 4.229,99',
+            rating: 4
+        },
     ]
 
     return (
