@@ -17,6 +17,7 @@ export * from './Products/ProductCard'
 export * from './Products/Carousel'
 export * from './Products/PreCartInfo'
 export * from './Products/DepartmentCard'
+export * from './Products/MiniCardProduct'
 
 export * from './mobile/ListFavoriteMobile'
 export * from './mobile/PreCartInfoMobile'

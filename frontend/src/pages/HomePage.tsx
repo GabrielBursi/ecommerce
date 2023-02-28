@@ -4,13 +4,13 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { LoginContext, ProductsContext, ThemeContext } from "../contexts";
 import {LayoutBase} from "../layouts";
-import { Carousel, DepartmentCard } from "../components";
+import { Carousel, DepartmentCard, MiniCardProduct } from "../components";
 
 export function HomePage() {
 
     const { toggleTheme } = useContext(ThemeContext)
     const { isLogged, setIsLogged } = useContext(LoginContext)
-    const { productsDepartments } = useContext(ProductsContext)
+    const { productsDepartments, products } = useContext(ProductsContext)
 
     return (
         <LayoutBase showResearchInput showUserInfo showBanner showActions = {isLogged}>
@@ -46,6 +46,15 @@ export function HomePage() {
                             ))}
                         </Grid>
                     </Box>
+                    {products.map(product => (
+                        <MiniCardProduct
+                            key={product.id}
+                            id={product.id}  
+                            img={product.img}
+                            price={product.price}
+                            title={product.title}
+                        />
+                    ))}
                 </Box>
             </Box>
         </LayoutBase>
