@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
-import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ProductPage } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage } from "../pages";
 import { ChildrenProp } from '../types/children'
 
 export function RoutesApp() {
@@ -165,7 +165,8 @@ export function RoutesApp() {
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products/:product" element={<ProductPage />} />
+            <Route path="/products/:product" element={<ListProductsPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
             //!privado
