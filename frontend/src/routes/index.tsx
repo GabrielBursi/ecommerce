@@ -33,45 +33,37 @@ export function RoutesApp() {
         ])
         setProductsTabBar([
             {
-                name: "celular",
-                to: '/products/celular'
+                name: "hardware",
+                to: '/products/hardware'
             },
             {
-                name: "computador",
-                to: '/products/computador'
+                name: "periféricos",
+                to: '/products/perifericos'
             },
             {
-                name: "TV",
+                name: "computadores",
+                to: '/products/computadores'
+            },
+            {
+                name: "monitores",
+                to: '/products/monitores'
+            },
+            {
+                name: "cadeira e mesa",
+                to: '/products/cadeira_e_mesa'
+            },
+            {
+                name: "vídeo games",
+                to: '/products/vídeo_games'
+            },
+            {
+                name: "mundo geek",
+                to: '/products/geek'
+            },
+            {
+                name: "tv",
                 to: '/products/TV'
-            },
-            {
-                name: "livro",
-                to: '/products/livro'
-            },
-            {
-                name: "esporte",
-                to: '/products/esporte'
-            },
-            {
-                name: "roupa",
-                to: '/products/roupa'
-            },
-            {
-                name: "games",
-                to: '/products/games'
-            },
-            {
-                name: "bebê",
-                to: '/products/bebê'
-            },
-            {
-                name: "brinquedo",
-                to: '/products/brinquedo'
-            },
-            {
-                name: "comida",
-                to: '/products/comida'
-            },
+            }
         ])
         setProductsDepartments([
             {
@@ -97,7 +89,7 @@ export function RoutesApp() {
             {
                 title: 'tv',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TV_1645045665.png&w=384&h=280&q=70',
-                to: '/products/tv'
+                to: '/products/TV'
             },
             {
                 title: 'celular & smartphone',
@@ -105,14 +97,14 @@ export function RoutesApp() {
                 to: '/products/celular_smartphone'
             },
             {
-                title: 'casa e decoração',
-                src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CASA-E-DECORACAO_1659439626.png&w=384&h=280&q=70',
-                to: '/products/casa_decoração'
+                title: 'espaço gamer',
+                src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/ESPACO-GAMER_1658426219.png&w=384&h=280&q=70',
+                to: '/products/espaço_gamer'
             },
             {
-                title: 'eletrodomésticos',
-                src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/ELETRODOMESTICOS.png&w=384&h=280&q=70',
-                to: '/products/eletrodomésticos'
+                title: 'tablets, ipads e e-readers',
+                src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TABLETS-IPADS-E-E-READERS_1645096620.png&w=384&h=280&q=70',
+                to: '/products/tablets'
             },
             {
                 title: 'áudio',

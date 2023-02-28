@@ -35,7 +35,7 @@ export function DepartmentCard({title, src, to}: DepartmentCardProps) {
                     zIndex:1,
                 }}
             >
-                <MyImage alt={title} src={src} width={hover ? '220px' : 'auto'}/>
+                <MyImage alt={title} src={src} />
             </Box>
         </Box>
     );

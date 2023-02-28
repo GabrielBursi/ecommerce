@@ -32,7 +32,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
     const navigate = useNavigate()
     const match = useMatch('/');
     const { product } = useParams<'product'>()
-    const productUpperCase = `${product?.charAt(0)?.toUpperCase()}${product?.slice(1)}`
+    const productUpperCase = `${product?.charAt(0)?.toUpperCase()}${product?.slice(1)}`.replaceAll('_', ' ')
 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
