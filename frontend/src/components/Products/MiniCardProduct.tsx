@@ -18,13 +18,12 @@ export function MiniCardProduct({ img, price, title, id }: IProducts) {
             elevation={hover ? 10 : 2}
             sx={{
                 width:'130px',
-                height:'190px',
+                height:'130px',
                 display:'flex',
                 flexDirection:'column',
                 alignItems:'center',
                 justifyContent:'center',
                 cursor:'pointer',
-                m:4
             }}
         >
             <Box
@@ -36,7 +35,7 @@ export function MiniCardProduct({ img, price, title, id }: IProducts) {
                     justifyContent: 'center',
                 }}
             >
-                <MyImage src={img} alt={title} width='100px' />
+                <MyImage src={img} alt={title} width='70px' />
             </Box>
             <Box
                 sx={{

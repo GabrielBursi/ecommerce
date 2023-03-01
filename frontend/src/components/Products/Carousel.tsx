@@ -28,10 +28,10 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
             component={motion.div}
             whileTap={{ cursor: 'grabbing' }}
             sx={{
-                height: 'auto',
+                height: showMiniCard ? '100%' : 'auto',
+                width: '100%',
                 cursor: 'grab',
                 overflow: 'hidden',
-                mt:2
             }}
         >
             <Box
@@ -43,6 +43,7 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                 transition={{ duration: 0.8 }}
                 sx={{
                     display: 'flex',
+                    height: '100%'
                 }}
             >
                 {products.map(product => (
@@ -51,7 +52,11 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                         sx={{
                             height: 'auto',
                             width: 'auto',
-                            padding:2,
+                            padding: showMiniCard ? 0 : 2,
+                            ml: showMiniCard ? 2 : 0,
+                            display:'flex',
+                            justifyContent:'center',
+                            alignItems:'center'
                         }}
                     >
                         { showMiniCard ?
