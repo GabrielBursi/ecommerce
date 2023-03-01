@@ -113,7 +113,7 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
                         size="large" 
                         onClick={() => id && addProductInCart(id)}
                     >
-                        { isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
+                        { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                     </Button>
                 </Box>
             </Box>

@@ -140,7 +140,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                             size="large"
                             onClick={() => { id && addProductInCart(id) }}
                             >
-                            {isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
+                            {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                         </Button>
                     </CardActions>
                 </Box>

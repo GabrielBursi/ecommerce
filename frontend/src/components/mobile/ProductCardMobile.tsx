@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -18,8 +18,11 @@ interface ProductCardProps extends IProducts {
 }
 
 function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart, addProductInLiked, seeProduct, isAlreadyInCart, isFavorite }: ProductCardProps) {
+
+    const [hover, setHover] = useState(false);
+
     return (
-        <Card sx={{ width: 290, height: 220 }} elevation={2}>
+        <Card sx={{ width: 290, height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>
             <CardActionArea>
                 <Box
                     sx={{
@@ -60,7 +63,6 @@ function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: 2
                             }}
                         >
                             <Typography
@@ -88,7 +90,7 @@ function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart
                     size="medium"
                     onClick={() => { id && addProductInCart(id) }}
                 >
-                    {isAlreadyInCart ? 'IR AO CARRINHO' : 'COMPRAR'}
+                    {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                 </Button>
             </CardActions>
         </Card>
