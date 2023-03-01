@@ -22,45 +22,15 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
 
-    const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+    const { productsLiked, productsInCart, addProductInCart, addProductInLiked, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        const productLiked = productsLiked.filter(product => product.id === id)
-        productLiked.forEach(() => {
-            setIsFavorite(true)
-        })
-        const productLikedInCart = productsInCart.filter(product => product.id === id)
-        productLikedInCart.forEach(() => {
-            setIsAlreadyInCart(true)
-        })
+        filterProductsAndSetFavoriteOrInCart('card produto', id, setIsAlreadyInCart, setIsFavorite)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsLiked, productsInCart]);
-
-    function addProductInCart(id: number | string){
-        if (!isLogged)
-        return navigate('/login')
-
-        if (isAlreadyInCart) return navigate('/cart')
-        setProductsInCart([...productsInCart, { img, price, title, rating, id }])
-        navigate(`/precart/${id}`)
-    }
-
-    function addProductInLiked(){
-
-        if (!isLogged)
-        return navigate('/login')
-
-        setIsFavorite(oldIsFavorite => !oldIsFavorite)
-        if(!isFavorite){
-            setProductsLiked([...productsLiked, {img, price, title, rating, id}])
-        }else{
-            const productsLikedWithout = productsLiked.filter(product => product.id !== id)
-            setProductsLiked(productsLikedWithout)
-        }
-    }
 
     function seeProduct(){
         navigate(`/product/${id}`)
@@ -78,6 +48,9 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                 seeProduct={seeProduct}
                 isAlreadyInCart={isAlreadyInCart}
                 isFavorite={isFavorite}
+                isLogged={isLogged}
+                setIsFavorite={setIsFavorite}
+                navigate={navigate}
             />
 
     return (
@@ -95,7 +68,9 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                     <CardHeader 
                         action={
                             hover ? 
-                            <IconButton size="small" onClick={addProductInLiked}>
+                            <IconButton size="small" onClick={ () => {
+                                    addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, title, rating, id }, id)
+                                }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                             </IconButton>
                             :
@@ -138,7 +113,9 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                             startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                             fullWidth
                             size="large"
-                            onClick={() => { id && addProductInCart(id) }}
+                            onClick={() => {
+                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                            }}
                             >
                             {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                         </Button>

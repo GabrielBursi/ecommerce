@@ -1,23 +1,43 @@
 import { memo, useState } from "react";
+import { NavigateFunction } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "../Products/MyImage";
-import { IProducts } from "../../types";
+import { id, IProducts } from "../../types";
 
 interface ProductCardProps extends IProducts {
     width?: number | string,
     height?: number | string,
     mdDown?: boolean,
-    addProductInLiked: () => void,
-    addProductInCart: (id: number | string) => void,
+    addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
+    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
     seeProduct: () => void,
     isFavorite: boolean,
-    isAlreadyInCart: boolean
+    isAlreadyInCart: boolean,
+    isLogged: boolean,
+    setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+    navigate: NavigateFunction
 }
 
-function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart, addProductInLiked, seeProduct, isAlreadyInCart, isFavorite }: ProductCardProps) {
+function ProductCardMobileMemo(
+    { 
+        img, 
+        price, 
+        title, 
+        rating, 
+        id, 
+        addProductInCart, 
+        addProductInLiked, 
+        seeProduct, 
+        isAlreadyInCart, 
+        isFavorite, 
+        isLogged, 
+        setIsFavorite, 
+        navigate 
+    }: ProductCardProps
+) {
 
     const [hover, setHover] = useState(false);
 
@@ -35,7 +55,9 @@ function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart
                     }}
                 >
                     <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
-                    <IconButton size="small" onClick={addProductInLiked}>
+                    <IconButton size="small" onClick={() => {
+                            addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, title, rating, id }, id)
+                        }}>
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>
                 </Box>
@@ -88,7 +110,9 @@ function ProductCardMobileMemo({ img, price, title, rating, id, addProductInCart
                     startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                     fullWidth
                     size="medium"
-                    onClick={() => { id && addProductInCart(id) }}
+                    onClick={() => {
+                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                    }}
                 >
                     {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                 </Button>

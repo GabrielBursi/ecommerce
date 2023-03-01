@@ -1,19 +1,20 @@
 import { memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { IProducts } from "../../types";
+import { id, IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
 
 interface ListFavoriteMobileProps extends IProducts {
-    addProductInCart: (id: number | string) => void
+    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
     removeProductLiked: () => void,
     isAlreadyInCart: boolean,
+    isLogged: boolean
 }
 
-function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart  }: ListFavoriteMobileProps) {
+function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
 
     const navigate = useNavigate()
 
@@ -29,7 +30,9 @@ function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCar
                         {isAlreadyInCart ?
                             <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
                             :
-                            <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => id && addProductInCart(id)} />
+                            <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => {
+                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                            }} />
                         }
                     </IconButton>
                 </Box>

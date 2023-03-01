@@ -21,28 +21,16 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
     const [color, setColor] = useState(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
-    const { setProductsLiked, productsLiked, setProductsInCart, productsInCart } = useContext(ProductsContext)
+    const { setProductsLiked, productsLiked, addProductInCart, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const brand = title.split(' ')[0]
     const nameWithoutBrand = title.replace(title.split(' ')[0], '')
 
     useEffect(() => {
-        const productLikedInCart = productsInCart.filter(product => product.id === id)
-        productLikedInCart.forEach(() => {
-            setIsAlreadyInCart(true)    
-        })
+        filterProductsAndSetFavoriteOrInCart('lista de favoritos', id, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsLiked]);
-
-    function addProductInCart(id: number | string) {
-
-        if (!isLogged)
-        return navigate('/login')
-
-        setProductsInCart([...productsInCart, { img, price, title, rating, id }])
-        navigate(`/precart/${id}`)
-    }
 
     function removeProductLiked(){
         const productsLikedWithout = productsLiked.filter(product => product.id !== id)
@@ -57,6 +45,7 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
             title={title}
             price={price}
             rating={rating}
+            isLogged={isLogged}
             addProductInCart={addProductInCart}
             removeProductLiked={removeProductLiked}
             isAlreadyInCart={isAlreadyInCart}
@@ -111,7 +100,9 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
                         startIcon={ isAlreadyInCart ? <ShoppingCartCheckoutIcon/> : <AddShoppingCartIcon/>} 
                         fullWidth 
                         size="large" 
-                        onClick={() => id && addProductInCart(id)}
+                        onClick={() => {
+                            id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                        }}
                     >
                         { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                     </Button>

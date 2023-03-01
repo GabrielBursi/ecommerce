@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
+import { NavigateFunction } from "react-router-dom";
 import * as uuid from 'uuid';
-import { ChildrenProp, DepartmentCardProps, IProducts } from "../types";
+import { ChildrenProp, DepartmentCardProps, id, IProducts } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -14,8 +15,15 @@ interface ProductsContextData {
     productsDepartments: DepartmentCardProps[],
     setProductsDepartments: React.Dispatch<React.SetStateAction<DepartmentCardProps[]>>,
 
-    arrayTeste: IProducts[]
+    arrayTeste: IProducts[],
+
+    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
+    addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
+
+    filterProductsAndSetFavoriteOrInCart: (filter: filter, id: id, setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>, setIsFavorite?: React.Dispatch<React.SetStateAction<boolean>>) => void
 }
+
+type filter = 'lista de favoritos' | 'card produto' 
 
 const ProductsContext = createContext({} as ProductsContextData)
 
@@ -111,6 +119,74 @@ function ProductsProvider({ children }: ChildrenProp) {
         },
     ]
 
+    function addProductInCart(
+            isLogged: boolean, 
+            navigate: NavigateFunction, 
+            isAlreadyInCart: boolean, 
+            product: IProducts,
+            id: id
+        ) {
+        if (!isLogged)
+            return navigate('/login')
+
+        if (isAlreadyInCart)
+            return navigate('/cart')
+
+        setProductsInCart([...productsInCart, product])
+        navigate(`/precart/${id}`)
+    }
+
+    function addProductInLiked(
+            isLogged: boolean, 
+            navigate: NavigateFunction, 
+            setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, 
+            isFavorite: boolean, 
+            product: IProducts, 
+            id: id
+        ) {
+
+        if (!isLogged)
+            return navigate('/login')
+
+        setIsFavorite(oldIsFavorite => !oldIsFavorite)
+        if (!isFavorite) {
+            setProductsLiked([...productsLiked, product ])
+        } else {
+            const productsLikedWithout = productsLiked.filter(product => product.id !== id)
+            setProductsLiked(productsLikedWithout)
+        }
+    }
+
+    function filterProductsAndSetFavoriteOrInCart(
+            filter: filter, 
+            id: id, 
+            setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>, 
+            setIsFavorite?: React.Dispatch<React.SetStateAction<boolean>>
+        ){
+
+        if(filter === 'lista de favoritos'){
+
+            const productLikedInCart = productsInCart.filter(product => product.id === id)
+                productLikedInCart.forEach(() => {
+                    setIsAlreadyInCart(true)    
+                })
+
+        }else if(filter === 'card produto' && setIsFavorite){
+
+            const productLiked = productsLiked.filter(product => product.id === id)
+                productLiked.forEach(() => {
+                    setIsFavorite(true)
+                })
+        
+            const productLikedInCart = productsInCart.filter(product => product.id === id)
+            productLikedInCart.forEach(() => {
+                setIsAlreadyInCart(true)
+            })
+
+        }
+    }
+
+
     return (
         <ProductsContext.Provider value={{ 
             products, 
@@ -121,7 +197,10 @@ function ProductsProvider({ children }: ChildrenProp) {
             setProductsInCart, 
             arrayTeste, 
             productsDepartments, 
-            setProductsDepartments 
+            setProductsDepartments ,
+            addProductInCart,
+            addProductInLiked,
+            filterProductsAndSetFavoriteOrInCart
         }}>
             {children}
         </ProductsContext.Provider>

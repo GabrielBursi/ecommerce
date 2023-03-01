@@ -16,12 +16,14 @@ export function ProductPage() {
     const { id } = useParams<'id'>()
     const navigate= useNavigate()
 
-    const { products, setProductsInCart, productsInCart, setProductsLiked, productsLiked } = useContext(ProductsContext)
+    const { products, productsInCart, productsLiked, addProductInCart, addProductInLiked } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const [productInfo, setProductInfo] = useState<IProducts>({ id: '', img: '', price: '', title: ' ', rating: 0 });
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
+
+    const { img, price, title, rating } = productInfo
 
     useEffect(() => {
         if(!id){
@@ -42,28 +44,6 @@ export function ProductPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, productsLiked, productsInCart]);
 
-    function addProductInCart(id: number | string | undefined) {
-
-        if (!isLogged)
-            return navigate('/login')
-
-        setProductsInCart([...productsInCart, { img: productInfo.img, price: productInfo.price, title: productInfo.title, rating: productInfo.rating, id }])
-        navigate(`/precart/${id}`)
-    }
-
-    function addProductInLiked() {
-
-        if (!isLogged)
-            return navigate('/login')
-
-        setIsFavorite(oldIsFavorite => !oldIsFavorite)
-        if (!isFavorite) {
-            setProductsLiked([...productsLiked, { img: productInfo.img, price: productInfo.price, title: productInfo.title, rating: productInfo.rating, id }])
-        } else {
-            const productsLikedWithout = productsLiked.filter(product => product.id !== id)
-            setProductsLiked(productsLikedWithout)
-        }
-    }
 
     return (
         <LayoutBase showActions showResearchInput showTabBar showUserInfo>
@@ -99,7 +79,9 @@ export function ProductPage() {
                                         <IconButton color='primary' size="medium">
                                             <ShareIcon sx={{fontSize: '2rem'}}/>
                                         </IconButton>
-                                        <IconButton size="medium" onClick={addProductInLiked}>
+                                        <IconButton size="medium" onClick={() => {
+                                                addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, title, rating }, id)
+                                            }}>
                                             <FavoriteIcon sx={{ fontSize: '2rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                                         </IconButton>
                                     </Box>
@@ -141,7 +123,9 @@ export function ProductPage() {
                                                 size="large" 
                                                 startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />} 
                                                 sx={{fontSize:'1.5rem'}} 
-                                                onClick={() => addProductInCart(productInfo.id)}
+                                                onClick={() => {
+                                                    addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating }, id)
+                                                }}
                                             >
                                                 {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                                             </Button>
