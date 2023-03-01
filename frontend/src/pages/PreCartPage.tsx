@@ -11,16 +11,19 @@ export function PreCartPage() {
     const { isLogged } = useContext(LoginContext)
     const { productsInCart } = useContext(ProductsContext)
 
-    const [productAddInCart, setProductAddInCart] = useState<IProducts>();
+    const [productAddInCart, setProductAddInCart] = useState<IProducts>({id: '', img: '', price: '', title: ''});
 
     const { id } = useParams<'id'>();
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(id){
-            const productAdded = productsInCart.find(product => product.id === id);
-            setProductAddInCart(productAdded)
+        if(!id){
+            return console.log('teste');
+            
         }
+        const arrProductAdded = productsInCart.filter(product => product.id === id);
+        const [productAdded] = arrProductAdded
+        setProductAddInCart(productAdded)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
@@ -33,7 +36,7 @@ export function PreCartPage() {
             <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
                 <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
                     <Grid item xs={12} height={mdDown ? '35%' : '55%'}>
-                        {productAddInCart && <PreCartInfo img={productAddInCart?.img} price={productAddInCart?.price} title={productAddInCart?.title} id={id || ''} />}
+                        {productAddInCart && <PreCartInfo img={productAddInCart.img} price={productAddInCart.price} title={productAddInCart.title} id={id} />}
                     </Grid>
                         { mdDown &&
                             <Grid item xs={12} height='auto'>
@@ -53,7 +56,7 @@ export function PreCartPage() {
                                 <Carousel/>
                             </>
                             :
-                            <Box height='100%' padding={2} component={Paper} elevation={10}>
+                            <Box height='85%' padding={2} component={Paper} elevation={10}>
                                 <Typography color='primary' variant={mdDown ? 'subtitle1' : 'h5'} noWrap>
                                     PRODUTOS RELACIONADOS
                                 </Typography>
