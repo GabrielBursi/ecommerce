@@ -15,7 +15,7 @@ interface ProductCardProps extends IProducts{
     mdDown?: boolean
 }
 
-export function ProductCard({ img, price, name, rating, width = 270, height = 400, id, mdDown }: ProductCardProps) {
+export function ProductCard({ img, price, name, rating, width = 270, height = 390, id, mdDown }: ProductCardProps) {
 
     const [hover, setHover] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
@@ -43,13 +43,14 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 40
                 name={name}
                 id={id}
                 rating={rating}
+                isAlreadyInCart={isAlreadyInCart}
+                setIsAlreadyInCart={setIsAlreadyInCart}
+                isFavorite={isFavorite}
+                setIsFavorite={setIsFavorite}
                 addProductInCart={addProductInCart}
                 addProductInLiked={addProductInLiked}
                 seeProduct={seeProduct}
-                isAlreadyInCart={isAlreadyInCart}
-                isFavorite={isFavorite}
                 isLogged={isLogged}
-                setIsFavorite={setIsFavorite}
                 navigate={navigate}
             />
 
@@ -68,59 +69,58 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 40
                     <CardHeader 
                         action={
                             hover ? 
-                            <IconButton size="small" onClick={ () => {
+                            <IconButton size="medium" onClick={ () => {
                                     addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
                                 }}>
-                                <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
+                                <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="medium" />
                             </IconButton>
                             :
-                            <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
+                            <Rating value={rating} precision={0.5} readOnly max={5} size='medium' color="primary" />
                         }
                     />
                 </Box>
-                <Box onClick={seeProduct}>
-                    <Box 
-                        sx={{
-                            width: '100%', 
-                            height:'160px',
-                            display:'flex',
-                            justifyContent:'center',
-                            alignItems:'center'
-                        }}
-                    >
-                        <MyImage alt="123" src={img} width='110px' height='auto'/>
-                    </Box>
-                    <CardContent sx={{ paddingY: 0, height: 90 }}>
-                        <Typography 
-                            variant="body1" 
-                            color="black" 
-                            overflow='hidden' 
-                            textOverflow='ellipsis'
-                            fontWeight='bold' 
-                            sx={{wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
-                        >
-                            {name}
-                        </Typography>
-                    </CardContent>
-                    <CardContent sx={{paddingY: 0}}>
-                        <Typography variant="h5" color="primary" fontWeight='bold'>
-                            {price}
-                        </Typography>
-                    </CardContent>
-                    <CardActions disableSpacing>
-                        <Button
-                            variant="contained"
-                            startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
-                            fullWidth
-                            size="large"
-                            onClick={() => {
-                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
-                            }}
-                            >
-                            {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
-                        </Button>
-                    </CardActions>
+                <Box
+                    onClick={seeProduct}
+                    sx={{
+                        width: '100%', 
+                        height:'160px',
+                        display:'flex',
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                >
+                    <MyImage alt="123" src={img} width='110px' height='auto'/>
                 </Box>
+                <CardContent sx={{ paddingY: 0, height: 90 }} onClick={seeProduct}>
+                    <Typography 
+                        variant="body1" 
+                        color="black" 
+                        overflow='hidden' 
+                        textOverflow='ellipsis'
+                        fontWeight='bold' 
+                        sx={{wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+                    >
+                        {name}
+                    </Typography>
+                </CardContent>
+                <CardContent sx={{paddingY: 0}} onClick={seeProduct}>
+                    <Typography variant="h5" color="primary" fontWeight='bold'>
+                        {price}
+                    </Typography>
+                </CardContent>
+            <CardActions disableSpacing>
+                <Button
+                    variant="contained"
+                    startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
+                    fullWidth
+                    size="large"
+                    onClick={() => {
+                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
+                    }}
+                    >
+                    {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
+                </Button>
+            </CardActions>
             </CardActionArea>
         </Card>
     );
