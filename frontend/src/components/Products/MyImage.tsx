@@ -4,6 +4,7 @@ import { MyImageProps } from '../../types';
 
 const MyImageMemo = ({ alt, height, width, src }: MyImageProps) => (
         <LazyLoadImage
+            draggable={false}
             alt={alt}
             src={src}
             height={height}
