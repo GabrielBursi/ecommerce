@@ -1,5 +1,5 @@
 export interface IProducts {
-    id?: id, //! a api tem uma propriedade asin que é única e string
+    id: id, //! a api tem uma propriedade asin que é única e string
     title: string,
     description?: string,
     price:string,
@@ -7,7 +7,7 @@ export interface IProducts {
     img: string,
 }
 
-export type id = number | string | undefined
+export type id = number | string
 
 export interface TabBarProducts {
     name:string,

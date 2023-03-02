@@ -7,13 +7,18 @@ import { Carousel, PreCartInfo } from "../components";
 import { IProducts } from "../types";
 
 export function PreCartPage() {
+    
+    const theme = useTheme()
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+    
+    const { id } = useParams<'id'>();
 
     const { isLogged } = useContext(LoginContext)
     const { productsInCart } = useContext(ProductsContext)
 
-    const [productAddInCart, setProductAddInCart] = useState<IProducts>({id: '', img: '', price: '', title: ''});
+    const [productAddInCart, setProductAddInCart] = useState<IProducts>();
 
-    const { id } = useParams<'id'>();
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -27,16 +32,13 @@ export function PreCartPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    const theme = useTheme()
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
         <LayoutBase showActions = {isLogged} showResearchInput showUserInfo>
             <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
                 <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
                     <Grid item xs={12} height={mdDown ? '35%' : '55%'}>
-                        {productAddInCart && <PreCartInfo img={productAddInCart.img} price={productAddInCart.price} title={productAddInCart.title} id={id} />}
+                        {productAddInCart && <PreCartInfo img={productAddInCart.img} price={productAddInCart.price} title={productAddInCart.title} id={id || 'id não existe'} />}
                     </Grid>
                         { mdDown &&
                             <Grid item xs={12} height='auto'>

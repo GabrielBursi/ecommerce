@@ -124,7 +124,6 @@ function ProductsProvider({ children }: ChildrenProp) {
             navigate: NavigateFunction, 
             isAlreadyInCart: boolean, 
             product: IProducts,
-            id: id
         ) {
         if (!isLogged)
             return navigate('/login')
@@ -133,7 +132,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             return navigate('/cart')
 
         setProductsInCart([...productsInCart, product])
-        navigate(`/precart/${id}`)
+        navigate(`/precart/${product.id}`)
     }
 
     function addProductInLiked(
