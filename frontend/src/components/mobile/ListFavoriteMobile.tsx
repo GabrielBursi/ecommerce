@@ -14,7 +14,7 @@ interface ListFavoriteMobileProps extends IProducts {
     isLogged: boolean
 }
 
-function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
+function ListFavoriteMobileMemo({ name, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
 
     const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCar
                             <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
                             :
                             <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => {
-                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
                             }} />
                         }
                     </IconButton>
@@ -39,7 +39,7 @@ function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCar
             </Box>
             <Box flex={1} display='flex' alignItems='center' gap={2}>
                 <Box display='flex' alignItems='center' justifyContent='center' width='110px' height='110px'>
-                    <MyImage alt={title} src={img} height='auto' width='110px' />
+                    <MyImage alt={name} src={img} height='auto' width='110px' />
                 </Box>
                 <Box flex={1} display='flex' flexDirection='column' gap={2} height='100%'>
                     <Box width='100%'>
@@ -52,7 +52,7 @@ function ListFavoriteMobileMemo({ title, img, price, rating, id, addProductInCar
                             overflow='hidden'
                             textOverflow="ellipsis"
                         >
-                            {title}
+                            {name}
                         </Typography>
                     </Box>
                     <Box width='100%'>

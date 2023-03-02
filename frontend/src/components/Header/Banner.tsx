@@ -6,11 +6,11 @@ import { HeaderContext } from "../../contexts";
 import { CarouselBanner } from "./CarouselBanner";
 
 interface BannerProps {
-    title: string,
+    name: string,
     showCarousel?: boolean
 }
 
-export function Banner({title, showCarousel = false}: BannerProps) {
+export function Banner({name, showCarousel = false}: BannerProps) {
 
     const { arrImgBanner } = useContext(HeaderContext)
 
@@ -40,7 +40,7 @@ export function Banner({title, showCarousel = false}: BannerProps) {
         >
             { !showCarousel &&
                 <Typography variant="subtitle1" fontWeight='bold' color='black' mb={2}>
-                    Você está em: {title}
+                    Você está em: {name}
                 </Typography>
             }
             { showCarousel && 
@@ -95,7 +95,7 @@ export function Banner({title, showCarousel = false}: BannerProps) {
                 }}
             >
                 <Typography variant="h5" fontWeight='bold' color='secondary'>
-                    {title}
+                    {name}
                 </Typography>
             </Box>
         </Box>

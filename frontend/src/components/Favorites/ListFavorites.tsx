@@ -9,7 +9,7 @@ import { MyImage } from "../Products/MyImage";
 import { LoginContext, ProductsContext } from "../../contexts";
 import { ListFavoriteMobile } from "../mobile";
 
-export function ListFavorites({ title, img, price, rating, id }: IProducts) {
+export function ListFavorites({ name, img, price, rating, id }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -24,8 +24,8 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
     const { setProductsLiked, productsLiked, addProductInCart, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
-    const brand = title.split(' ')[0]
-    const nameWithoutBrand = title.replace(title.split(' ')[0], '')
+    const brand = name.split(' ')[0]
+    const nameWithoutBrand = name.replace(name.split(' ')[0], '')
 
     useEffect(() => {
         filterProductsAndSetFavoriteOrInCart('lista de favoritos', id, setIsAlreadyInCart)
@@ -42,7 +42,7 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
             id={id}
             key={id}
             img={img}
-            title={title}
+            name={name}
             price={price}
             rating={rating}
             isLogged={isLogged}
@@ -56,7 +56,7 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
 
             <Box display='flex' alignItems='center' width='60%' height='100%' gap={2}>
                 <Box  width='auto' minWidth='20%' height='auto' maxHeight='200px' display='flex' alignItems='center' justifyContent='center'>
-                    <MyImage alt={title} src={img} height='auto' width={mdDown ? '110px' : '140px'}/>
+                    <MyImage alt={name} src={img} height='auto' width={mdDown ? '110px' : '140px'}/>
                 </Box>
                 <Box flex={1}  maxWidth='650px' height='100%' display='flex' flexDirection='column' >
                     <Box maxWidth='100%' maxHeight='100%'>
@@ -101,7 +101,7 @@ export function ListFavorites({ title, img, price, rating, id }: IProducts) {
                         fullWidth 
                         size="large" 
                         onClick={() => {
-                            id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                            id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
                         }}
                     >
                         { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

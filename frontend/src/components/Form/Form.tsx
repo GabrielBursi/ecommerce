@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../../contexts";
 
 interface LoginPageProps {
-    title: string,
+    nameForm: string,
     textButton: string,
     create: boolean,
     handleSubmit: () => void,
 }
 
-export function Form({ title, textButton, create, handleSubmit }: LoginPageProps) {
+export function Form({ nameForm, textButton, create, handleSubmit }: LoginPageProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -75,7 +75,7 @@ export function Form({ title, textButton, create, handleSubmit }: LoginPageProps
                 variant={smDown ? 'h4' : mdDown ? 'h3' : 'h2'}
                 noWrap
             >
-                {title}
+                {name}
             </Typography>
             <Box
                 component="form"

@@ -92,7 +92,7 @@ export function Login() {
     return (
         <LayoutBase showUserInfo showTabBar = {false}>
             <Box display='flex' justifyContent='center' alignItems='center' height='100%'>
-                <Form title={create ? "CRIAR CONTA" : "FAZER LOGIN"} textButton={create ? "criar" : "entrar"} create={create  ? true : false} handleSubmit={handleSubmit}/>
+                <Form nameForm={create ? "CRIAR CONTA" : "FAZER LOGIN"} textButton={create ? "criar" : "entrar"} create={create  ? true : false} handleSubmit={handleSubmit}/>
             </Box>
         </LayoutBase>
     );

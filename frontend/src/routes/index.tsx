@@ -67,62 +67,62 @@ export function RoutesApp() {
         ])
         setProductsDepartments([
             {
-                title: 'hardware',
+                name: 'hardware',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/HARDWARE_1648493892.png&w=384&h=280&q=70',
                 to: '/products/hardware'
             },
             {
-                title: 'periféricos',
+                name: 'periféricos',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/PERIFERICOS.png&w=384&h=280&q=70',
                 to: '/products/periféricos'
             },
             {
-                title: 'games',
+                name: 'games',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/GAMER.png&w=384&h=280&q=70',
                 to: '/products/games'
             },
             {
-                title: 'computadores',
+                name: 'computadores',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/COMPUTADORES.png&w=384&h=280&q=70',
                 to: '/products/computadores'
             },
             {
-                title: 'tv',
+                name: 'tv',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TV_1645045665.png&w=384&h=280&q=70',
                 to: '/products/TV'
             },
             {
-                title: 'celular & smartphone',
+                name: 'celular & smartphone',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CELULAR-SMARTPHONE_1645045581.png&w=384&h=280&q=70',
                 to: '/products/celular_smartphone'
             },
             {
-                title: 'espaço gamer',
+                name: 'espaço gamer',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/ESPACO-GAMER_1658426219.png&w=384&h=280&q=70',
                 to: '/products/espaço_gamer'
             },
             {
-                title: 'tablets, ipads e e-readers',
+                name: 'tablets, ipads e e-readers',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TABLETS-IPADS-E-E-READERS_1645096620.png&w=384&h=280&q=70',
                 to: '/products/tablets'
             },
             {
-                title: 'áudio',
+                name: 'áudio',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/AUDIO.png&w=384&h=280&q=70',
                 to: '/products/áudio'
             },
             {
-                title: 'casa inteligente',
+                name: 'casa inteligente',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CASA-INTELIGENTE_1661457250.png&w=384&h=280&q=70',
                 to: '/products/casa_inteligente'
             },
             {
-                title: 'câmeras e drones',
+                name: 'câmeras e drones',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CAMERAS-E-DRONES_1659439533.png&w=384&h=280&q=70',
                 to: '/products/câmeras_drones'
             },
             {
-                title: 'serviços digitais e softwares',
+                name: 'serviços digitais e softwares',
                 src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/SERVICOS-DIGITAIS_1657908578.png&w=384&h=280&q=70',
                 to: '/products/serviços_digitais_softwares'
             },

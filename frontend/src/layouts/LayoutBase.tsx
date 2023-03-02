@@ -104,7 +104,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
             {showTabBar && <TabBar productsTabBar={productsTabBar}/>}
 
             <Box flex={1} overflow="auto">    
-                {showBanner && <Banner title={match?.pathname === '/' ? 'Home' : productUpperCase } showCarousel={match?.pathname === '/'}/>}
+                {showBanner && <Banner name={match?.pathname === '/' ? 'Home' : productUpperCase } showCarousel={match?.pathname === '/'}/>}
                 {children}
             </Box>
         </Box>

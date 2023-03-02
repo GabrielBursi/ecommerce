@@ -6,7 +6,7 @@ import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
 import { PreCartInfoMobile } from "../mobile";
 
-export function PreCartInfo({ img, price, title, id }: IProducts) {
+export function PreCartInfo({ img, price, name, id }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -17,12 +17,12 @@ export function PreCartInfo({ img, price, title, id }: IProducts) {
 
     const navigate = useNavigate()
 
-    const brand = title.split(' ')[0]
-    const nameWithoutBrand = title.replace(title.split(' ')[0], '')
+    const brand = name.split(' ')[0]
+    const nameWithoutBrand = name.replace(name.split(' ')[0], '')
 
     if(smDown)
     return <PreCartInfoMobile
-                title={title}
+                name={name}
                 img={img}
                 price={price}
                 id={id}
@@ -34,7 +34,7 @@ export function PreCartInfo({ img, price, title, id }: IProducts) {
         <Box height='100%' display='flex' flexDirection='column' padding={2} component={Paper} elevation={10}>
             <Box height='100%' display='flex' alignItems='center' gap={2}>
                 <Box display='flex' alignItems='center' justifyContent='center' width='20%' height='100%'>
-                    <MyImage alt={title} src={img} height='auto' width={mdDown ? '110px' : '140px'} />
+                    <MyImage alt={name} src={img} height='auto' width={mdDown ? '110px' : '140px'} />
                 </Box>
                 <Box display='flex' flexDirection='column' alignItems='start' justifyContent='center' width='50%' height='100%'>
                     <Typography component='span' variant='body1' fontWeight="light">

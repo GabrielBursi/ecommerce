@@ -25,7 +25,7 @@ function ProductCardMobileMemo(
     { 
         img, 
         price, 
-        title, 
+        name, 
         rating, 
         id, 
         addProductInCart, 
@@ -56,7 +56,7 @@ function ProductCardMobileMemo(
                 >
                     <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                     <IconButton size="small" onClick={() => {
-                            addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, title, rating, id }, id)
+                            addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
                         }}>
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>
@@ -95,7 +95,7 @@ function ProductCardMobileMemo(
                                 fontWeight='bold'
                                 sx={{ wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
                             >
-                                {title}
+                                {name}
                             </Typography>
                             <Typography variant="h6" color="primary" fontWeight='bold'>
                                 {price}
@@ -111,7 +111,7 @@ function ProductCardMobileMemo(
                     fullWidth
                     size="medium"
                     onClick={() => {
-                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
                     }}
                 >
                     {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

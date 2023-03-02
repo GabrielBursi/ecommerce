@@ -66,7 +66,7 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                                 img={product.img}
                                 price={product.price}
                                 rating={product.rating}
-                                title={product.title}
+                                name={product.name}
                             />
                             :
                             <ProductCard
@@ -75,7 +75,7 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                                 img={product.img}
                                 price={product.price}
                                 rating={product.rating}
-                                title={product.title}
+                                name={product.name}
                                 mdDown={true}
                                 width='100%'
                                 height='90%'

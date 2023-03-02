@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DepartmentCardProps } from "../../types";
 import { MyImage } from "./MyImage";
 
-export function DepartmentCard({title, src, to}: DepartmentCardProps) {
+export function DepartmentCard({name, src, to}: DepartmentCardProps) {
 
     const [hover, setHover] = useState<boolean>(false);
 
@@ -28,14 +28,14 @@ export function DepartmentCard({title, src, to}: DepartmentCardProps) {
             }}
         >
             <Typography variant="subtitle1" fontWeight='bold' color={hover ? 'primary' : 'black'}>
-                {title.toUpperCase()}
+                {name.toUpperCase()}
             </Typography>
             <Box
                 sx={{
                     zIndex:1,
                 }}
             >
-                <MyImage alt={title} src={src} />
+                <MyImage alt={name} src={src} />
             </Box>
         </Box>
     );

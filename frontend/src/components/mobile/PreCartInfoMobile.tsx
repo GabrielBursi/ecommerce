@@ -8,7 +8,7 @@ interface PreCartInfoMobileProps extends IProducts {
     nameWithoutBrand: string
 }
 
-function PreCartInfoMobileMemo({ img, price, title, id, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
+function PreCartInfoMobileMemo({ img, price, name, id, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
 
     const [open, setOpen] = useState(false);
 
@@ -21,7 +21,7 @@ function PreCartInfoMobileMemo({ img, price, title, id, brand, nameWithoutBrand 
         <Box height='100%' width='100%' display='flex' flexDirection='column' padding={2} component={Paper} elevation={10}>
             <Box height='70%' display='flex' alignItems='center' gap={2}>
                 <Box display='flex' alignItems='center' justifyContent='center' width='30%' height='100%'>
-                    <MyImage alt={title} src={img} height='auto' width='100px' />
+                    <MyImage alt={name} src={img} height='auto' width='100px' />
                 </Box>
                 <Box display='flex' flexDirection='column' alignItems='start' justifyContent='start' flex={1} height='100%'>
                     <Typography component='span' variant='body2' fontWeight="light">

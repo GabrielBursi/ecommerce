@@ -4,7 +4,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { IProducts } from "../../types";
 import { MyImage } from "./MyImage";
 
-export function MiniCardProduct({ img, price, title, id }: IProducts) {
+export function MiniCardProduct({ img, price, name, id }: IProducts) {
 
     const [hover, setHover] = useState(false);
     const navigate = useNavigate()
@@ -35,7 +35,7 @@ export function MiniCardProduct({ img, price, title, id }: IProducts) {
                     justifyContent: 'center',
                 }}
             >
-                <MyImage src={img} alt={title} width='70px' />
+                <MyImage src={img} alt={name} width='70px' />
             </Box>
             <Box
                 sx={{

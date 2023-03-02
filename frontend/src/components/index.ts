@@ -19,6 +19,8 @@ export * from './Products/PreCartInfo'
 export * from './Products/DepartmentCard'
 export * from './Products/MiniCardProduct'
 
+export * from './ProductSelected/ProductSelected'
+
 export * from './mobile/ListFavoriteMobile'
 export * from './mobile/PreCartInfoMobile'
 export * from './mobile/ProductCardMobile'

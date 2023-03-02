@@ -15,7 +15,7 @@ interface ProductCardProps extends IProducts{
     mdDown?: boolean
 }
 
-export function ProductCard({ img, price, title, rating, width = 270, height = 400, id, mdDown }: ProductCardProps) {
+export function ProductCard({ img, price, name, rating, width = 270, height = 400, id, mdDown }: ProductCardProps) {
 
     const [hover, setHover] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
@@ -40,7 +40,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
     return <ProductCardMobile
                 img={img}
                 price={price}
-                title={title}
+                name={name}
                 id={id}
                 rating={rating}
                 addProductInCart={addProductInCart}
@@ -69,7 +69,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                         action={
                             hover ? 
                             <IconButton size="small" onClick={ () => {
-                                    addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, title, rating, id }, id)
+                                    addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
                                 }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                             </IconButton>
@@ -99,7 +99,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                             fontWeight='bold' 
                             sx={{wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
                         >
-                            {title}
+                            {name}
                         </Typography>
                     </CardContent>
                     <CardContent sx={{paddingY: 0}}>
@@ -114,7 +114,7 @@ export function ProductCard({ img, price, title, rating, width = 270, height = 4
                             fullWidth
                             size="large"
                             onClick={() => {
-                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, title, rating, id }, id)
+                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
                             }}
                             >
                             {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

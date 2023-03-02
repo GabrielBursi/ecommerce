@@ -1,6 +1,6 @@
 export interface IProducts {
     id: id, //! a api tem uma propriedade asin que é única e string
-    title: string,
+    name: string,
     description?: string,
     price:string,
     rating?:number,
@@ -15,7 +15,7 @@ export interface TabBarProducts {
 }
 
 export interface DepartmentCardProps {
-    title: string,
+    name: string,
     src: string,
     to: string
 }
