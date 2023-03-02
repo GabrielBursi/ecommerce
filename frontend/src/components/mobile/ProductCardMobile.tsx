@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -6,6 +6,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "../Products/MyImage";
 import { id, IProducts } from "../../types";
+import { ProductsContext } from "../../contexts";
 
 interface ProductCardProps extends IProducts {
     width?: number | string,
@@ -18,10 +19,11 @@ interface ProductCardProps extends IProducts {
     isAlreadyInCart: boolean,
     isLogged: boolean,
     setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>,
     navigate: NavigateFunction
 }
 
-function ProductCardMobileMemo(
+export function ProductCardMobile(
     { 
         img, 
         price, 
@@ -32,14 +34,22 @@ function ProductCardMobileMemo(
         addProductInLiked, 
         seeProduct, 
         isAlreadyInCart, 
+        setIsAlreadyInCart,
         isFavorite, 
-        isLogged, 
         setIsFavorite, 
-        navigate 
+        isLogged, 
+        navigate,
     }: ProductCardProps
 ) {
 
     const [hover, setHover] = useState(false);
+
+    const { productsLiked, productsInCart, filterProductsAndSetFavoriteOrInCart,  } = useContext(ProductsContext)
+
+    useEffect(() => {
+        filterProductsAndSetFavoriteOrInCart('card produto', id, setIsAlreadyInCart, setIsFavorite)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productsLiked, productsInCart]);
 
     return (
         <Card sx={{ width: 290, height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>
@@ -120,5 +130,3 @@ function ProductCardMobileMemo(
         </Card>
     );
 }
-
-export const ProductCardMobile = memo(ProductCardMobileMemo)

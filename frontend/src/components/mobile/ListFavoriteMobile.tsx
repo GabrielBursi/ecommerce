@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -14,7 +13,7 @@ interface ListFavoriteMobileProps extends IProducts {
     isLogged: boolean
 }
 
-function ListFavoriteMobileMemo({ name, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
+export function ListFavoriteMobile({ name, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
 
     const navigate = useNavigate()
 
@@ -65,5 +64,3 @@ function ListFavoriteMobileMemo({ name, img, price, rating, id, addProductInCart
         </Box>
     );
 }
-
-export const ListFavoriteMobile =  memo(ListFavoriteMobileMemo);
