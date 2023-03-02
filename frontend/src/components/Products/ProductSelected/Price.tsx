@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import { id, IProducts } from "../../types";
+import { id, IProducts } from "../../../types";
 import { NavigateFunction } from "react-router-dom";
 
 interface PriceProps extends Pick<IProducts, 'price'> {

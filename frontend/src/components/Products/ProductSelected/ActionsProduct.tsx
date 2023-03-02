@@ -2,7 +2,7 @@ import { NavigateFunction } from "react-router-dom";
 import { Box, Divider, IconButton, Rating, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import { IProducts, id } from "../../types";
+import { IProducts, id } from "../../../types";
 
 interface ActionsProductProps extends Pick<IProducts, 'name' | 'rating'> {
     addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,

@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Box, Paper, Typography } from "@mui/material";
 import SellIcon from '@mui/icons-material/Sell';
 import { ActionsProduct, ImagemZoom, NameProduct, Price, SearchCep } from ".";
-import { Carousel } from "../Products/Carousel";
-import { IProducts, MyImageProps } from "../../types";
-import { LoginContext, ProductsContext } from "../../contexts";
+import { Carousel } from "../Carousel";
+import { IProducts, MyImageProps } from "../../../types";
+import { LoginContext, ProductsContext } from "../../../contexts";
 
 interface ProductSelectedProps extends IProducts, MyImageProps {}
 

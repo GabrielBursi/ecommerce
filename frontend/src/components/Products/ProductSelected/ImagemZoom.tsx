@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { MyImageProps } from "../../types";
-import { MyImage } from "../Products/MyImage";
+import { MyImageProps } from "../../../types";
+import { MyImage } from "../MyImage";
 
 export function ImagemZoom({alt, src}: MyImageProps) {
     return (

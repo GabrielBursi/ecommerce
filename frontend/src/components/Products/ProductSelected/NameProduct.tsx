@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { IProducts } from "../../types";
+import { IProducts } from "../../../types";
 
 export function NameProduct({name}: Pick<IProducts, 'name'>) {
     return (
