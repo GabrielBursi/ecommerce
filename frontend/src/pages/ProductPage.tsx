@@ -32,7 +32,7 @@ export function ProductPage() {
                 <ProductSelected 
                     alt={productSelectedInfo?.name || '' } 
                     src={productSelectedInfo?.img || ''}
-                    id={productSelectedInfo?.id || '' } 
+                    id={id || 'não existe'} 
                     img={productSelectedInfo?.img || '' } 
                     price={productSelectedInfo?.price || '' } 
                     rating={productSelectedInfo?.rating || 0} 
