@@ -28,14 +28,13 @@ const ProductsContext = createContext({} as ProductsContextData)
 
 function ProductsProvider({ children }: ChildrenProp) {
 
-    //*teste
-    const [products, setProducts] = useState<IProducts[]>([]); //!temporario 
-    const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); //!temporario
-    const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); //!temporario
+    const [products, setProducts] = useState<IProducts[]>([]); 
+    const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
+    const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
 
     const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
 
-    const arrayTeste: IProducts[] = [
+    const arrayTeste: IProducts[] = [ //!temporario
         {
         id: uuid.v4(),
         name: 'Apple iPhone 14, 128GB, Blue - Unlocked (Renewed)',

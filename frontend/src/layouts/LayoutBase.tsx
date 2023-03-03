@@ -23,7 +23,7 @@ interface LayoutProps {
     showBanner?: boolean,
 }
 
-export function LayoutBase({ children, showResearchInput = false, showActions = false, showUserInfo = false, showTabBar = true, showBanner = false}: LayoutProps) {
+export function LayoutBase({ children, showResearchInput = false, showActions = false, showUserInfo = false, showTabBar = false, showBanner = false}: LayoutProps) {
 
     const theme = useTheme()
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))

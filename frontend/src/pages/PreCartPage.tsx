@@ -34,7 +34,7 @@ export function PreCartPage() {
 
 
     return (
-        <LayoutBase showActions = {isLogged} showResearchInput showUserInfo>
+        <LayoutBase showActions = {isLogged} showResearchInput showUserInfo showTabBar>
             <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
                 <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
                     <Grid item xs={12} height={mdDown ? '35%' : '55%'}>

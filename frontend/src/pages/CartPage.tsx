@@ -18,7 +18,7 @@ export function CartPage() {
     const navigate = useNavigate()
 
     return (
-        <LayoutBase showActions showResearchInput showUserInfo>
+        <LayoutBase showUserInfo>
             <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%' >
                 <Box display='flex' flexDirection='column' width='95%' height='100%' paddingY={2} gap={2}>
                     <Box height="10%" display='flex' alignItems='center'>

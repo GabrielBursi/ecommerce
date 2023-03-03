@@ -7,7 +7,7 @@ export function ListProductsPage() {
     const { isLogged } = useContext(LoginContext)
 
     return (
-        <LayoutBase showResearchInput showUserInfo showBanner showActions = {isLogged}>
+        <LayoutBase showResearchInput showUserInfo showTabBar showBanner showActions = {isLogged}>
             
         </LayoutBase>
     );
