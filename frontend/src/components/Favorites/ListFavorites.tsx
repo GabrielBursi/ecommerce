@@ -21,21 +21,18 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
     const [color, setColor] = useState(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
-    const { setProductsLiked, productsLiked, addProductInCart, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
+    const {  productsLiked, productsInCart, addProductInCart, filterProductsAndSetFavoriteOrInCart, removeProductLiked } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart('lista de favoritos', id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsLiked]);
 
-    function removeProductLiked(){
-        const productsLikedWithout = productsLiked.filter(product => product.id !== id)
-        setProductsLiked(productsLikedWithout)
-    }
+    
 
     if(smDown) 
     return <ListFavoriteMobile
@@ -45,10 +42,6 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
             name={name}
             price={price}
             rating={rating}
-            isLogged={isLogged}
-            addProductInCart={addProductInCart}
-            removeProductLiked={removeProductLiked}
-            isAlreadyInCart={isAlreadyInCart}
         />
 
     return (
@@ -86,7 +79,7 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"onClick={removeProductLiked}/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductLiked(id)}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>

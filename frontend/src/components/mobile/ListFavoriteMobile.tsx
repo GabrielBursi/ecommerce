@@ -1,21 +1,27 @@
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { id, IProducts } from "../../types";
+import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
+import { LoginContext, ProductsContext } from "../../contexts";
 
-interface ListFavoriteMobileProps extends IProducts {
-    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
-    removeProductLiked: () => void,
-    isAlreadyInCart: boolean,
-    isLogged: boolean
-}
 
-export function ListFavoriteMobile({ name, img, price, rating, id, addProductInCart, removeProductLiked, isAlreadyInCart, isLogged  }: ListFavoriteMobileProps) {
+export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) {
+
+    const { isLogged } = useContext(LoginContext)
+    const { addProductInCart, productsLiked, productsInCart,filterProductsAndSetFavoriteOrInCart, removeProductLiked } = useContext(ProductsContext)
+
+    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productsLiked]);
 
     return (
         <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>
@@ -23,7 +29,7 @@ export function ListFavoriteMobile({ name, img, price, rating, id, addProductInC
                 <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                 <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" onClick={removeProductLiked} />
+                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductLiked(id)} />
                     </IconButton>
                     <IconButton size="medium" >
                         {isAlreadyInCart ?

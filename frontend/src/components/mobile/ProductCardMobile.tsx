@@ -1,53 +1,33 @@
 import { useContext, useEffect, useState } from "react";
-import { NavigateFunction } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "../Products/MyImage";
-import { id, IProducts } from "../../types";
-import { ProductsContext } from "../../contexts";
+import { IProducts } from "../../types";
+import { LoginContext, ProductsContext } from "../../contexts";
 
 interface ProductCardProps extends IProducts {
-    width?: number | string,
-    height?: number | string,
-    mdDown?: boolean,
-    addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
-    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
     seeProduct: () => void,
-    isFavorite: boolean,
-    isAlreadyInCart: boolean,
-    isLogged: boolean,
-    setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
-    setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>,
-    navigate: NavigateFunction
 }
 
-export function ProductCardMobile(
-    { 
-        img, 
-        price, 
-        name, 
-        rating, 
-        id, 
-        addProductInCart, 
-        addProductInLiked, 
-        seeProduct, 
-        isAlreadyInCart, 
-        setIsAlreadyInCart,
-        isFavorite, 
-        setIsFavorite, 
-        isLogged, 
-        navigate,
-    }: ProductCardProps
-) {
+export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }: ProductCardProps) {
 
     const [hover, setHover] = useState(false);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
-    const { productsLiked, productsInCart, filterProductsAndSetFavoriteOrInCart,  } = useContext(ProductsContext)
+
+    const { productsLiked, productsInCart, addProductInCart, addProductInLiked, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
+    const { isLogged } = useContext(LoginContext)
+
+    const navigate = useNavigate()
+
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart('card produto', id, setIsAlreadyInCart, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsLiked, id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsLiked, productsInCart]);
 

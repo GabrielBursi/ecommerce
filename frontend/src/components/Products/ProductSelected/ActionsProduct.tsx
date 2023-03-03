@@ -1,29 +1,40 @@
-import { NavigateFunction } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Divider, IconButton, Rating, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import { IProducts, id } from "../../../types";
+import { IProducts } from "../../../types";
+import { LoginContext, ProductsContext } from "../../../contexts";
 
-interface ActionsProductProps extends Pick<IProducts, 'name' | 'rating'> {
-    addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
-    isLogged: boolean, 
-    navigate: NavigateFunction, 
-    isFavorite: boolean, 
+interface ActionsProductProps {
     product: IProducts, 
-    setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function ActionsProduct({ name, rating, addProductInLiked, isFavorite, isLogged, navigate, product, setIsFavorite }: ActionsProductProps) {
+export function ActionsProduct({ product }: ActionsProductProps) {
+
+    const navigate = useNavigate()
+
+    const { filterProductsAndSetFavoriteOrInCart, productsLiked, addProductInLiked } = useContext(ProductsContext)
+    const { isLogged } = useContext(LoginContext)
+
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    useEffect(() => {
+        filterProductsAndSetFavoriteOrInCart(productsLiked, product.id, setIsFavorite)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [product.id, productsLiked]);
+
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between'>
             <Box width='30%' display='flex' justifyContent='center' alignItems='center'>
                 <Typography variant="subtitle1" color='black' fontWeight='bold'>
-                    {name.split(' ')[0]}
+                    {product.name.split(' ')[0]}
                 </Typography>
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box width='30%' display='flex' justifyContent='center' alignItems='center'>
-                <Rating value={rating} precision={0.5} readOnly max={5} size='large' />
+                <Rating value={product.rating} precision={0.5} readOnly max={5} size='large' />
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box width='30%' display='flex' justifyContent='center' alignItems='center' gap={2}>

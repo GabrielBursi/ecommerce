@@ -28,7 +28,8 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const navigate = useNavigate()
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart('card produto', id, setIsAlreadyInCart, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsLiked, id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsLiked, productsInCart]);
 
@@ -43,15 +44,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                 name={name}
                 id={id}
                 rating={rating}
-                isAlreadyInCart={isAlreadyInCart}
-                setIsAlreadyInCart={setIsAlreadyInCart}
-                isFavorite={isFavorite}
-                setIsFavorite={setIsFavorite}
-                addProductInCart={addProductInCart}
-                addProductInLiked={addProductInLiked}
                 seeProduct={seeProduct}
-                isLogged={isLogged}
-                navigate={navigate}
             />
 
     return (
