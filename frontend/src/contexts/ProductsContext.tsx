@@ -19,6 +19,7 @@ interface ProductsContextData {
 
     addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
     addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
+    removeProductLiked(id: id): void,
 
     filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
 }
@@ -154,6 +155,11 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
     }
 
+    function removeProductLiked(id: id) {
+        const productsLikedWithout = productsLiked.filter(product => product.id !== id)
+        setProductsLiked(productsLikedWithout)
+    }
+
     function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>){
 
         const productNotLikedOrInCart = arr.filter(product => product.id !== id)
@@ -176,6 +182,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             setProductsDepartments ,
             addProductInCart,
             addProductInLiked,
+            removeProductLiked,
             filterProductsAndSetFavoriteOrInCart
         }}>
             {children}
