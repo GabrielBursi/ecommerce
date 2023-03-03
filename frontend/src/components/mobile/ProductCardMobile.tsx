@@ -19,17 +19,17 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
 
-    const { productsLiked, productsInCart, addProductInCart, addProductInLiked, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
+    const { productsFavorited, productsInCart, addProductInCart, addProductInFavorited, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsLiked, id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, id, setIsFavorite)
         filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsLiked, productsInCart]);
+    }, [productsFavorited, productsInCart]);
 
     return (
         <Card sx={{ width: 290, height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>
@@ -46,7 +46,7 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
                 >
                     <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                     <IconButton size="small" onClick={() => {
-                            addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
+                            addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
                         }}>
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>

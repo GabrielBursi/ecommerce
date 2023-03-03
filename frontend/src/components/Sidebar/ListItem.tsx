@@ -25,7 +25,7 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
     const resolvedPath = useResolvedPath(to)
     const match = useMatch({ path: resolvedPath.pathname, end: true })
 
-    const { productsLiked, productsInCart } = useContext(ProductsContext)
+    const { productsFavorited, productsInCart } = useContext(ProductsContext)
 
     function handleClick() {
         navigate(to)
@@ -35,7 +35,7 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
     const badge = useMemo(() => {
         if (icon === 'favorite') {
             return (
-                <StyledBadge badgeContent={productsLiked.length} color="info">
+                <StyledBadge badgeContent={productsFavorited.length} color="info">
                     <Icon color='primary'>{icon}</Icon>
                 </StyledBadge>
             );
@@ -48,7 +48,7 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
         } else {
             return <Icon color='primary'>{icon}</Icon>;
         }
-    }, [icon, productsLiked.length, productsInCart.length]);
+    }, [icon, productsFavorited.length, productsInCart.length]);
 
     return (
         <ListItemButton selected={!!match} onClick={handleClick}>

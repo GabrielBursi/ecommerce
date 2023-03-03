@@ -18,12 +18,12 @@ export function Actions() {
 
     const navigate = useNavigate()
 
-    const { productsLiked } = useContext(ProductsContext)
+    const { productsFavorited } = useContext(ProductsContext)
     const { productsInCart } = useContext(ProductsContext)
 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={4} >
-            <StyledBadge badgeContent={productsLiked.length} color="info">
+            <StyledBadge badgeContent={productsFavorited.length} color="info">
                 <FavoriteIcon color="primary" fontSize="large" sx={{ cursor: "pointer" }} onClick={() => {navigate('/favorite')}}/>
             </StyledBadge>
             <StyledBadge badgeContent={productsInCart.length} color="info">

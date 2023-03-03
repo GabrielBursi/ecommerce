@@ -14,16 +14,16 @@ export function ActionsProduct({ product }: ActionsProductProps) {
 
     const navigate = useNavigate()
 
-    const { filterProductsAndSetFavoriteOrInCart, productsLiked, addProductInLiked } = useContext(ProductsContext)
+    const { filterProductsAndSetFavoriteOrInCart, productsFavorited, addProductInFavorited } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsLiked, product.id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, product.id, setIsFavorite)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product.id, productsLiked]);
+    }, [product.id, productsFavorited]);
 
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between'>
@@ -42,7 +42,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
                     <ShareIcon sx={{ fontSize: '2rem' }} />
                 </IconButton>
                 <IconButton size="medium" onClick={() => {
-                    addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, product, product.id)
+                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, product, product.id)
                 }}>
                     <FavoriteIcon sx={{ fontSize: '2rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>

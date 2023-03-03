@@ -22,16 +22,16 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
 
-    const { productsLiked, productsInCart, addProductInCart, addProductInLiked, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
+    const { productsFavorited, productsInCart, addProductInCart, addProductInFavorited, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsLiked, id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, id, setIsFavorite)
         filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsLiked, productsInCart]);
+    }, [productsFavorited, productsInCart]);
 
     function seeProduct(){
         navigate(`/product/${id}`)
@@ -63,7 +63,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                         action={
                             hover ? 
                             <IconButton size="medium" onClick={ () => {
-                                    addProductInLiked(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
+                                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
                                 }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="medium" />
                             </IconButton>

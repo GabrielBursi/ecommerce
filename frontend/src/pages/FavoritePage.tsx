@@ -13,7 +13,7 @@ export function FavoritePage() {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const { productsLiked } = useContext(ProductsContext)
+    const { productsFavorited } = useContext(ProductsContext)
 
     const navigate = useNavigate()
 
@@ -28,7 +28,7 @@ export function FavoritePage() {
                     </Box>
                     <Box flex={1} display='flex' flexDirection='column' gap={2}>
                         { 
-                            productsLiked.map(product => (
+                            productsFavorited.map(product => (
                                 <ListFavorites
                                     id={product.id}
                                     key={product.id}

@@ -12,7 +12,7 @@ import { LoginContext, ProductsContext } from "../../contexts";
 export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) {
 
     const { isLogged } = useContext(LoginContext)
-    const { addProductInCart, productsLiked, productsInCart,filterProductsAndSetFavoriteOrInCart, removeProductLiked } = useContext(ProductsContext)
+    const { addProductInCart, productsFavorited, productsInCart,filterProductsAndSetFavoriteOrInCart, removeProductFavorited } = useContext(ProductsContext)
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
@@ -21,7 +21,7 @@ export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) 
     useEffect(() => {
         filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsLiked]);
+    }, [productsFavorited]);
 
     return (
         <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>
@@ -29,7 +29,7 @@ export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) 
                 <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                 <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductLiked(id)} />
+                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductFavorited(id)} />
                     </IconButton>
                     <IconButton size="medium" >
                         {isAlreadyInCart ?

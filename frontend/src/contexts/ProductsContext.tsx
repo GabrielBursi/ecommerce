@@ -5,11 +5,11 @@ import { ChildrenProp, DepartmentCardProps, id, IProducts } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
-    productsLiked: IProducts[],
+    productsFavorited: IProducts[],
     productsInCart: IProducts[],
 
     setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
-    setProductsLiked: React.Dispatch<React.SetStateAction<IProducts[]>>,
+    setProductsFavorited: React.Dispatch<React.SetStateAction<IProducts[]>>,
     setProductsInCart: React.Dispatch<React.SetStateAction<IProducts[]>>,
 
     productsDepartments: DepartmentCardProps[],
@@ -18,8 +18,8 @@ interface ProductsContextData {
     arrayTeste: IProducts[],
 
     addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
-    addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
-    removeProductLiked(id: id): void,
+    addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
+    removeProductFavorited(id: id): void,
 
     filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
 }
@@ -30,7 +30,7 @@ function ProductsProvider({ children }: ChildrenProp) {
 
     //*teste
     const [products, setProducts] = useState<IProducts[]>([]); //!temporario 
-    const [productsLiked, setProductsLiked] = useState<IProducts[]>([]); //!temporario
+    const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); //!temporario
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); //!temporario
 
     const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
@@ -134,7 +134,7 @@ function ProductsProvider({ children }: ChildrenProp) {
         navigate(`/precart/${product.id}`)
     }
 
-    function addProductInLiked(
+    function addProductInFavorited(
             isLogged: boolean, 
             navigate: NavigateFunction, 
             setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, 
@@ -148,41 +148,41 @@ function ProductsProvider({ children }: ChildrenProp) {
 
         setIsFavorite(oldIsFavorite => !oldIsFavorite)
         if (!isFavorite) {
-            setProductsLiked([...productsLiked, product ])
+            setProductsFavorited([...productsFavorited, product ])
         } else {
-            const productsLikedWithout = productsLiked.filter(product => product.id !== id)
-            setProductsLiked(productsLikedWithout)
+            const productsFavoritedWithout = productsFavorited.filter(product => product.id !== id)
+            setProductsFavorited(productsFavoritedWithout)
         }
     }
 
-    function removeProductLiked(id: id) {
-        const productsLikedWithout = productsLiked.filter(product => product.id !== id)
-        setProductsLiked(productsLikedWithout)
+    function removeProductFavorited(id: id) {
+        const productsFavoritedWithout = productsFavorited.filter(product => product.id !== id)
+        setProductsFavorited(productsFavoritedWithout)
     }
 
     function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>){
 
-        const productNotLikedOrInCart = arr.filter(product => product.id !== id)
-        productNotLikedOrInCart.forEach(() => setState(false))
+        const productNotFavoritedOrInCart = arr.filter(product => product.id !== id)
+        productNotFavoritedOrInCart.forEach(() => setState(false))
 
-        const productLikedOrInCart = arr.filter(product => product.id === id)
-        productLikedOrInCart.forEach(() => setState(true))
+        const productFavoritedOrInCart = arr.filter(product => product.id === id)
+        productFavoritedOrInCart.forEach(() => setState(true))
     }
 
     return (
         <ProductsContext.Provider value={{ 
             products, 
             setProducts, 
-            productsLiked, 
-            setProductsLiked, 
+            productsFavorited, 
+            setProductsFavorited, 
             productsInCart, 
             setProductsInCart, 
             arrayTeste, 
             productsDepartments, 
             setProductsDepartments ,
             addProductInCart,
-            addProductInLiked,
-            removeProductLiked,
+            addProductInFavorited,
+            removeProductFavorited,
             filterProductsAndSetFavoriteOrInCart
         }}>
             {children}
