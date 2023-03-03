@@ -20,10 +20,8 @@ interface ProductsContextData {
     addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
     addProductInLiked: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
 
-    filterProductsAndSetFavoriteOrInCart: (filter: filter, id: id, setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>, setIsFavorite?: React.Dispatch<React.SetStateAction<boolean>>) => void
+    filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
 }
-
-type filter = 'lista de favoritos' | 'card produto' 
 
 const ProductsContext = createContext({} as ProductsContextData)
 
@@ -156,35 +154,14 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
     }
 
-    function filterProductsAndSetFavoriteOrInCart(
-            filter: filter, 
-            id: id, 
-            setIsAlreadyInCart: React.Dispatch<React.SetStateAction<boolean>>, 
-            setIsFavorite?: React.Dispatch<React.SetStateAction<boolean>>
-        ){
+    function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>){
 
-        if(filter === 'lista de favoritos'){
+        const productNotLikedOrInCart = arr.filter(product => product.id !== id)
+        productNotLikedOrInCart.forEach(() => setState(false))
 
-            const productLikedInCart = productsInCart.filter(product => product.id === id)
-                productLikedInCart.forEach(() => {
-                    setIsAlreadyInCart(true)    
-                })
-
-        }else if(filter === 'card produto' && setIsFavorite){
-
-            const productLiked = productsLiked.filter(product => product.id === id)
-                productLiked.forEach(() => {
-                    setIsFavorite(true)
-                })
-        
-            const productLikedInCart = productsInCart.filter(product => product.id === id)
-            productLikedInCart.forEach(() => {
-                setIsAlreadyInCart(true)
-            })
-
-        }
+        const productLikedOrInCart = arr.filter(product => product.id === id)
+        productLikedOrInCart.forEach(() => setState(true))
     }
-
 
     return (
         <ProductsContext.Provider value={{ 
