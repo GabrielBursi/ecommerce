@@ -5,6 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { IProducts } from "../../../types";
 import { LoginContext, ProductsContext } from "../../../contexts";
+import { ModalURL } from "../../Modal/ModalURL";
 
 interface ActionsProductProps {
     product: IProducts, 
@@ -21,9 +22,13 @@ export function ActionsProduct({ product }: ActionsProductProps) {
     const { isLogged } = useContext(LoginContext)
 
     const [isFavorite, setIsFavorite] = useState(false);
+    const [url, setUrl] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         filterProductsAndSetFavoriteOrInCart(productsFavorited, product.id, setIsFavorite)
+        setUrl(window.location.href)
+        
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product.id, productsFavorited]);
@@ -41,7 +46,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box width='30%' display='flex' justifyContent='center' alignItems='center' gap={2}>
-                <IconButton color='primary' size={mdDown ? "small" : "medium"}>
+                <IconButton color='primary' size={mdDown ? "small" : "medium"} onClick={() => setIsOpen(true)}>
                     <ShareIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} />
                 </IconButton>
                 <IconButton size={mdDown ? "small" : "medium"} onClick={() => {
@@ -50,6 +55,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
                     <FavoriteIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>
             </Box>
+            <ModalURL isOpen={isOpen} setIsOpen={setIsOpen} url={url}/>
         </Box>
     );
 }
