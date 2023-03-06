@@ -18,21 +18,22 @@ export function ImagemZoom({alt, src}: MyImageProps) {
     
 
     function handleMouseMove(e: MouseEvent<HTMLImageElement>){
-        
-        const { offsetX, offsetY } = e.nativeEvent
-        
-        const { clientX, clientY } = e
 
-        const xPercentage = (offsetX / clientX) * 100
-        const yPercentage = (offsetY / clientY) * 100
+
+        const { offsetX, offsetY, target } = e.nativeEvent
+
+        const { offsetWidth, offsetHeight } = (target as HTMLImageElement)
+
+        const xPercentage = (offsetX / offsetWidth) * 100
+        const yPercentage = (offsetY / offsetHeight) * 100
 
         setMagnifyStyle((prev) => {
             return {
                     ...prev, 
                     display: 'block',
                     backgroundPosition: `${xPercentage}% ${yPercentage}%`,
-                    top: `${offsetY - 100}px`,
-                    left: `${offsetX - 100}px`
+                    top: `${offsetY - 50}px`,
+                    left: `${offsetX - 50}px`
                 }
         })
         
