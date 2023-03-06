@@ -29,6 +29,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        padding: '10px'
     },
 };
 
@@ -58,7 +59,7 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep, cepOptions }: ModalPr
                         </Typography>
                     </Box>
                     <IconButton onClick={() => setIsOpen(false)}>
-                        <CloseIcon sx={{ fontSize: '0.8rem' }} />
+                        <CloseIcon sx={{ fontSize: '1.2rem' }} />
                     </IconButton>
                 </Box>
                 <Box display='flex' alignItems='center' gap={1} height='10%'>
