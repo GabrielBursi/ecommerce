@@ -1,19 +1,17 @@
-import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { IProducts } from "../../../types";
 import { LoginContext, ProductsContext } from "../../../contexts";
+import { SearchCepMobile } from "./SearchCepMobile";
 
 interface PriceProps {
     product: IProducts, 
 }
 
-export function Price({ product }: PriceProps) {
-
-    const theme = useTheme()
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+export function PriceMobile({ product }: PriceProps) {
 
     const navigate = useNavigate()
 
@@ -29,20 +27,23 @@ export function Price({ product }: PriceProps) {
     }, [product.id, productsInCart]);
 
     return (
-        <Box flex={1}>
-            <Box minHeight='60%' display='flex' flexDirection='column'>
-                <Box flex={1} display='flex' alignItems='center'>
-                    <Typography color='primary' variant={mdDown ? "h4" : "h2"} fontWeight='bold'>
+        <Box height='40%' display='flex' flexDirection='column'  gap={2}>
+            <Box height='60%' display='flex' flexDirection='column'>
+                <Box width='100%' display='flex' alignItems='center'> {/* preço */}
+                    <Typography color='primary' variant='h4' fontWeight='bold'>
                         {product.price}
                     </Typography>
                 </Box>
-                <Box minWidth='200px' width='50%' height='30%' display='flex' justifyContent='center'>
+                <Box>
+                    <SearchCepMobile/>
+                </Box>
+                <Box width='100%'> {/* botão */}
                     <Button
                         variant="contained"
                         fullWidth
-                        size={mdDown ? "medium" : "large"}
+                        size="large"
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
-                        sx={{ fontSize: mdDown ? '1rem' : '1.4rem' }}
+                        sx={{ fontSize: '1.2rem'}}
                         onClick={() => {
                             addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.id)
                         }}

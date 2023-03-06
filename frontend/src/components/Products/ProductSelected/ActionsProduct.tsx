@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Divider, IconButton, Rating, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { IProducts } from "../../../types";
@@ -11,6 +11,9 @@ interface ActionsProductProps {
 }
 
 export function ActionsProduct({ product }: ActionsProductProps) {
+
+    const theme = useTheme()
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     const navigate = useNavigate()
 
@@ -26,25 +29,25 @@ export function ActionsProduct({ product }: ActionsProductProps) {
     }, [product.id, productsFavorited]);
 
     return (
-        <Box width='100%' height='10%' display='flex' justifyContent='space-between'>
+        <Box width='100%' height='10%' display='flex' justifyContent='space-between' gap={1}>
             <Box width='30%' display='flex' justifyContent='center' alignItems='center'>
-                <Typography variant="subtitle1" color='black' fontWeight='bold'>
+                <Typography variant={mdDown ? "subtitle2" : "subtitle1"} color='black' fontWeight='bold'>
                     {product.name.split(' ')[0]}
                 </Typography>
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box width='30%' display='flex' justifyContent='center' alignItems='center'>
-                <Rating value={product.rating} precision={0.5} readOnly max={5} size='large' />
+                <Rating value={product.rating} precision={0.5} readOnly max={5} size={mdDown ? 'small' : 'medium'} />
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box width='30%' display='flex' justifyContent='center' alignItems='center' gap={2}>
-                <IconButton color='primary' size="medium">
-                    <ShareIcon sx={{ fontSize: '2rem' }} />
+                <IconButton color='primary' size={mdDown ? "small" : "medium"}>
+                    <ShareIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} />
                 </IconButton>
-                <IconButton size="medium" onClick={() => {
+                <IconButton size={mdDown ? "small" : "medium"} onClick={() => {
                     addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, product, product.id)
                 }}>
-                    <FavoriteIcon sx={{ fontSize: '2rem' }} color={isFavorite ? 'primary' : 'inherit'} />
+                    <FavoriteIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>
             </Box>
         </Box>

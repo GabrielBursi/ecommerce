@@ -1,9 +1,13 @@
 import { useEffect, useState, MouseEvent } from "react";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { MyImageProps } from "../../../types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export function ImagemZoom({alt, src}: MyImageProps) {
+
+    const theme = useTheme()
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
     const [magnifyStyle, setMagnifyStyle] = useState({ backgroundImage: `url()` });
 
@@ -39,12 +43,12 @@ export function ImagemZoom({alt, src}: MyImageProps) {
     }
 
     return (
-        <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
+        <Box width='100%' display='flex' justifyContent='center' alignItems='center' height='100%'>
             <Box sx={{ position: 'relative', cursor: 'none' }}>
                 <LazyLoadImage
                     alt={alt} 
                     src={src} 
-                    width='250px' 
+                    width={smDown ? '140px' : mdDown ? '180px' : '220px' }
                     height='auto' 
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
