@@ -18,6 +18,7 @@ export * from './Products/Carousel'
 export * from './Products/PreCartInfo'
 export * from './Products/DepartmentCard'
 export * from './Products/MiniCardProduct'
+export * from './Products/Filter'
 
 export * from './Products/ProductSelected/ProductSelected'
 
