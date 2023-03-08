@@ -35,13 +35,15 @@
     "@types/react-input-mask": "^3.0.2",
     "@types/react-lazy-load-image-component": "^1.5.2",
     "@types/react-modal": "^3.13.1",
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "json-server": "^0.17.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server --watch --port 3333 ./mock/server.json"
   },
   "eslintConfig": {
     "extends": [

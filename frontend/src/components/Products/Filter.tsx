@@ -8,7 +8,7 @@ interface FilterProps {
 
 export function Filter({ product }: FilterProps) {
 
-    const { arrayTeste } = useContext(ProductsContext)
+    const { products } = useContext(ProductsContext)
 
     const [filterPage, setFilterPage] = useState('20 por página');
     const [numberFilterPage, setNumberFilterPage] = useState(Number(filterPage.split(' ')[0]));
@@ -47,8 +47,8 @@ export function Filter({ product }: FilterProps) {
     }, [filterPage]);
 
     useEffect(() => {
-        const menorValor = arrayTeste.reduce((anterior, atual) => anterior.price < atual.price ? anterior : atual);
-        const maiorValor = arrayTeste.reduce((anterior, atual) => anterior.price > atual.price ? anterior : atual);
+        const menorValor = products.reduce((anterior, atual) => anterior.price < atual.price ? anterior : atual);
+        const maiorValor = products.reduce((anterior, atual) => anterior.price > atual.price ? anterior : atual);
         setHighestPrice(Number(maiorValor.price.split(' ')[1].replace('.', '').replace(',', '.')))
         setLowestPrice(Number(menorValor.price.split(' ')[1]))
         setPriceFilter([lowestPrice, highestPrice])

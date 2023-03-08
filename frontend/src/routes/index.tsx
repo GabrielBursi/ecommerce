@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage } from "../pages";
+import { ApiTest } from "../services";
 import { ChildrenProp } from '../types/children'
 
 export function RoutesApp() {
@@ -10,10 +11,15 @@ export function RoutesApp() {
     const { setProductsTabBar, setArrImgBanner } = useContext(HeaderContext)
     const { toggleDrawerOptions } = useContext(DrawerContext)
     const { isLogged } = useContext(LoginContext)
-    const { arrayTeste, setProducts, setProductsDepartments } = useContext(ProductsContext)
+    const { setProducts, setProductsDepartments } = useContext(ProductsContext)
+
+    async function getProducts(){
+        const res = await ApiTest('/')
+        setProducts(res.data);
+    }
 
     useEffect(() => {
-        setProducts(arrayTeste)
+        getProducts()
         setArrImgBanner([
             {
                 alt: 'Oferta do dia',
