@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, MenuItem, Paper, Select, SelectChangeEvent, Slider, Typography } from "@mui/material";
-import { ProductsContext } from "../../contexts";
+import { Box, MenuItem, Paper, Select, SelectChangeEvent, Slider, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { ProductsContext } from "../../../contexts";
 
 interface FilterProps {
     product?: string
@@ -55,15 +55,19 @@ export function Filter({ product }: FilterProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product]);
 
+    const theme = useTheme()
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+
     return (
-        <Box height='15%' display='flex' justifyContent='center' alignItems='end' gap={2}>
-            <Box width='30%' height='50%' display='flex' alignItems='center' gap={1}>
+        <Box height='100px' display='flex' justifyContent={smDown ? 'center' : mdDown ? 'space-between' : 'center'} alignItems={smDown ? 'center' : 'end'} gap={smDown ? 0 : 2} flexDirection={smDown ? 'column' : 'row'} marginTop={smDown ? 1 : 0}>
+            <Box width={smDown ? '100%' : mdDown ? '50%' : '30%'} height='65%' display='flex' alignItems='center' gap={1}>
                 <Typography variant="subtitle1" fontWeight='bold'>
                     Preço:
                 </Typography>
-                <Box component={Paper} height='100%' width='100%' display='flex' alignItems='center' flexDirection='column' paddingX={2}>
+                <Box component={Paper} width='100%' height={smDown ? '60%' : '100%'} display='flex' alignItems='center' flexDirection='column'>
                     <Slider 
-                    size="small"
+                        size="small"
                         getAriaLabel={() => 'Price Range'} 
                         defaultValue={highestPrice} 
                         max={highestPrice} 
@@ -71,19 +75,20 @@ export function Filter({ product }: FilterProps) {
                         disableSwap
                         value={priceFilter}
                         onChange={handleChangePrice}
+                        sx={{width: '95%'}}
                     />
-                    <Box display='flex' alignItems='center' justifyContent='space-between' width='100%'>
-                        <Typography variant="body1">$ {priceFilter[0]}</Typography>
-                        <Typography variant="body1">$ {priceFilter[1]}</Typography>
+                    <Box display='flex' alignItems='center' justifyContent='space-between' width='100%' paddingX={1}>
+                        <Typography variant={smDown ? "body2" : "body1"}>$ {priceFilter[0]}</Typography>
+                        <Typography variant={smDown ? "body2" : "body1"}>$ {priceFilter[1]}</Typography>
                     </Box>
                 </Box>
             </Box>
-            <Box width='30%' height='50%' display='flex' alignItems='center' gap={1}>
+            <Box width={smDown ? '100%' : mdDown ? '50%' : '30%'} height='65%' display='flex' alignItems='center' gap={1}>
                 <Typography variant="subtitle1" fontWeight='bold'>
                     Exibir: 
                 </Typography>
-                <Box component={Paper} height='100%' width='100%'>
-                    <Select fullWidth value={filterPage} onChange={handleChangePage}>
+                <Box component={Paper} width='100%' height={smDown ? '60%' : '100%'}>
+                    <Select fullWidth value={filterPage} onChange={handleChangePage} sx={{height:'100%'}}>
                         <MenuItem value='20 por página'>20 por página</MenuItem>
                         <MenuItem value='40 por página'>40 por página</MenuItem>
                         <MenuItem value='60 por página'>60 por página</MenuItem>
