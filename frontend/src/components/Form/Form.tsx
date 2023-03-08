@@ -102,6 +102,7 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
                         value={name}
                         error={!!errorName}
                         helperText={errorName}
+                        placeholder='Ex: Gabriel Bursi'
                     />
                 }
                 <TextField
@@ -115,6 +116,7 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
                     value={email}
                     error={!!errorEmail}
                     helperText={errorEmail}
+                    placeholder='Ex: email@exemplo.com'
                 />
                 {create ?
                     <Grid container spacing={2}>
