@@ -1,0 +1,5 @@
+export * from './CartPage'
+export * from './ConfirmPage'
+export * from './DonePage'
+export * from './IndentificationPage'
+export * from './PaymentPage'

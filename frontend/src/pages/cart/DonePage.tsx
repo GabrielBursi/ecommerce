@@ -1,8 +1,8 @@
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Steps } from "../components";
-import { LayoutBase } from "../layouts";
+import { ButtonNavigate, Steps } from "../../components";
+import { LayoutBase } from "../../layouts";
 
-export function CartPage() {
+export function DonePage() {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -19,7 +19,7 @@ export function CartPage() {
                             <Box flex={1} border='1px solid red'></Box>
                         </Box>
                         <Box border='1px solid red' width='25%' height='70%'>
-
+                            <ButtonNavigate />
                         </Box>
                     </Box>
                 </Box>

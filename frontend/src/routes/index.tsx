@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
-import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage } from "../pages";
 import { ApiTest } from "../services";
 import { ChildrenProp } from '../types/children'
 
@@ -178,7 +178,11 @@ export function RoutesApp() {
             //!privado
             <Route path="/favorite" element={<PrivateRoute><FavoritePage /></PrivateRoute>} /> 
             //!privado
-            <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} /> 
+            <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} />
+            <Route path="/cart/identification" element={<PrivateRoute><IndentificationPage /></PrivateRoute>} />
+            <Route path="/cart/identification/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
+            <Route path="/cart/identification/payment/confirm" element={<PrivateRoute><ConfirmPage /></PrivateRoute>} />
+            <Route path="/cart/identification/payment/confirm/done" element={<PrivateRoute><DonePage /></PrivateRoute>} /> 
             //!privado
             <Route path="/precart/:id" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
         </Routes>
