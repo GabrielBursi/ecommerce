@@ -19,8 +19,8 @@ export function FavoritePage() {
 
     return (
         <LayoutBase showActions showResearchInput showUserInfo showTabBar>
-            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%' >
-                <Box display='flex' flexDirection='column' width='95%' height='100%' paddingY={2} gap={2}>
+            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='auto'>
+                <Box display='flex' flexDirection='column' width='75%' height='100%' paddingY={2} gap={2}>
                     <Box  height="10%" display='flex' alignItems='center'>
                         <Typography variant={smDown ? 'h4' : mdDown ? 'h3' : 'h2'} color='primary'>
                             {smDown ? <ArrowBackIosNewIcon onClick={() => {navigate('/')}}/> : <FavoriteIcon fontSize="large"/>} FAVORITOS

@@ -20,9 +20,9 @@ export function ProductList({ filter }: ProductListProps) {
 
     return (
         <Box height='auto'>
-            <Grid container rowGap={1}>
+            <Grid container rowGap={4}>
                 {products.map(product => (
-                    <Grid item xs={12} sm={6} md={4} lg={2} key={product.id} display='flex' justifyContent='center' alignItems='center'>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} display='flex' justifyContent='center' alignItems='center'>
                         {smDown ? 
                             <ProductCardMobile
                                 id={product.id}
