@@ -14,7 +14,7 @@ export function RoutesApp() {
     const { setProducts, setProductsDepartments } = useContext(ProductsContext)
 
     async function getProducts(){
-        const res = await ApiTest('/')
+        const res = await ApiTest('/products10')
         setProducts(res.data);
     }
 
