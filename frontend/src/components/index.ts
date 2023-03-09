@@ -1,29 +1,13 @@
-export * from './Header/ResearchInput'
-export * from './Header/Actions'
-export * from './Header/UserInfo'
-export * from './Header/TabBar'
-export * from './Header/Banner'
-export * from './Header/CarouselBanner'
+export * from './Header'
 
-export * from './Form/Form'
+export * from './Form'
 
-export * from './Sidebar/Sidebar'
-export * from './Sidebar/ListItem'
+export * from './Sidebar'
 
-export * from './Favorites/ListFavorites'
+export * from './Favorites'
 
-export * from './Products/MyImage'
-export * from './Products/ProductCard'
-export * from './Products/Carousel'
-export * from './Products/PreCartInfo'
-export * from './Products/DepartmentCard'
-export * from './Products/MiniCardProduct'
+export * from './Cart'
 
-export * from './Products/ProductList/Filter'
-export * from './Products/ProductList/ProductList'
+export * from './Products'
 
-export * from './Products/ProductSelected/ProductSelected'
-
-export * from './mobile/ListFavoriteMobile'
-export * from './mobile/PreCartInfoMobile'
-export * from './mobile/ProductCardMobile'
+export * from './mobile'
