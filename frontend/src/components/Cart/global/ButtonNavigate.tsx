@@ -3,9 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface ButtonNavigateProps {
     showBackButton?: boolean
+    showGoButton?: boolean
 }
 
-export function ButtonNavigate({ showBackButton = true}: ButtonNavigateProps) {
+export function ButtonNavigate({ showBackButton = true, showGoButton = true }: ButtonNavigateProps) {
 
     const navigate = useNavigate()
     const location = useLocation();
@@ -22,8 +23,8 @@ export function ButtonNavigate({ showBackButton = true}: ButtonNavigateProps) {
 
     return (
         <Box>
-            <button onClick={() => { nextRoute && navigate(nextRoute) }}>Ir</button>
-            {showBackButton && <button onClick={() => { navigate(-1) }}>Voltar</button>}
+            {showGoButton && <button type="button" onClick={() => { nextRoute && navigate(nextRoute) }}>Ir</button>}
+            {showBackButton && <button type="button" onClick={() => { navigate(-1) }}>Voltar</button>}
         </Box>
     );
 }

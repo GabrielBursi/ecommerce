@@ -1,5 +1,5 @@
 import { Stack, Step, StepLabel, Stepper } from "@mui/material";
-import { ColorlibConnector, ColorlibStepIcon } from "./utils";
+import { ColorlibConnector, ColorlibStepIcon } from "../utils";
 
 interface StepperComponentProps {
     step: number
