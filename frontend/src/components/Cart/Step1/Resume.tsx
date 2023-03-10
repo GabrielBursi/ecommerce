@@ -4,7 +4,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 
 export function Resume() {
     return (
-        <Box component={Paper} elevation={2} width='25%' height='70%' padding={3} display='flex' flexDirection='column' gap={2}>
+        <Box component={Paper} elevation={2} width='25%' height='70%' padding={2} display='flex' flexDirection='column' gap={2}>
             <Box display='flex' alignItems='center' gap={1} height='auto'>
                 <DescriptionIcon color="primary" />
                 <Typography variant="h5" fontWeight='bold'>
