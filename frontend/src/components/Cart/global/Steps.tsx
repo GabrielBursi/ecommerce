@@ -40,12 +40,12 @@ export function Steps() {
     }, [location]);
 
     return (
-        <Box display='flex' alignItems='center' width='65%' height='25%' border='1px solid black'>
+        <Box display='flex' alignItems='center' width='65%' height='25%'>
             <ButtonNavigate showBackButton={location.pathname !== '/cart'} showGoButton={location.pathname !== '/cart/identification/payment/confirm/done'}/>
-            <Box display='flex' justifyContent='center' alignItems='center' border='1px solid black' height='100%' width='20%'>
+            <Box display='flex' justifyContent='center' alignItems='center' height='100%' width='20%'>
                 <Progress value={step.percentage}/>
             </Box>
-            <Box display='flex' justifyContent='center' alignItems='center' border='1px solid black' height='100%' flex={1}>
+            <Box display='flex' justifyContent='center' alignItems='center' height='100%' flex={1}>
                 <StepperComponent step={step.step}/>
             </Box>
             
