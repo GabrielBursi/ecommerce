@@ -3,13 +3,6 @@ import { useState } from "react";
 import InputMask from "react-input-mask";
 import { ModalCEP } from "../../Modal/ModalCEP";
 
-type CepOptions = {
-    name: string,
-    rating: number,
-    price: string,
-    days: number
-}
-
 export function SearchCep() {
 
     const theme = useTheme()
@@ -17,13 +10,6 @@ export function SearchCep() {
 
     const [cep, setCep] = useState<string>('');
     const [isOpen, setIsOpen] = useState(false);
-
-    const cepOptions: CepOptions[] = [
-        { name: 'Rede Sul', rating: 5, price: 'R$ 22,69', days: 4 }, 
-        { name: 'Sedex', rating: 4.5, price: 'R$ 23,12', days: 6 }, 
-        { name: 'GFL', rating: 5, price: 'R$ 30,24', days: 9 }, 
-        { name: 'Correios PAC', rating: 4.5, price: 'R$ 47,49', days: 5 },
-    ]
 
     return (
         <Box width='100%' height='150px' display='flex' justifyContent='center' alignItems='start' flexDirection='column' gap={1} >
@@ -47,7 +33,7 @@ export function SearchCep() {
                     </Button>
                 </Box>
             </Box>
-            <ModalCEP isOpen={isOpen} setIsOpen={setIsOpen} cep={cep} setCep={setCep} cepOptions={cepOptions}/>
+            <ModalCEP isOpen={isOpen} setIsOpen={setIsOpen} cep={cep} setCep={setCep}/>
         </Box>
     );
 }

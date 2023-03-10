@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { ChildrenProp, DepartmentCardProps, id, IProducts } from "../types";
+import { CepOptions, ChildrenProp, DepartmentCardProps, id, IProducts } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -19,11 +19,20 @@ interface ProductsContextData {
     removeProductFavorited(id: id): void,
 
     filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
+
+    cepOptions: CepOptions[]
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
 
 function ProductsProvider({ children }: ChildrenProp) {
+
+    const cepOptions: CepOptions[] = [
+        { name: 'Rede Sul', rating: 5, price: 'R$ 22,69', days: 4 },
+        { name: 'Sedex', rating: 4.5, price: 'R$ 23,12', days: 6 },
+        { name: 'GFL', rating: 5, price: 'R$ 30,24', days: 9 },
+        { name: 'Correios PAC', rating: 4.5, price: 'R$ 47,49', days: 5 },
+    ]
 
     const [products, setProducts] = useState<IProducts[]>([]); 
     const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
@@ -95,7 +104,8 @@ function ProductsProvider({ children }: ChildrenProp) {
             addProductInCart,
             addProductInFavorited,
             removeProductFavorited,
-            filterProductsAndSetFavoriteOrInCart
+            filterProductsAndSetFavoriteOrInCart,
+            cepOptions
         }}>
             {children}
         </ProductsContext.Provider>

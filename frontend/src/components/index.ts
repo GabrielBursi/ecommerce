@@ -11,3 +11,5 @@ export * from './Cart'
 export * from './Products'
 
 export * from './mobile'
+
+export * from './CEP'

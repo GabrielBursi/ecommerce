@@ -1,28 +1,15 @@
 import { useContext } from "react";
-import { Box, Button, Divider, Paper, Rating, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ProductInCart } from "./ProductInCart";
 import { ProductsContext } from "../../../contexts";
-
-type CepOptions = {
-    name: string,
-    rating: number,
-    price: string,
-    days: number
-}
+import { Cep } from "../../CEP";
 
 export function ListProductsInCart() {
 
-    const { productsInCart } = useContext(ProductsContext)
-
-    const cepOptions: CepOptions[] = [
-        { name: 'Rede Sul', rating: 5, price: 'R$ 22,69', days: 4 },
-        { name: 'Sedex', rating: 4.5, price: 'R$ 23,12', days: 6 },
-        { name: 'GFL', rating: 5, price: 'R$ 30,24', days: 9 },
-        { name: 'Correios PAC', rating: 4.5, price: 'R$ 47,49', days: 5 },
-    ]
+    const { productsInCart, cepOptions } = useContext(ProductsContext)
 
     return (
         <Box height='auto' component={Paper} elevation={2} padding={2} display='flex' flexDirection='column' gap={2} >
@@ -58,27 +45,9 @@ export function ListProductsInCart() {
                             FRETE:
                         </Typography>
                     </Box>
-                    {cepOptions.map(option => {
-                            return (
-                                <Box key={option.name} display='flex' justifyContent='space-between' alignItems='center'>
-                                    <Box display='flex' flexDirection='column' height='100%' alignItems='start' justifyContent='center'>
-                                        <Typography variant='subtitle1' color='black' fontWeight='bold'>
-                                            {option.name}
-                                        </Typography>
-                                        <Rating value={option.rating} precision={0.5} size='small' readOnly max={5} />
-                                    </Box>
-                                    <Box display='flex' flexDirection='column' height='100%' alignItems='start' justifyContent='center'>
-                                        <Typography variant='subtitle1' color='black' fontWeight='bold'>
-                                            {option.price}
-                                        </Typography>
-                                        <Typography variant='subtitle2' color='black' fontWeight='light'>
-                                            até {option.days} dias úteis
-                                        </Typography>
-                                    </Box>
-
-                                </Box>
-                            )
-                        })
+                    {cepOptions.map(option => (
+                        <Cep days={option.days} name={option.name} price={option.price} rating={option.rating} key={option.name}/>
+                    ))
                     }
                 </Box>
             </Box>

@@ -1,24 +1,18 @@
-import { Box, Button, IconButton, Rating, TextField, Typography } from '@mui/material';
+import { useContext, useState } from 'react';
+import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Modal from 'react-modal';
 import InputMask from "react-input-mask";
-import { useState } from 'react';
+import { ProductsContext } from '../../contexts';
+import { Cep } from '../CEP';
 
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
     cep: string,
     setCep: (cep: string) => void,
-    cepOptions: CepOptions[],
-}
-
-type CepOptions = {
-    name: string,
-    rating: number,
-    price: string,
-    days: number
 }
 
 const customStyles = {
@@ -35,9 +29,11 @@ const customStyles = {
 
 Modal.setAppElement('#root')
 
-export function ModalCEP({ isOpen, setIsOpen, cep, setCep, cepOptions }: ModalProps) {
+export function ModalCEP({ isOpen, setIsOpen, cep, setCep  }: ModalProps) {
 
     const [showOptions, setShowOptions] = useState(true);
+
+    const { cepOptions } = useContext(ProductsContext)
 
     function showCepOptions() {
         if (cep.length >= 9) {
@@ -85,27 +81,9 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep, cepOptions }: ModalPr
                 </Box>
                 <Box display='flex' flexDirection='column' gap={1}>
                     {showOptions && 
-                        cepOptions.map(option => {
-                            return (
-                                <Box key={option.name} display='flex' justifyContent='space-between' alignItems='center' mb={2}>
-                                    <Box display='flex' flexDirection='column' height='100%' alignItems='start' justifyContent='center'>
-                                        <Typography variant='subtitle1' color='black' fontWeight='bold'>
-                                            {option.name}
-                                        </Typography>
-                                        <Rating value={option.rating} precision={0.5} size='small' readOnly max={5} />
-                                    </Box>
-                                    <Box display='flex' flexDirection='column' height='100%' alignItems='start' justifyContent='center'>
-                                        <Typography variant='subtitle1' color='black' fontWeight='bold'>
-                                            {option.price}
-                                        </Typography>
-                                        <Typography variant='subtitle2' color='black' fontWeight='light'>
-                                            até {option.days} dias úteis
-                                        </Typography>
-                                    </Box>
-
-                                </Box>
-                            )
-                        })
+                        cepOptions.map(option => (
+                            <Cep days={option.days} name={option.name} price={option.price} rating={option.rating} key={option.name}/>
+                        ))
                     }
                     
                 </Box>
