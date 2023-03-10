@@ -1,12 +1,8 @@
-import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { ButtonNavigate, Steps } from "../../components";
+import { Box } from "@mui/material";
+import { Steps } from "../../components";
 import { LayoutBase } from "../../layouts";
 
 export function IndentificationPage() {
-
-    const theme = useTheme()
-    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
         <LayoutBase showUserInfo>
@@ -19,7 +15,6 @@ export function IndentificationPage() {
                             <Box flex={1} border='1px solid red'></Box>
                         </Box>
                         <Box border='1px solid red' width='25%' height='70%'>
-                            <ButtonNavigate />
                         </Box>
                     </Box>
                 </Box>
