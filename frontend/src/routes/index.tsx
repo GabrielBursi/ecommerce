@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
-import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage } from "../pages";
 import { ApiTest } from "../services";
 import { ChildrenProp } from '../types/children'
 
@@ -178,7 +178,8 @@ export function RoutesApp() {
             //!privado
             <Route path="/favorite" element={<PrivateRoute><FavoritePage /></PrivateRoute>} /> 
             //!privado
-            <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} />
+            <Route path="/cart_empty" element={<PrivateRoute><CartEmptyPage /></PrivateRoute>} />
+            <Route path="/cart" element={<PrivateRoute><CartEmptyRoute><CartPage /></CartEmptyRoute></PrivateRoute>} />
             <Route path="/cart/identification" element={<PrivateRoute><IndentificationPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment/confirm" element={<PrivateRoute><ConfirmPage /></PrivateRoute>} />
@@ -195,6 +196,16 @@ function PrivateRoute({ children }: ChildrenProp){
     
     if (!isLogged) 
     return <Navigate to='/login'/>
+
+    return children
+}
+
+function CartEmptyRoute({ children }: ChildrenProp){
+
+    const { productsInCart } = useContext(ProductsContext)
+
+    if(productsInCart.length === 0)
+    return <Navigate to='/cart_empty'/>
 
     return children
 }

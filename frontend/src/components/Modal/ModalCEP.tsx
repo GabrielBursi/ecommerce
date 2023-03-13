@@ -29,7 +29,7 @@ const customStyles = {
 
 Modal.setAppElement('#root')
 
-export function ModalCEP({ isOpen, setIsOpen, cep, setCep  }: ModalProps) {
+export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
 
     const [showOptions, setShowOptions] = useState(true);
 
