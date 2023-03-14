@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import InputMask from "react-input-mask";
 import { ModalCEP } from "../../Modal/ModalCEP";
+import MaskedInput from "react-text-mask";
+import { MaskInputCep } from "../../Modal/utils";
 
 export function SearchCepMobile() {
 
@@ -16,14 +17,20 @@ export function SearchCepMobile() {
             </Typography>
             <Box display='flex' gap={1} height='60%' width='100%'>
                 <Box display='flex' justifyContent='center' alignItems='center' flex={1}>
-                    <InputMask
-                        mask="99999-999"
+                    <TextField
+                        fullWidth
+                        label='CEP'
+                        placeholder='Insira o CEP'
                         value={cep}
-                        maskPlaceholder="_____-___"
                         onChange={(e) => setCep(e.target.value)}
-                    >
-                        <TextField placeholder='Insira o CEP' fullWidth/>
-                    </InputMask>
+                        InputProps={{
+                            inputComponent: MaskedInput as any,
+                            inputProps: {
+                                mask: MaskInputCep,
+                                type: 'tel',
+                            },
+                        }}
+                    />
                 </Box>
                 <Box display='flex' justifyContent='center' width='20%'>
                     <Button variant="outlined" fullWidth sx={{ fontSize: '1rem' }} onClick={() => cep.length === 9 && setIsOpen(true)}>
