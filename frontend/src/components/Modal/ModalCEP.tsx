@@ -4,9 +4,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Modal from 'react-modal';
-import InputMask from "react-input-mask";
 import { ProductsContext } from '../../contexts';
 import { Cep } from '../CEP';
+import MaskedInput from 'react-text-mask';
+import { MaskInputCep } from './utils';
 
 interface ModalProps {
     isOpen: boolean,
@@ -66,14 +67,19 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
                 </Box>
                 <Box display='flex' justifyContent='space-between' alignItems='center' gap={2}>
                     <Box flex={1} alignItems='center'>
-                        <InputMask
-                            mask="99999-999"
+                        <TextField
+                            fullWidth
+                            label='CEP'
                             value={cep}
-                            maskPlaceholder="_____-___"
                             onChange={(e) => setCep(e.target.value)}
-                        >
-                            <TextField value={cep} fullWidth placeholder='Insira o CEP' />
-                        </InputMask>
+                            InputProps={{
+                                inputComponent: MaskedInput as any,
+                                inputProps: {
+                                    mask: MaskInputCep,
+                                    type: 'tel',
+                                },
+                            }}
+                        />
                     </Box>
                     <Box display='flex' justifyContent='center' height='56px'>
                         <Button variant='contained' sx={{height: '100%'}} onClick={showCepOptions}>ALTERAR CEP</Button>
