@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+import '../../TraducoesYup'
 
 import Modal from 'react-modal';
 import MaskedInput from 'react-text-mask';
 
-import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { MaskInputCep } from './utils';
-
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
@@ -25,12 +27,27 @@ interface IForm {
     identification: string,
     street: string,
     number: string,
-    complement: string,
-    ref: string,
+    complement?: string,
+    ref?: string,
     neighborhood: string,
-    city: string,
-    state: string,
+    city?: string,
+    state?: string,
 }
+
+const addressSchema: yup.ObjectSchema<IForm> = yup.object({
+    cep: yup.string().required(),
+    identification: yup.string().required().default('Endereço Principal'),
+    street: yup.string().required(),
+    number: yup.string().required(),
+    complement: yup.string(),
+    ref: yup.string(),
+    neighborhood: yup.string().required(),
+    city: yup.string(),
+    state: yup.string(),
+    
+}) 
+
+type FormData = yup.InferType<typeof addressSchema>;
 
 const customStyles = {
     content: {
@@ -48,21 +65,17 @@ Modal.setAppElement('#root')
 
 export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }: ModalProps) {
 
-    const url = 'https://viacep.com.br/ws/87005020/json/'
     const [cep, setCep] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        if(!cep.includes('_')){
+    const { control, handleSubmit, formState: {errors} } = useForm<IForm>({ 
+        mode: 'onSubmit', 
+        resolver: yupResolver(addressSchema) 
+    })
 
-            console.log(cep.length, cep); //!chamar api aqui
-        }
-        
-    }, [cep]);
-
-    const { control, handleSubmit } = useForm<IForm>({mode: 'onSubmit'})
-
-    const onSubmit: SubmitHandler<IForm> = data => {
-        console.log(data)
+    const onSubmit = (data: FormData) => {
+        addressSchema.validate(data, { abortEarly: false })
+            .then(validData => { console.log(validData) })
     };
 
     return (
@@ -87,10 +100,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='cep'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
                                             fullWidth 
                                             label='CEP'
+                                            placeholder='Insira o CEP'
                                             value={cep}
+                                            error={!!errors.cep}
+                                            helperText={errors?.cep?.message}
                                             onChange={(e)=>setCep(e.target.value)}
                                             InputProps={{
                                                 inputComponent: MaskedInput as any,
@@ -108,7 +125,10 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='identification'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.identification}
+                                            helperText={errors?.identification?.message}
                                             fullWidth 
                                             label='Indentificação'
                                             placeholder='Minha casa'
@@ -121,10 +141,15 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='street'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.street}
+                                            helperText={errors?.street?.message}
                                             fullWidth 
                                             label='Rua'
                                             placeholder='Ex: Rua dos Dados Falsos'
+                                            disabled={isLoading}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30}/>) }}
                                         />
                                     }
                                 />
@@ -134,10 +159,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='number'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.number}
+                                            helperText={errors?.number?.message}
                                             fullWidth 
                                             label='Número'
                                             placeholder='000'
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) }}
                                         />
                                     }
                                 />
@@ -147,7 +176,10 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='complement'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.complement}
+                                            helperText={errors?.complement?.message}
                                             fullWidth 
                                             label='Complemento'
                                             placeholder='Ex: Bloco 99 Apto 999'
@@ -160,7 +192,10 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='ref'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.ref}
+                                            helperText={errors?.ref?.message}
                                             fullWidth 
                                             label='Referência'
                                             placeholder='Ex: Casa do portão roxo'
@@ -173,9 +208,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='neighborhood'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='outlined'
+                                            error={!!errors.neighborhood}
+                                            helperText={errors?.neighborhood?.message}
                                             fullWidth 
                                             label='Bairro'
+                                            disabled={isLoading}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) }}
                                         />
                                     }
                                 />
@@ -185,12 +225,15 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='city'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='filled'
+                                            error={!!errors.city}
+                                            helperText={errors?.city?.message}
                                             fullWidth 
                                             label='Cidade' 
                                             required 
                                             disabled 
-                                            InputProps={{endAdornment: (<IconButton disabled><LockIcon /></IconButton>)}}
+                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
                                         />
                                     }
                                 />
@@ -200,12 +243,15 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                     name='state'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field} 
+                                        <TextField {...field}
+                                            variant='filled'
+                                            error={!!errors.state}
+                                            helperText={errors?.state?.message}
                                             fullWidth 
                                             label='UF' 
                                             required 
                                             disabled 
-                                            InputProps={{endAdornment: (<IconButton disabled><LockIcon /></IconButton>)}}
+                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
                                         />
                                     }
                                 />
