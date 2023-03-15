@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,6 +15,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { MaskInputCep } from './utils';
+import axios from 'axios';
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
@@ -36,7 +38,7 @@ interface IForm {
 
 const addressSchema: yup.ObjectSchema<IForm> = yup.object({
     cep: yup.string().required(),
-    identification: yup.string().required().default('Endereço Principal'),
+    identification: yup.string().required(),
     street: yup.string().required(),
     number: yup.string().required(),
     complement: yup.string(),
@@ -48,6 +50,13 @@ const addressSchema: yup.ObjectSchema<IForm> = yup.object({
 }) 
 
 type FormData = yup.InferType<typeof addressSchema>;
+
+interface DataApiCep {
+    logradouro: string,
+    bairro: string,
+    localidade: string,
+    uf: string,
+}
 
 const customStyles = {
     content: {
@@ -65,13 +74,59 @@ Modal.setAppElement('#root')
 
 export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }: ModalProps) {
 
-    const [cep, setCep] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-
-    const { control, handleSubmit, formState: {errors} } = useForm<IForm>({ 
+    const { 
+            control, 
+            handleSubmit, 
+            formState: {errors}, 
+            setValue, 
+            setFocus, 
+            watch, 
+            setError, 
+            clearErrors, 
+            reset 
+        } = useForm<IForm>({ 
         mode: 'onSubmit', 
         resolver: yupResolver(addressSchema) 
     })
+
+    const cep = watch('cep', '')
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        
+        clearErrors('cep')
+
+        if(!cep.includes('_') && cep !== ''){
+
+            setIsLoading(true)
+
+            axios(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`)
+                .then(({data}) => {
+
+                    setIsLoading(false)
+
+                    if(data.erro){
+                        return setError('cep', { type: 'custom', message: 'CEP não encontrado' });
+                    }
+                    
+                    setFocus('number')
+                    const dataTyped: DataApiCep = data
+                    setValue('city', dataTyped.localidade)
+                    setValue('state', dataTyped.uf)
+                    setValue('neighborhood', dataTyped.bairro)
+                    setValue('street', dataTyped.logradouro)
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        
+    }, [cep]);
+
+    useEffect(() => {
+        reset()
+    }, [isOpen]);
 
     const onSubmit = (data: FormData) => {
         addressSchema.validate(data, { abortEarly: false })
@@ -105,10 +160,9 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                             fullWidth 
                                             label='CEP'
                                             placeholder='Insira o CEP'
-                                            value={cep}
                                             error={!!errors.cep}
                                             helperText={errors?.cep?.message}
-                                            onChange={(e)=>setCep(e.target.value)}
+                                            disabled={isLoading}
                                             InputProps={{
                                                 inputComponent: MaskedInput as any,
                                                 inputProps: {
@@ -166,7 +220,6 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                             fullWidth 
                                             label='Número'
                                             placeholder='000'
-                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) }}
                                         />
                                     }
                                 />
