@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { ModalAddress } from "../../Modal";
+import { AddressContext } from "../../../contexts";
 
 export function Address() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isNewAddress, setIsNewAddress] = useState(false);
+
+    const { formData } = useContext(AddressContext)
 
     return (
         <Box height='40%' component={Paper} elevation={2} padding={2} display='flex' flexDirection='column' gap={2}>
@@ -26,13 +29,13 @@ export function Address() {
             <Box flex={1} bgcolor='#fafafb' display='flex' flexDirection='column' padding={1} borderLeft='2px solid #4527a0' borderRadius={0.5}>
                 <Box flex={1} display='flex' flexDirection='column' padding={2}>
                     <Typography variant="subtitle1">
-                        RUA ESTACIO DE SÁ
+                        {formData?.street}
                     </Typography>
                     <Typography variant="subtitle1">
-                        Número: 1082, apto 503
+                        Número: {formData?.number}, {formData?.complement}
                     </Typography>
                     <Typography variant="subtitle1">
-                        CEP 87005020 - Maringá, PR
+                        CEP {formData?.cep} - {formData?.city}, {formData?.state}
                     </Typography>
                 </Box>
                 <Box height='20%' display='flex' alignItems='center' justifyContent='end' gap={1}>

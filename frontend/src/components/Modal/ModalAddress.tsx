@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { MaskInputCep } from './utils';
 import axios from 'axios';
+import { AddressContext } from '../../contexts';
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
@@ -49,7 +50,7 @@ const addressSchema: yup.ObjectSchema<IForm> = yup.object({
     
 }) 
 
-type FormData = yup.InferType<typeof addressSchema>;
+export type FormData = yup.InferType<typeof addressSchema>;
 
 interface DataApiCep {
     logradouro: string,
@@ -91,6 +92,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
 
     const cep = watch('cep', '')
 
+    const { formData, setFormData } = useContext(AddressContext)
+
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -126,11 +129,22 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
 
     useEffect(() => {
         reset()
+        if(!isNewAddress && formData){
+            setValue('cep', formData.cep)
+            setValue('city', formData.city)
+            setValue('complement', formData.complement)
+            setValue('identification', formData.identification)
+            setValue('neighborhood', formData.neighborhood)
+            setValue('ref', formData.ref)
+            setValue('street', formData.street)
+            setValue('state', formData.state)
+            setValue('number', formData.number)
+        }
     }, [isOpen]);
 
     const onSubmit = (data: FormData) => {
         addressSchema.validate(data, { abortEarly: false })
-            .then(validData => { console.log(validData) })
+            .then(validData => { setFormData(validData); setIsOpen(false) })
     };
 
     return (
