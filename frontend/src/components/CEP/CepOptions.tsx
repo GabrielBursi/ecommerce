@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Radio, Rating, Typography } from "@mui/material";
 import { CepOptions } from "../../types";
+import { ResumeContext } from "../../contexts";
 
 export function Cep({ days, name, price, rating, showInputRadio = false } :CepOptions) {
 
     const [isSelected, setIsSelected] = useState(false);
+    const { cepOptions, setFrete } = useContext(ResumeContext)
 
-    function handleSelect(){
-        setIsSelected(!isSelected)
-    }
+    useEffect(() => {
+        const nameFindArr = cepOptions.filter(option => option.name === name)
+        const [ nameFind ] = nameFindArr
+        console.log( {name}, nameFind);
+        setFrete(Number(nameFind.price.replace('R$', '').replace(',', '.')))
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSelected]);
 
     return (
         <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -17,7 +24,7 @@ export function Cep({ days, name, price, rating, showInputRadio = false } :CepOp
                     <Box display='flex' height='100%' alignItems='start' justifyContent='center'>
                         <Radio
                             checked={isSelected}
-                            onClick={handleSelect}
+                            onClick={() => setIsSelected(!isSelected)}
                             size="small"
                             value={name}
                             name="radio-buttons"

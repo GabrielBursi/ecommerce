@@ -2,22 +2,22 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
-import { ProductsContext } from "../../../contexts";
+import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 
 export function Resume() {
 
-    const { productsInCart, frete } = useContext(ProductsContext)
-    const [total, setTotal] = useState(0);
-    const [some, setSome] = useState(0);
+    const { productsInCart } = useContext(ProductsContext)
+    const { addressList } = useContext(AddressContext)
+    const { frete, setSomeProducts, setTotal, someProducts, total } = useContext(ResumeContext)
 
     const navigate = useNavigate()
     
     useEffect(() => {
         const soma = productsInCart.reduce((acumulador, objeto) => acumulador + Number(objeto.price.replace('$ ', '').replace(',','')), 0);
-        setSome(soma)
+        setSomeProducts(soma)
         setTotal(soma + frete)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsInCart]);
+    }, [productsInCart, frete]);
 
     return (
         <Box component={Paper} elevation={2} width='25%' height='70%' padding={2} display='flex' flexDirection='column' gap={2}>
@@ -33,7 +33,7 @@ export function Resume() {
                         Valor dos Produtos: 
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        R$ {some.toFixed(2)}
+                        R$ {someProducts.toFixed(2).replace('.', ',')}
                     </Typography>
                 </Box>
                 <Divider />
@@ -42,7 +42,7 @@ export function Resume() {
                         Frete:
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        R$ {frete.toFixed(2)}
+                        R$ {frete.toFixed(2).replace('.', ',')}
                     </Typography>
                 </Box>
                 <Box display='flex' bgcolor='#e5fff1' flexDirection='column' justifyContent='center' alignItems='center' height='100%' paddingX={2}>
@@ -50,14 +50,31 @@ export function Resume() {
                         Valor Total:
                     </Typography>
                     <Typography variant="h4" fontWeight='bold'>
-                        R$ {total.toFixed(2)}
+                        R$ {total.toFixed(2).replace('.', ',')}
                     </Typography>
                 </Box>
             </Box>
             <Box height='30%' display='flex' justifyContent='center' alignItems='center'>
                 <Stack spacing={2} width='100%'>
-                    <Button variant="contained" fullWidth size="large" sx={{ fontSize: '1.2rem' }} onClick={() => navigate('/cart/identification')}>IR PARA O PAGAMENTO</Button>
-                    <Button variant="outlined" fullWidth size="large" sx={{ fontSize: '1.2rem' }} onClick={() => navigate('/')}>CONTINUAR COMPRANDO</Button>
+                    <Button 
+                        variant="contained" 
+                        fullWidth 
+                        size="large" 
+                        sx={{ fontSize: '1.2rem' }} 
+                        disabled={addressList.length === 0} 
+                        onClick={() => navigate('/cart/identification')}
+                    >
+                        IR PARA O PAGAMENTO
+                    </Button>
+                    <Button 
+                        variant="outlined" 
+                        fullWidth 
+                        size="large" 
+                        sx={{ fontSize: '1.2rem' }} 
+                        onClick={() => navigate('/')}
+                    >
+                        CONTINUAR COMPRANDO
+                    </Button>
                 </Stack>
             </Box>
         </Box>

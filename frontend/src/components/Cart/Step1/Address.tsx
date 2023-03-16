@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { InfoAddress } from "./InfoAddress";
 import { AddressContext } from "../../../contexts";
@@ -27,10 +27,12 @@ export function Address() {
                     complement={formData?.complement}
                     number={formData?.number || ''}
                 />
-                <Box height='20%' display='flex' alignItems='center' justifyContent='end' gap={1}>
-                    <ButtonEdit />
-                    <ButtonList />
-                    <ButtonNew />
+                <Box height='20%' display='flex' alignItems='center' justifyContent='end'>
+                    <Stack direction='row' spacing={2}>
+                        <ButtonEdit />
+                        <ButtonList />
+                        <ButtonNew />
+                    </Stack>
                 </Box>
             </Box>
         </Box>

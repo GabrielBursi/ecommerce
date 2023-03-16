@@ -4,13 +4,14 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ProductInCart } from "./ProductInCart";
-import { ProductsContext } from "../../../contexts";
+import { ProductsContext, ResumeContext } from "../../../contexts";
 import { Cep } from "../../CEP";
 import { ModalClearCart } from "../../Modal";
 
 export function ListProductsInCart() {
 
-    const { productsInCart, cepOptions, setProductsInCart } = useContext(ProductsContext)
+    const { productsInCart, setProductsInCart } = useContext(ProductsContext)
+    const { cepOptions } = useContext(ResumeContext)
 
     const [isOpen, setIsOpen] = useState(false);
 

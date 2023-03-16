@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Modal from 'react-modal';
-import { ProductsContext } from '../../contexts';
+import { ResumeContext } from '../../contexts';
 import { Cep } from '../CEP';
 import MaskedInput from 'react-text-mask';
 import { MaskInputCep } from './utils';
@@ -34,7 +34,7 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
 
     const [showOptions, setShowOptions] = useState(true);
 
-    const { cepOptions } = useContext(ProductsContext)
+    const { cepOptions } = useContext(ResumeContext)
 
     function showCepOptions() {
         if (cep.length >= 9) {
