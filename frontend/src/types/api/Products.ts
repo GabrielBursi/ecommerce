@@ -5,6 +5,7 @@ export interface IProducts {
     price:string,
     rating?:number,
     img: string,
+    quant?: number
 }
 
 export type id = number | string

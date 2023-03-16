@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -13,7 +13,10 @@ export function Resume() {
     const navigate = useNavigate()
     
     useEffect(() => {
-        const soma = productsInCart.reduce((acumulador, objeto) => acumulador + Number(objeto.price.replace('$ ', '').replace(',','')), 0);
+        const soma = productsInCart.reduce((acumulador, product) => { 
+            const PricePerQuant = Number(product.price.replace('$ ', '').replace(',', '')) * (product?.quant || 1)
+            return acumulador + PricePerQuant
+        }, 0);
         setSomeProducts(soma)
         setTotal(soma + frete)
     // eslint-disable-next-line react-hooks/exhaustive-deps

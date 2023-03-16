@@ -39,7 +39,7 @@ export function ResumeContextProvider({children}: ChildrenProp){
             total, 
             setTotal,
             someProducts, 
-            setSomeProducts
+            setSomeProducts,
         }}>
             {children}
         </ResumeContext.Provider>

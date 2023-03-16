@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IProducts } from "../../../types";
+import { IProducts, id } from "../../../types";
 import { MyImage } from "../../Products";
 import { ProductsContext } from "../../../contexts";
 import { ModalClearCart } from "../../Modal";
@@ -12,12 +12,13 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
 
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
     const [isOpen, setIsOpen] = useState(false);
-    const [quant, setQuant] = useState(1);
-    const [priceQuant, setPriceQuant] = useState<number>(Number(price.replace(',', '').replace('$ ', '')));
 
+    const product = productsInCart.filter(product => product.id === id)
+
+    const [quant, setQuant] = useState(product[0].quant || 1);
 
     useEffect(() => {
-        console.log(priceQuant.toFixed(2));
+        updateProductQuantity(id, quant)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [quant]);
 
@@ -26,12 +27,23 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
 
     function addQuant(){
         setQuant(oldQuant => oldQuant + 1)
-        setPriceQuant(Number(price.replace(',', '').replace('$ ', '')) * quant)
     }
     
     function removeQuant(){
         setQuant(oldQuant => oldQuant - 1)
-        setPriceQuant((Number(price.replace(',', '').replace('$ ', '')) * quant) - Number(price.replace(',', '').replace('$ ', '')))
+    }
+
+    function updateProductQuantity(id: id, quant: number) {
+        const updatedProducts = productsInCart.map(product => {
+            if (product.id === id) {
+                return {
+                    ...product,
+                    quant
+                };
+            }
+            return product;
+        });
+        setProductsInCart(updatedProducts);
     }
 
     function removeProductCart(){

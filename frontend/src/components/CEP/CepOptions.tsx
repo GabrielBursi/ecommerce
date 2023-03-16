@@ -11,7 +11,6 @@ export function Cep({ days, name, price, rating, showInputRadio = false } :CepOp
     useEffect(() => {
         const nameFindArr = cepOptions.filter(option => option.name === name)
         const [ nameFind ] = nameFindArr
-        console.log( {name}, nameFind);
         setFrete(Number(nameFind.price.replace('R$', '').replace(',', '.')))
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
