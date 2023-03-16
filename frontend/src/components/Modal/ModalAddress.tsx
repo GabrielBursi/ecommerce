@@ -22,10 +22,10 @@ interface ModalProps {
     setIsOpen: (value: boolean) => void,
     title: string,
     btnText: string,
-    isNewAddress: boolean
+    isNewAddress?: boolean
 }
 
-interface IForm {
+export interface FormData {
     cep: string,
     identification: string,
     street: string,
@@ -37,7 +37,7 @@ interface IForm {
     state?: string,
 }
 
-const addressSchema: yup.ObjectSchema<IForm> = yup.object({
+const addressSchema: yup.ObjectSchema<FormData> = yup.object({
     cep: yup.string().required(),
     identification: yup.string().required(),
     street: yup.string().required(),
@@ -49,9 +49,6 @@ const addressSchema: yup.ObjectSchema<IForm> = yup.object({
     state: yup.string(),
     
 }) 
-
-export type FormData = yup.InferType<typeof addressSchema>;
-
 interface DataApiCep {
     logradouro: string,
     bairro: string,
@@ -73,7 +70,7 @@ const customStyles = {
 
 Modal.setAppElement('#root')
 
-export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }: ModalProps) {
+export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress = true }: ModalProps) {
 
     const { 
             control, 
@@ -85,14 +82,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
             setError, 
             clearErrors, 
             reset 
-        } = useForm<IForm>({ 
+        } = useForm<FormData>({ 
         mode: 'onSubmit', 
         resolver: yupResolver(addressSchema) 
     })
 
     const cep = watch('cep', '')
 
-    const { formData, setFormData } = useContext(AddressContext)
+    const { formData, setFormData, setAddressList, addressList } = useContext(AddressContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -144,7 +141,11 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
 
     const onSubmit = (data: FormData) => {
         addressSchema.validate(data, { abortEarly: false })
-            .then(validData => { setFormData(validData); setIsOpen(false) })
+            .then(validData => { 
+                setAddressList([...addressList, validData])
+                setFormData(validData) 
+                setIsOpen(false) 
+            })
     };
 
     return (
@@ -176,13 +177,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                             placeholder='Insira o CEP'
                                             error={!!errors.cep}
                                             helperText={errors?.cep?.message}
-                                            disabled={isLoading}
+                                            disabled={isLoading || !isNewAddress}
                                             InputProps={{
                                                 inputComponent: MaskedInput as any,
                                                 inputProps: {
                                                     mask: MaskInputCep,
                                                     type: 'tel',
                                                 },
+                                                endAdornment: (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>)
                                             }}
                                         />
                                     }
@@ -216,8 +218,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                             fullWidth 
                                             label='Rua'
                                             placeholder='Ex: Rua dos Dados Falsos'
-                                            disabled={isLoading}
-                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30}/>) }}
+                                            disabled={isLoading || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
                                         />
                                     }
                                 />
@@ -281,8 +283,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress }
                                             helperText={errors?.neighborhood?.message}
                                             fullWidth 
                                             label='Bairro'
-                                            disabled={isLoading}
-                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) }}
+                                            disabled={isLoading || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
                                         />
                                     }
                                 />

@@ -3,14 +3,16 @@ import { ChildrenProp } from "../types";
 
 interface AddressContextData {
     formData: FormData | undefined,
-    setFormData: React.Dispatch<React.SetStateAction<FormData | undefined>>
+    setFormData: React.Dispatch<React.SetStateAction<FormData | undefined>>,
+    addressList: FormData[],
+    setAddressList: React.Dispatch<React.SetStateAction<FormData[]>>,
 }
 
 type FormData = {
-    complement?: string | undefined;
-    ref?: string | undefined;
-    city?: string | undefined;
-    state?: string | undefined;
+    complement?: string;
+    ref?: string;
+    city?: string;
+    state?: string;
     number: string;
     cep: string;
     identification: string;
@@ -23,9 +25,10 @@ const AddressContext = createContext({} as AddressContextData)
 function AddressContextProvider({ children }: ChildrenProp) {
     
     const [formData, setFormData] = useState<FormData>();
+    const [addressList, setAddressList] = useState<FormData[]>([]);
 
     return (
-        <AddressContext.Provider value={{ formData, setFormData }}>
+        <AddressContext.Provider value={{ formData, setFormData, addressList, setAddressList }}>
             {children}
         </AddressContext.Provider>
     );
