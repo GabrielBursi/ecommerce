@@ -46,7 +46,7 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
     }
 
     return (
-        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
             <Box display='flex' flexDirection='column' gap={1}>
                 <Box display='flex' justifyContent='space-between' alignItems='center' gap={2} height='20%'>
                     <Box display='flex' alignItems='center' gap={1}>

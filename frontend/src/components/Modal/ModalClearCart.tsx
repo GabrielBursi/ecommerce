@@ -24,7 +24,7 @@ Modal.setAppElement('#root')
 export function ModalClearCart({ isOpen, setIsOpen, question, action }: ModalProps) {
 
     return (
-        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
             <Box display='flex' flexDirection='column' gap={2}>
                 <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                     <Typography variant='h5' fontWeight='bold'>
