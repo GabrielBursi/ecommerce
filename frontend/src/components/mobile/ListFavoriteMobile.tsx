@@ -62,7 +62,7 @@ export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) 
                     </Box>
                     <Box width='100%'>
                         <Typography color='primary' variant='h6' fontWeight='bold'>
-                            {price}
+                            {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </Typography>
                     </Box>
                 </Box>

@@ -13,11 +13,9 @@ export function Cep({ days, name, price, rating, selected, showInputRadio = fals
     const { cepOptions, setFrete } = useContext(ResumeContext)
 
     useEffect(() => {
-        console.log(selected);
-        
         const nameFindArr = cepOptions.filter(option => option.selected === true)
         const [ nameFind ] = nameFindArr
-        setFrete(Number(nameFind.price.replace('R$', '').replace(',', '.')))
+        setFrete(nameFind.price)
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
@@ -45,7 +43,7 @@ export function Cep({ days, name, price, rating, selected, showInputRadio = fals
             </Box>
             <Box display='flex' flexDirection='column' height='100%' alignItems='start' justifyContent='center'>
                 <Typography variant='subtitle1' color='black' fontWeight='bold'>
-                    {price}
+                    {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
                 <Typography variant='subtitle2' color='black' fontWeight='light'>
                     até {days} dias úteis

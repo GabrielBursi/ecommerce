@@ -17,10 +17,10 @@ export const ResumeContext = createContext({} as ResumeContextData)
 export function ResumeContextProvider({children}: ChildrenProp){
 
     const cepOptionsDefault: CepOptions[] = [
-        { name: 'Rede Sul', rating: 5, price: 'R$ 22,69', days: 4, selected: true },
-        { name: 'Sedex', rating: 4.5, price: 'R$ 23,12', days: 6, selected: false },
-        { name: 'GFL', rating: 5, price: 'R$ 30,24', days: 9, selected: false },
-        { name: 'Correios PAC', rating: 4.5, price: 'R$ 47,49', days: 5, selected: false },
+        { name: 'Rede Sul', rating: 5, price: 22.69, days: 4, selected: true },
+        { name: 'Sedex', rating: 4.5, price: 23.12, days: 6, selected: false },
+        { name: 'GFL', rating: 5, price: 30.24, days: 9, selected: false },
+        { name: 'Correios PAC', rating: 4.5, price: 47.49, days: 5, selected: false },
     ]
 
     const [cepOptions, setCepOptions] = useState<CepOptions[]>(cepOptionsDefault);

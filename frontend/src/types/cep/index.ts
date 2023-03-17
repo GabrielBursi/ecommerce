@@ -1,7 +1,7 @@
 export type CepOptions = {
     name: string,
     rating: number,
-    price: string,
+    price: number,
     days: number,
     selected?: boolean,
 }

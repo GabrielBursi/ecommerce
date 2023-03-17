@@ -78,22 +78,6 @@ export function RoutesApp() {
             "img": "https://m.media-amazon.com/images/I/818vY0K7DAL._AC_UY654_QL65_.jpg",
             "price": "$ 999.99",
             "rating": 4.5
-        },
-        {
-            "id": "acaa54e1-5d02-44f3-b240-e1c360594660",
-            "name": "PlayStation®5 + God of War Ragnarök",
-            "description": "teste",
-            "img": "https://m.media-amazon.com/images/I/61kD52KblYL._AC_UL960_QL65_.jpg",
-            "price": "R$ 4.499,90",
-            "rating": 4
-        },
-        {
-            "id": "666003a0-211d-4c7a-8134-07ceb5b7bcb6",
-            "name": "Console PlayStation 5",
-            "description": "teste",
-            "img": "https://m.media-amazon.com/images/I/51+qnZm7V7L._AC_UL960_QL65_.jpg",
-            "price": "R$ 4.229,99",
-            "rating": 4
         }
     ]
 
@@ -103,7 +87,16 @@ export function RoutesApp() {
             setProducts(res.data);
         } catch (error) {
             alert(error + ' API FAKE NÃO ESTA NO AR, COMANDO PARA API FAKE: npm run server - USANDO ARRAY DE TESTE COM 10 PRODUTOS');
-            setProducts(arrayTESTE)
+            const arrayTESTEsemNumero = arrayTESTE.map(product => {
+                if(typeof product.price === 'string'){
+                    return {
+                        ...product,
+                        price: Number(product.price.replace('R$','').replace('$', '').replace(',', ''))
+                    }
+                }
+                return product;
+            })
+            setProducts(arrayTESTEsemNumero)
         }
     }
 

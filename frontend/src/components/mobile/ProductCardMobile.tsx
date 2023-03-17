@@ -88,7 +88,7 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
                                 {name}
                             </Typography>
                             <Typography variant="h6" color="primary" fontWeight='bold'>
-                                {price}
+                                {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </Typography>
                         </Box>
                     </CardContent>

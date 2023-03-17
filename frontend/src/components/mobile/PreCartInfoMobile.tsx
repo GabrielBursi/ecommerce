@@ -42,7 +42,7 @@ export function PreCartInfoMobile({ img, price, name, id, brand, nameWithoutBran
             </Box>
             <Box flex={1} display='flex' alignItems='center' justifyContent='center'>
                 <Typography color='primary' variant='h4' fontWeight='bold'>
-                    {price}
+                    {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
             </Box>
             <Snackbar

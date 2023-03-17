@@ -42,7 +42,6 @@ function ProductsProvider({ children }: ChildrenProp) {
 
         if (isAlreadyInCart)
             return navigate('/cart')
-
         setProductsInCart([...productsInCart, product])
         navigate(`/precart/${product.id}`)
     }

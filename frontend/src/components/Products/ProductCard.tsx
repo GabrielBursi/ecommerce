@@ -98,7 +98,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                 </CardContent>
                 <CardContent sx={{paddingY: 0}} onClick={seeProduct}>
                     <Typography variant="h5" color="primary" fontWeight='bold'>
-                        {price}
+                        {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </CardContent>
             <CardActions disableSpacing>

@@ -50,7 +50,7 @@ export function MiniCardProduct({ img, price, name, id }: IProducts) {
                 }}
             >
                 <Typography variant={mdDown ? "subtitle2" : "subtitle1"} color='primary' fontWeight='bold'>
-                    {price}
+                    {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
             </Box>
         </Box>

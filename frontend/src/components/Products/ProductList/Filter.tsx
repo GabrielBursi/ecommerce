@@ -49,8 +49,10 @@ export function Filter({ product }: FilterProps) {
     useEffect(() => {
         const menorValor = products.reduce((anterior, atual) => anterior.price < atual.price ? anterior : atual);
         const maiorValor = products.reduce((anterior, atual) => anterior.price > atual.price ? anterior : atual);
-        setHighestPrice(Number(maiorValor.price.split(' ')[1].replace('.', '').replace(',', '.')))
-        setLowestPrice(Number(menorValor.price.split(' ')[1]))
+        if(typeof menorValor.price === 'number' && typeof maiorValor.price === 'number'){
+            setHighestPrice(maiorValor.price)
+            setLowestPrice(menorValor.price)
+        }
         setPriceFilter([lowestPrice, highestPrice])
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product]);
@@ -78,8 +80,8 @@ export function Filter({ product }: FilterProps) {
                         sx={{width: '95%'}}
                     />
                     <Box display='flex' alignItems='center' justifyContent='space-between' width='100%' paddingX={1}>
-                        <Typography variant={smDown ? "body2" : "body1"}>$ {priceFilter[0]}</Typography>
-                        <Typography variant={smDown ? "body2" : "body1"}>$ {priceFilter[1]}</Typography>
+                        <Typography variant={smDown ? "body2" : "body1"}>{priceFilter[0].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Typography>
+                        <Typography variant={smDown ? "body2" : "body1"}>{priceFilter[1].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Typography>
                     </Box>
                 </Box>
             </Box>

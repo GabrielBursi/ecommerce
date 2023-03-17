@@ -33,7 +33,7 @@ export function Price({ product }: PriceProps) {
             <Box minHeight='60%' display='flex' flexDirection='column'>
                 <Box flex={1} display='flex' alignItems='center'>
                     <Typography color='primary' variant={mdDown ? "h4" : "h2"} fontWeight='bold'>
-                        {product.price}
+                        {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Box minWidth='200px' width='50%' height='30%' display='flex' justifyContent='center'>

@@ -14,8 +14,12 @@ export function Resume() {
     
     useEffect(() => {
         const soma = productsInCart.reduce((acumulador, product) => { 
-            const PricePerQuant = Number(product.price.replace('$ ', '').replace(',', '')) * (product?.quant || 1)
-            return acumulador + PricePerQuant
+            console.log(product.price)
+            if(typeof product.price === "number"){
+                const PricePerQuant = product.price * (product.quant || 1)
+                return acumulador + PricePerQuant
+            }
+            return 0
         }, 0);
         setSomeProducts(soma)
         setTotal(soma + frete)
@@ -36,7 +40,7 @@ export function Resume() {
                         Valor dos Produtos: 
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        R$ {someProducts.toFixed(2).replace('.', ',')}
+                        {someProducts.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Divider />
@@ -45,7 +49,7 @@ export function Resume() {
                         Frete:
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        R$ {frete.toFixed(2).replace('.', ',')}
+                        {frete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Box display='flex' bgcolor='#e5fff1' flexDirection='column' justifyContent='center' alignItems='center' height='100%' paddingX={2}>
@@ -53,7 +57,7 @@ export function Resume() {
                         Valor Total:
                     </Typography>
                     <Typography variant="h4" fontWeight='bold'>
-                        R$ {total.toFixed(2).replace('.', ',')}
+                        {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
             </Box>

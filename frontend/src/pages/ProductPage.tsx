@@ -34,7 +34,7 @@ export function ProductPage() {
                     src={productSelectedInfo?.img || ''}
                     id={id || 'não existe'} 
                     img={productSelectedInfo?.img || '' } 
-                    price={productSelectedInfo?.price || '' } 
+                    price={productSelectedInfo?.price || 0} 
                     rating={productSelectedInfo?.rating || 0} 
                     name={productSelectedInfo?.name || '' } 
                 />

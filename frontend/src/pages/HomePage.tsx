@@ -4,7 +4,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { LoginContext, ProductsContext, ThemeContext } from "../contexts";
 import {LayoutBase} from "../layouts";
-import { Carousel, DepartmentCard, MiniCardProduct, ProductCard } from "../components";
+import { Carousel, DepartmentCard, ProductCard } from "../components";
 
 export function HomePage() {
 

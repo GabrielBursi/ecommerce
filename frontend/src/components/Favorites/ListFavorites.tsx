@@ -84,7 +84,7 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
                     <Typography color='primary' variant={mdDown ? 'h4' : 'h3'} fontWeight='bold'>
-                        {price}
+                        {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>

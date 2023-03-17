@@ -94,7 +94,7 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
             </Box>
             <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center'>
                 <Typography color='primary' variant='h5' fontWeight='bold'>
-                    {price}
+                    {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
             </Box>
         </Box>

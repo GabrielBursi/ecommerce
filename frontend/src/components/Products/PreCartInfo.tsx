@@ -57,7 +57,7 @@ export function PreCartInfo({ img, price, name, id }: IProducts) {
                 <Divider orientation="vertical" variant="middle" sx={{ height: '50%' }} />
                 <Box display='flex' alignItems='center' justifyContent='center' flex={1} height='100%'>
                     <Typography color='primary' variant={ mdDown ? 'h5' : lgDown ? 'h4' : 'h3' } fontWeight='bold'>
-                        {price}
+                        {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
             </Box>
