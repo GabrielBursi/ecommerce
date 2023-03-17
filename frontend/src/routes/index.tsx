@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage } from "../pages";
-import { ApiTest } from "../services";
+import { ApiTest, convertCurrency } from "../services";
 import { IProducts } from "../types";
 import { ChildrenProp } from '../types/children'
 
@@ -84,6 +84,8 @@ export function RoutesApp() {
     async function getProducts(){
         try {
             const res = await ApiTest('/products10')
+            // const productsWithPriceConverted = await convertCurrency(res.data)
+            // setProducts(productsWithPriceConverted)
             setProducts(res.data);
         } catch (error) {
             alert(error + ' API FAKE NÃO ESTA NO AR, COMANDO PARA API FAKE: npm run server - USANDO ARRAY DE TESTE COM 10 PRODUTOS');
@@ -96,7 +98,8 @@ export function RoutesApp() {
                 }
                 return product;
             })
-            setProducts(arrayTESTEsemNumero)
+            const productsWithPriceConverted =  await convertCurrency(arrayTESTEsemNumero)
+            setProducts(productsWithPriceConverted)
         }
     }
 

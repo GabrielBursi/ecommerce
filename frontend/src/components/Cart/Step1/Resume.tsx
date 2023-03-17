@@ -14,7 +14,6 @@ export function Resume() {
     
     useEffect(() => {
         const soma = productsInCart.reduce((acumulador, product) => { 
-            console.log(product.price)
             if(typeof product.price === "number"){
                 const PricePerQuant = product.price * (product.quant || 1)
                 return acumulador + PricePerQuant
