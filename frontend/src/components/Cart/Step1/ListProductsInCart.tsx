@@ -7,13 +7,26 @@ import { ProductInCart } from "./ProductInCart";
 import { ProductsContext, ResumeContext } from "../../../contexts";
 import { Cep } from "../../CEP";
 import { ModalClearCart } from "../../Modal";
+import { CepOptions } from "../../../types";
 
 export function ListProductsInCart() {
-
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
-    const { cepOptions } = useContext(ResumeContext)
+    const { cepOptions, setCepOptions } = useContext(ResumeContext)
 
     const [isOpen, setIsOpen] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, setSelectedOption] = useState<CepOptions>();
+
+    function handleOptionSelect(optionSelected: CepOptions) {
+        setSelectedOption(optionSelected);
+
+        const updatedOptions = cepOptions.map((option) =>
+            option.name === optionSelected.name ? { ...option, selected: true } : { ...option, selected: false }
+        );
+
+        // atualiza o array com as opções selecionadas
+        setCepOptions(updatedOptions);
+    }
 
     function clearCart() {
         setProductsInCart([])
@@ -56,12 +69,15 @@ export function ListProductsInCart() {
                         </Typography>
                     </Box>
                     {cepOptions.map(option => (
-                        <Cep days={option.days}
+                        <Cep 
+                            key={option.name}
+                            days={option.days}
                             name={option.name}
                             price={option.price}
                             rating={option.rating}
-                            key={option.name}
-                            showInputRadio 
+                            selected={option.selected}
+                            onchange={handleOptionSelect}
+                            showInputRadio={true}
                         />
                         ))
                     }

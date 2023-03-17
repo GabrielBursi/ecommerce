@@ -1,20 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Box, Radio, Rating, Typography } from "@mui/material";
 import { CepOptions } from "../../types";
 import { ResumeContext } from "../../contexts";
 
-export function Cep({ days, name, price, rating, showInputRadio = false } :CepOptions) {
+interface CepProps extends CepOptions{
+    showInputRadio?: boolean,
+    onchange?: (value: CepOptions) => void;
+}
 
-    const [isSelected, setIsSelected] = useState(false);
+export function Cep({ days, name, price, rating, selected, showInputRadio = false, onchange }: CepProps) {
+
     const { cepOptions, setFrete } = useContext(ResumeContext)
 
     useEffect(() => {
-        const nameFindArr = cepOptions.filter(option => option.name === name)
+        console.log(selected);
+        
+        const nameFindArr = cepOptions.filter(option => option.selected === true)
         const [ nameFind ] = nameFindArr
         setFrete(Number(nameFind.price.replace('R$', '').replace(',', '.')))
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSelected]);
+    }, [selected]);
 
     return (
         <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -22,8 +28,8 @@ export function Cep({ days, name, price, rating, showInputRadio = false } :CepOp
                 { showInputRadio &&
                     <Box display='flex' height='100%' alignItems='start' justifyContent='center'>
                         <Radio
-                            checked={isSelected}
-                            onClick={() => setIsSelected(!isSelected)}
+                            checked={selected}
+                            onChange={(_e, _c) => {onchange && onchange({days, name, price, selected, rating})}}
                             size="small"
                             value={name}
                             name="radio-buttons"

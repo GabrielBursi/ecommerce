@@ -3,5 +3,5 @@ export type CepOptions = {
     rating: number,
     price: string,
     days: number,
-    showInputRadio?: boolean,
+    selected?: boolean,
 }
