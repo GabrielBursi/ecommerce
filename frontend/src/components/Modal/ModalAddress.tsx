@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import '../../TraducoesYup'
@@ -15,8 +16,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { MaskInputCep } from './utils';
-import axios from 'axios';
 import { AddressContext } from '../../contexts';
+import { AddressFormData, DataApiCep } from '../../types';
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
@@ -25,19 +26,7 @@ interface ModalProps {
     isNewAddress?: boolean
 }
 
-export interface FormData {
-    cep: string,
-    identification: string,
-    street: string,
-    number: string,
-    complement?: string,
-    ref?: string,
-    neighborhood: string,
-    city?: string,
-    state?: string,
-}
-
-const addressSchema: yup.ObjectSchema<FormData> = yup.object({
+const addressSchema: yup.ObjectSchema<AddressFormData> = yup.object({
     cep: yup.string().required(),
     identification: yup.string().required(),
     street: yup.string().required(),
@@ -49,12 +38,6 @@ const addressSchema: yup.ObjectSchema<FormData> = yup.object({
     state: yup.string(),
     
 }) 
-interface DataApiCep {
-    logradouro: string,
-    bairro: string,
-    localidade: string,
-    uf: string,
-}
 
 const customStyles = {
     content: {
@@ -82,7 +65,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
             setError, 
             clearErrors, 
             reset 
-        } = useForm<FormData>({ 
+        } = useForm<AddressFormData>({ 
         mode: 'onSubmit', 
         resolver: yupResolver(addressSchema) 
     })
@@ -103,19 +86,21 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
             axios(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`)
                 .then(({data}) => {
-
                     setIsLoading(false)
-
+                    
                     if(data.erro){
                         return setError('cep', { type: 'custom', message: 'CEP não encontrado' });
                     }
+
+                    clearErrors('neighborhood')
+                    clearErrors('street')
                     
-                    setFocus('number')
                     const dataTyped: DataApiCep = data
                     setValue('city', dataTyped.localidade)
                     setValue('state', dataTyped.uf)
                     setValue('neighborhood', dataTyped.bairro)
                     setValue('street', dataTyped.logradouro)
+                    setFocus('number')
                 })
                 .catch(error => {
                     console.log(error);
@@ -139,7 +124,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
         }
     }, [isOpen]);
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (data: AddressFormData) => {
         addressSchema.validate(data, { abortEarly: false })
             .then(validData => { 
                 setAddressList([...addressList, validData])
@@ -170,7 +155,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='cep'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             fullWidth 
                                             label='CEP'
@@ -195,7 +181,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='identification'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             error={!!errors.identification}
                                             helperText={errors?.identification?.message}
@@ -211,7 +198,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='street'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             error={!!errors.street}
                                             helperText={errors?.street?.message}
@@ -228,8 +216,10 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                 <Controller
                                     name='number'
                                     control={control}
-                                    render={({ field }) => 
-                                        <TextField {...field}
+                                    render={({ field: {ref, ...field} }) => 
+                                        <TextField 
+                                            {...field}
+                                            inputRef={ref}
                                             variant='outlined'
                                             error={!!errors.number}
                                             helperText={errors?.number?.message}
@@ -245,7 +235,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='complement'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             error={!!errors.complement}
                                             helperText={errors?.complement?.message}
@@ -261,7 +252,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='ref'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             error={!!errors.ref}
                                             helperText={errors?.ref?.message}
@@ -277,7 +269,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='neighborhood'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='outlined'
                                             error={!!errors.neighborhood}
                                             helperText={errors?.neighborhood?.message}
@@ -294,7 +287,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='city'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='filled'
                                             error={!!errors.city}
                                             helperText={errors?.city?.message}
@@ -312,7 +306,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     name='state'
                                     control={control}
                                     render={({ field }) => 
-                                        <TextField {...field}
+                                        <TextField 
+                                            {...field}
                                             variant='filled'
                                             error={!!errors.state}
                                             helperText={errors?.state?.message}

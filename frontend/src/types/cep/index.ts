@@ -5,3 +5,22 @@ export type CepOptions = {
     days: number,
     selected?: boolean,
 }
+
+export interface AddressFormData {
+    complement?: string;
+    ref?: string;
+    city?: string;
+    state?: string;
+    number: string;
+    cep: string;
+    identification: string;
+    street: string;
+    neighborhood: string;
+}
+
+export interface DataApiCep {
+    logradouro: string,
+    bairro: string,
+    localidade: string,
+    uf: string,
+}
