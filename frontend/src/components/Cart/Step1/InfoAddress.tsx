@@ -4,16 +4,17 @@ import { ButtonEdit, ButtonSelect } from "./ActionModal";
 import { AddressContext } from "../../../contexts";
 import { AddressFormData } from "../../../types";
 
-interface InfoAddressProps extends Omit<AddressFormData, 'neighborhood'> {
-    isOnModal?: boolean
+interface InfoAddressProps extends Omit<AddressFormData, | 'neighborhood'> {
+    isOnModal?: boolean,
+    isSelected?: boolean
 }
 
-export function InfoAddress({ street, complement, number, cep, city, state, identification, isOnModal = false }: InfoAddressProps) {
+export function InfoAddress({ street, complement, number, cep, city, state, identification, isOnModal = false, isSelected }: InfoAddressProps) {
 
     const { addressList } = useContext(AddressContext)
 
     return (
-        <Box flex={1} display='flex' flexDirection='column' padding={2} bgcolor={isOnModal ? '#fafafb' : ''} borderLeft={isOnModal ? '2px solid #4527a0' : ''}>
+        <Box flex={1} display='flex' flexDirection='column' padding={2} bgcolor={isOnModal ? '#fafafb' : ''} borderLeft={isSelected ? '2px solid #4527a0' : ''}>
             {addressList.length === 0 ?
                 <Typography variant="subtitle1">
                     Nenhum endereço cadastrado
@@ -36,7 +37,7 @@ export function InfoAddress({ street, complement, number, cep, city, state, iden
                     
                         <Box height='20%' display='flex' alignItems='center' justifyContent='end' gap={1}>
                             <ButtonEdit/>
-                            <ButtonSelect/>
+                            {!isSelected && <ButtonSelect addressSelected={{ street, complement, number, cep, city, state, identification, neighborhood: '' }}/>}
                         </Box>
                     }
                 </>

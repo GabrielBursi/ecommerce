@@ -53,6 +53,7 @@ export function ModalAddressList({ isOpen, setIsOpen }: ModalProps) {
                             complement={address.complement}
                             number={address.number}
                             isOnModal={true}
+                            isSelected={address.isSelected}
                         />
                     )}
                 </Box>

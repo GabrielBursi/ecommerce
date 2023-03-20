@@ -24,7 +24,6 @@ export function ListProductsInCart() {
             option.name === optionSelected.name ? { ...option, selected: true } : { ...option, selected: false }
         );
 
-        // atualiza o array com as opções selecionadas
         setCepOptions(updatedOptions);
     }
 

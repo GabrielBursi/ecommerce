@@ -18,6 +18,10 @@ export interface AddressFormData {
     neighborhood: string;
 }
 
+export interface AddressList extends Omit<AddressFormData, | 'neighborhood'> {
+    isSelected?: boolean;
+}
+
 export interface DataApiCep {
     logradouro: string,
     bairro: string,

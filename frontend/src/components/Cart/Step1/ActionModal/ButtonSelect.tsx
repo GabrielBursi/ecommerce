@@ -1,7 +1,17 @@
 import { Button } from "@mui/material";
+import { useContext } from "react";
+import { AddressContext } from "../../../../contexts";
+import { AddressFormData } from "../../../../types";
 
-export function ButtonSelect() {
+interface ButtonSelectProps {
+    addressSelected: AddressFormData
+}
+
+export function ButtonSelect({ addressSelected }: ButtonSelectProps) {
+
+    const { handleAddressSelect } = useContext(AddressContext)
+
     return (
-        <Button>SELECIONAR ESTE</Button>
+        <Button onClick={() => handleAddressSelect(addressSelected)}>SELECIONAR ESTE</Button>
     );
 }
