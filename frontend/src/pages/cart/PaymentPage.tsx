@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Box, Paper, Typography } from "@mui/material";
 import PaidIcon from '@mui/icons-material/Paid';
 import { Buttons, FormCard, OptionPaymentList, PixInfo, Steps } from "../../components";
 import { LayoutBase } from "../../layouts";
+import { ResumeContext } from "../../contexts";
 
 export function PaymentPage() {
 
@@ -13,8 +14,11 @@ export function PaymentPage() {
 
     const formRef = useRef<HTMLFormElement>()
 
+    const { setPayment } = useContext(ResumeContext)
+
     useEffect(() => {
         setSearchParams({payment: 'pix'})
+        setPayment('pix')
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

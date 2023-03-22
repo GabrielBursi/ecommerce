@@ -10,6 +10,8 @@ interface ResumeContextData {
     setTotal: (value: number) => void,
     someProducts: number, 
     setSomeProducts: (value: number) => void,
+    payment: string, 
+    setPayment: (value: string) => void,
 }
 
 export const ResumeContext = createContext({} as ResumeContextData)
@@ -30,6 +32,8 @@ export function ResumeContextProvider({children}: ChildrenProp){
     const [total, setTotal] = useState<number>(0);
     const [someProducts, setSomeProducts] = useState<number>(0);
 
+    const [payment, setPayment] = useState<string>('');
+
     return (
         <ResumeContext.Provider value={{
             cepOptions,
@@ -40,6 +44,8 @@ export function ResumeContextProvider({children}: ChildrenProp){
             setTotal,
             someProducts, 
             setSomeProducts,
+            payment, 
+            setPayment
         }}>
             {children}
         </ResumeContext.Provider>
