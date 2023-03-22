@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useMatch } from "react-router-dom";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -14,8 +15,10 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
     const [isOpen, setIsOpen] = useState(false);
 
     const product = productsInCart.filter(product => product.id === id)
-
     const [quant, setQuant] = useState(product[0].quant || 1);
+
+    const match = useMatch('/cart/identification/payment/confirm')
+    const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
     useEffect(() => {
         updateProductQuantity(id, quant)
@@ -78,23 +81,29 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
                     Quantidade
                 </Typography>
                 <Box width='60%' height='40%' display='flex' alignItems='center' justifyContent='center' gap={2}>
-                    <IconButton size="small" color="primary" onClick={removeQuant} disabled = {quant === 1}>
-                        <ArrowBackIosIcon/>
-                    </IconButton>
+                    { !isConfirmationPage &&
+                        <IconButton size="small" color="primary" onClick={removeQuant} disabled = {quant === 1}>
+                            <ArrowBackIosIcon/>
+                        </IconButton>
+                    }
                     <Typography color='black' variant='h6' fontWeight='bold'>
                         {quant}
                     </Typography>
-                    <IconButton size="small" color="primary" onClick={addQuant}>
-                        <ArrowForwardIosIcon />
-                    </IconButton>
+                    { !isConfirmationPage &&
+                        <IconButton size="small" color="primary" onClick={addQuant}>
+                            <ArrowForwardIosIcon />
+                        </IconButton>
+                    }
                 </Box>
-                <Button color="error" startIcon={<DeleteIcon />} size="small" onClick={() => setIsOpen(true)}>
-                    REMOVER
-                </Button>
+                { !isConfirmationPage &&
+                    <Button color="error" startIcon={<DeleteIcon />} size="small" onClick={() => setIsOpen(true)}>
+                        REMOVER
+                    </Button>
+                }
             </Box>
             <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center'>
                 <Typography color='primary' variant='h5' fontWeight='bold'>
-                    {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    {(Number(price) * quant).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
             </Box>
         </Box>

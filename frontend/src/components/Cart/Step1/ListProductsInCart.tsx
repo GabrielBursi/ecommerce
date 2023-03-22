@@ -1,32 +1,25 @@
 import { useContext, useState } from "react";
+import { useMatch } from "react-router-dom";
+
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ProductInCart } from "./ProductInCart";
-import { ProductsContext, ResumeContext } from "../../../contexts";
-import { Cep } from "../../CEP";
+
+import { ProductsContext } from "../../../contexts";
+
 import { ModalClearCart } from "../../Modal";
-import { CepOptions } from "../../../types";
+import { ListOptionsCep } from "./ListOptionsCep";
+import { ProductInCart } from "./ProductInCart";
 
 export function ListProductsInCart() {
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
-    const { cepOptions, setCepOptions } = useContext(ResumeContext)
 
     const [isOpen, setIsOpen] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setSelectedOption] = useState<CepOptions>();
 
-    function handleOptionSelect(optionSelected: CepOptions) {
-        setSelectedOption(optionSelected);
-
-        const updatedOptions = cepOptions.map((option) =>
-            option.name === optionSelected.name ? { ...option, selected: true } : { ...option, selected: false }
-        );
-
-        setCepOptions(updatedOptions);
-    }
-
+    const match = useMatch('/cart/identification/payment/confirm')
+    const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
+    
     function clearCart() {
         setProductsInCart([])
         setIsOpen(false)
@@ -39,14 +32,16 @@ export function ListProductsInCart() {
                 <Box display='flex' alignItems='center' gap={1} height='auto'>
                     <ShoppingBasketIcon color="primary" />
                     <Typography variant="h5" fontWeight='bold'>
-                        PRODUTO E FRETE
+                        {isConfirmationPage ? 'LISTA DE PRODUTOS' : 'PRODUTO E FRETE'}  
                     </Typography>
                 </Box>
-                <Box display='flex' alignItems='center'>
-                    <Button variant="outlined" color="error" startIcon={<DeleteIcon/>} onClick={() => setIsOpen(true)}>
-                        REMOVER TODOS OS PRODUTOS
-                    </Button>
-                </Box>
+                { !isConfirmationPage &&
+                    <Box display='flex' alignItems='center'>
+                        <Button variant="outlined" color="error" startIcon={<DeleteIcon/>} onClick={() => setIsOpen(true)}>
+                            REMOVER TODOS OS PRODUTOS
+                        </Button>
+                    </Box>
+                }
             </Box>
             <Divider/>
             <Box height='auto' display='flex' flexDirection='column' gap={4}>
@@ -59,28 +54,7 @@ export function ListProductsInCart() {
                         price={product.price}
                     />
                 ))}
-                <Divider />
-                <Box height='auto' bgcolor='#fafafb' padding={2}>
-                    <Box display='flex' alignItems='center' gap={1} height='auto'>
-                        <LocalShippingIcon color="primary" />
-                        <Typography variant="h5" fontWeight='bold'>
-                            FRETE:
-                        </Typography>
-                    </Box>
-                    {cepOptions.map(option => (
-                        <Cep 
-                            key={option.name}
-                            days={option.days}
-                            name={option.name}
-                            price={option.price}
-                            rating={option.rating}
-                            selected={option.selected}
-                            onchange={handleOptionSelect}
-                            showInputRadio={true}
-                        />
-                        ))
-                    }
-                </Box>
+                { !isConfirmationPage && <ListOptionsCep/> }
             </Box>
         </Box>
     );

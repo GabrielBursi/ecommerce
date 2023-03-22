@@ -75,7 +75,7 @@ export function Resume() {
                     <Box height='60%' width='100%' display='flex' justifyContent='center' alignItems='center'>
                         <Button>
                             <ReCAPTCHA
-                                sitekey={'6Le7wiElAAAAAHTuHogdqEKZbl68RUMk_t5rPh7U' || 'key'}
+                                sitekey={process.env.REACT_APP_SITE_KEY || 'key'}
                                 onChange={() => setReCaptcha(!reCaptcha)}
                                 badge='bottomleft'
                             />
