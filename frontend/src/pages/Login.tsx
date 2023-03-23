@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/material";
 import { Form } from "../components";
 import { LoginContext } from "../contexts";
@@ -12,8 +12,10 @@ import { YupSchemaLogin } from "../types";
 export function Login() {
 
     const { create } = useParams<'create'>();
+    const navigate = useNavigate()
 
-    const { setFormLogin } = useContext(LoginContext)
+    const { setFormLogin, setIsLogged } = useContext(LoginContext)
+
 
     //!temporário
     const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
@@ -32,10 +34,12 @@ export function Login() {
     function onSubmit(data: YupSchemaLogin) {
 
         //! melhorar código
-        if (create) {
+        if (create)  {
             createLoginSchema.validate(data, {abortEarly: false})
                 .then(valid => {
                     setFormLogin(valid)
+                    setIsLogged(true)
+                    navigate('/')
                 })
                 .catch((errors: yup.ValidationError) => {
                     console.log(errors);
@@ -45,7 +49,10 @@ export function Login() {
         }
 
         loginSchema.validate(data, { abortEarly: false })
-            .then(valid => { console.log('passou', valid) })
+            .then(valid => { 
+                console.log(valid);
+                // setFormLogin(valid)
+            })
             .catch((errors: yup.ValidationError) => {
                 console.log(errors);
                 
