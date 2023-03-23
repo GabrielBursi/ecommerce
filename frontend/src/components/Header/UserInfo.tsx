@@ -6,7 +6,7 @@ import { LoginContext } from "../../contexts";
 
 export function UserInfo (){
 
-    const { isLogged } = useContext(LoginContext)
+    const { isLogged, formLogin } = useContext(LoginContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -62,7 +62,7 @@ export function UserInfo (){
                         fontWeight='bold'
                         noWrap
                     >
-                        Olá Nome,
+                        Olá {formLogin?.name},
                     </Typography>
                     <Box display='flex' width='auto' height='30%' gap={1} alignItems='center'>
                         <Typography
