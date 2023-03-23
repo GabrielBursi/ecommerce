@@ -1,5 +1,6 @@
-import { Box, Paper } from "@mui/material";
-import { ListProductsInCart, Resume, Steps } from "../../components";
+import { Box } from "@mui/material";
+
+import { InfoRequest, ListProductsInCart, Resume, Steps } from "../../components";
 import { LayoutBase } from "../../layouts";
 
 export function ConfirmPage() {
@@ -11,9 +12,7 @@ export function ConfirmPage() {
                     <Steps/>
                     <Box width='100%' height='100%' display='flex' gap={4}>
                         <Box flex={1} display='flex' flexDirection='column' gap={4}>
-                            <Box height='40%' component={Paper}>
-
-                            </Box>
+                            <InfoRequest/>
                             <ListProductsInCart/>
                         </Box>
                         <Resume/>
