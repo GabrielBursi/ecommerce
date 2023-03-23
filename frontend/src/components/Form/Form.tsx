@@ -1,17 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+
+import * as yup from 'yup'
+import { yupResolver } from "@hookform/resolvers/yup";
+import '../../TraducoesYup'
+
 import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import { LoginContext } from "../../contexts";
+
+import { YupSchemaLogin } from "../../types";
 
 interface LoginPageProps {
     nameForm: string,
     textButton: string,
     create: boolean,
-    handleSubmit: () => void,
+    onSubmit: (data: YupSchemaLogin) => void,
+    schemaCreate: yup.ObjectSchema<YupSchemaLogin, yup.AnyObject, any, "">,
+    schemaLogin: yup.ObjectSchema<Pick<YupSchemaLogin, "email" | "password">, yup.AnyObject, any, "">
 }
 
-export function Form({ nameForm, textButton, create, handleSubmit }: LoginPageProps) {
+export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, schemaLogin }: LoginPageProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -23,34 +32,20 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const { 
-            setName, 
-            setConfirmPassword, 
-            setEmail, 
-            setPassword, 
-            name, 
-            email, 
-            password, 
-            confirmPassword, 
-            setErrorName,
-            setErrorEmail,
-            setErrorPassword,
-            setErrorConfirmPassword,
-            errorName, 
-            errorEmail, 
-            errorPassword, 
-            errorConfirmPassword
-        } = useContext(LoginContext)
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        clearErrors,
+        reset
+    } = useForm<YupSchemaLogin>({
+        mode: 'onSubmit',
+        resolver: yupResolver(create ? schemaCreate : schemaLogin),
+    })
 
     function handleChangePage(){
-        setErrorName('')
-        setErrorEmail('')
-        setErrorPassword('')
-        setErrorConfirmPassword('')
-        setName('')
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
+        clearErrors()
+        reset()
         navigate(create ? '/login' : '/login/create')
     }
 
@@ -75,7 +70,7 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
                 variant={smDown ? 'h4' : mdDown ? 'h3' : 'h2'}
                 noWrap
             >
-                {name}
+                {nameForm}
             </Typography>
             <Box
                 component="form"
@@ -92,111 +87,125 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
                 }}
             >
                 {create &&
-                    <TextField
-                        required
-                        id="name"
-                        label="Nome"
-                        fullWidth
-                        onChange={(e) => setName(e.target.value)}
-                        onKeyDown={() => setErrorName('')}
-                        value={name}
-                        error={!!errorName}
-                        helperText={errorName}
-                        placeholder='Ex: Gabriel Bursi'
+                    <Controller
+                        name="name"
+                        control={control}
+                        render={({ field }) => 
+                            <TextField
+                                {...field}
+                                required
+                                label="Nome"
+                                fullWidth
+                                error={!!errors.name}
+                                helperText={errors.name?.message}
+                                placeholder='Ex: Gabriel Bursi'
+                            />
+                        }
                     />
                 }
-                <TextField
-                    required
-                    id="email"
-                    label="Email"
-                    type="email"
-                    fullWidth
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={() => setErrorEmail('')}
-                    value={email}
-                    error={!!errorEmail}
-                    helperText={errorEmail}
-                    placeholder='Ex: email@exemplo.com'
+                <Controller
+                    name='email'
+                    control={control}
+                    render={({ field }) => 
+                        <TextField
+                            {...field}
+                            required
+                            label="Email"
+                            fullWidth
+                            error={!!errors.email}
+                            helperText={errors.email?.message}
+                            placeholder='Ex: email@exemplo.com'
+                        />
+                    }
                 />
                 {create ?
                     <Grid container spacing={2}>
                         <Grid item xs={mdDown ? 12 : 6}>
-                            <TextField
-                                required
-                                id="password"
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                label="Senha"
-                                fullWidth
-                                onChange={(e) => setPassword(e.target.value)}
-                                onKeyDown={() => setErrorPassword('')}
-                                value={password}
-                                error={!!errorPassword}
-                                helperText={errorPassword}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={() => setShowConfirmPassword((show) => !show)}
-                                                edge="start"
-                                            >
-                                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
+                            <Controller
+                                name='password'
+                                control={control}
+                                render={({ field }) => 
+                                    <TextField
+                                        {...field}
+                                        required
+                                        type={showPassword ? 'text' : 'password'}
+                                        label="Senha"
+                                        fullWidth
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        onClick={() => setShowPassword((show) => !show)}
+                                                        edge="start"
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                }
                             />
                         </Grid>
                         <Grid item xs={mdDown ? 12 : 6}>
-                            <TextField
-                                required
-                                id="repeat-password"
-                                type={showPassword ? 'text' : 'password'}
-                                label="Confirme sua senha"
-                                fullWidth
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                onKeyDown={() => setErrorConfirmPassword('')}
-                                value={confirmPassword}
-                                error={!!errorConfirmPassword}
-                                helperText={errorConfirmPassword}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={() => setShowPassword((show) => !show)}
-                                                edge="start"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
+                            <Controller
+                                name='confirmPassword'
+                                control={control}
+                                render={({ field }) => 
+                                    <TextField
+                                        {...field}
+                                        required
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        label="Confirme sua senha"
+                                        fullWidth
+                                        error={!!errors.confirmPassword}
+                                        helperText={errors.confirmPassword?.message}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        onClick={() => setShowConfirmPassword((show) => !show)}
+                                                        edge="start"
+                                                    >
+                                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                }
                             />
                         </Grid>
                     </Grid>
                     :
-                    <TextField
-                        required
-                        id="password"
-                        type={showPassword ? 'text' : 'password'}
-                        label="Senha"
-                        fullWidth
-                        onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={() => setErrorPassword('')}
-                        value={password}
-                        error={!!errorPassword}
-                        helperText={errorPassword}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={() => setShowPassword((show) => !show)}
-                                        edge="start"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
+                    <Controller
+                    name='password'
+                    control={control}
+                    render={({ field }) => 
+                        <TextField
+                            {...field}
+                            required
+                            type={showPassword ? 'text' : 'password'}
+                            label="Senha"
+                            fullWidth
+                            error={!!errors.password}
+                            helperText={errors.password?.message}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword((show) => !show)}
+                                            edge="start"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    }
                     />
                 }
                 <Button 
@@ -204,7 +213,7 @@ export function Form({ nameForm, textButton, create, handleSubmit }: LoginPagePr
                     size="large" 
                     fullWidth 
                     startIcon={textButton === 'criar' ? '' : <LoginOutlined />}
-                    onClick={handleSubmit}
+                    onClick={handleSubmit(onSubmit)}
                 >
                     {textButton}
                 </Button>

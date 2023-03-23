@@ -7,28 +7,13 @@ import { LayoutBase } from "../layouts";
 
 import '../TraducoesYup'
 import * as yup from 'yup'
-
-interface YupSchemaLogin {
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string,
-}
+import { YupSchemaLogin } from "../types";
 
 export function Login() {
 
     const { create } = useParams<'create'>();
 
-    const { 
-            name, 
-            email, 
-            password, 
-            confirmPassword, 
-            setErrorName, 
-            setErrorEmail, 
-            setErrorPassword, 
-            setErrorConfirmPassword 
-        } = useContext(LoginContext)
+    const { setFormLogin } = useContext(LoginContext)
 
     //!temporário
     const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
@@ -43,56 +28,41 @@ export function Login() {
         confirmPassword: yup.string().oneOf([yup.ref('password')]).required(),
     })
 
-    function handleSubmit() {
 
-        const userDataCreate = { name, email, password, confirmPassword }
-        const userDataLogin = { email, password }
+    function onSubmit(data: YupSchemaLogin) {
 
         //! melhorar código
         if (create) {
-            createLoginSchema.validate(userDataCreate, {abortEarly: false})
-                .then(valid => {console.log('passou')})
+            createLoginSchema.validate(data, {abortEarly: false})
+                .then(valid => {
+                    setFormLogin(valid)
+                })
                 .catch((errors: yup.ValidationError) => {
-                    errors.inner.forEach(error => {
-                        switch (error.path) {
-                            case 'name':
-                                setErrorName(error.message);
-                                break
-                            case 'email':
-                                setErrorEmail(error.message);
-                                break
-                            case 'password':
-                                setErrorPassword(error.message);
-                                break
-                            case 'confirmPassword':
-                                setErrorConfirmPassword(error.message);
-                                break
-                        }
-                    });
+                    console.log(errors);
+                    
                 })
             return
         }
 
-        loginSchema.validate(userDataLogin, { abortEarly: false })
-            .then(valid => { console.log('passou') })
+        loginSchema.validate(data, { abortEarly: false })
+            .then(valid => { console.log('passou', valid) })
             .catch((errors: yup.ValidationError) => {
-                errors.inner.forEach(error => {
-                    switch (error.path) {
-                        case 'email':
-                            setErrorEmail(error.message);
-                            break
-                        case 'password':
-                            setErrorPassword(error.message);
-                            break
-                    }
-                });
+                console.log(errors);
+                
             })
     }
 
     return (
         <LayoutBase showUserInfo>
             <Box display='flex' justifyContent='center' alignItems='center' height='100%'>
-                <Form nameForm={create ? "CRIAR CONTA" : "FAZER LOGIN"} textButton={create ? "criar" : "entrar"} create={create  ? true : false} handleSubmit={handleSubmit}/>
+                <Form 
+                    nameForm={create ? "CRIAR CONTA" : "FAZER LOGIN"} 
+                    textButton={create ? "criar" : "entrar"} 
+                    create={!!create} 
+                    onSubmit={onSubmit}
+                    schemaCreate={createLoginSchema}
+                    schemaLogin={loginSchema}
+                />
             </Box>
         </LayoutBase>
     );

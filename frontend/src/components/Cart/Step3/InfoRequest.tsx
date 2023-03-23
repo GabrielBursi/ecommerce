@@ -7,11 +7,11 @@ import { AddressContext, LoginContext } from "../../../contexts";
 export function InfoRequest(){
 
     const { formData } = useContext(AddressContext)
-    const { email, name } = useContext(LoginContext)
+    const { formLogin } = useContext(LoginContext)
 
     const dataUser: info[] = [
         { nome: 'CPF', dados: '09093123971' },
-        { nome: 'E-mail', dados: email },
+        { nome: 'E-mail', dados: formLogin?.email },
         { nome: 'CEP', dados: formData?.cep },
     ]
 
@@ -51,7 +51,7 @@ export function InfoRequest(){
             </Box>
             <Divider/>
             <Box display='flex' gap={1} height='100%'>
-                <InfoUser principalInfo={name} infos={dataUser}/>
+                <InfoUser principalInfo={formLogin?.name} infos={dataUser}/>
                 <InfoUser principalInfo={formData?.street} infos={dataAddress} />
             </Box>
         </Box>
