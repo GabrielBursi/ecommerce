@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Box, IconButton, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Modal from 'react-modal';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 
 interface ModalProps {
     isOpen: boolean,
@@ -25,13 +26,6 @@ const customStyles = {
 Modal.setAppElement('#root')
 
 export function ModalURL({isOpen, setIsOpen, url}: ModalProps) {
-
-    const [isCopy, setIsCopy] = useState(false);
-
-    useEffect(() => {
-        setIsCopy(false)
-    }, [url]);
-
     return (
         <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
             <Box display='flex' flexDirection='column' gap={1}>
@@ -49,7 +43,7 @@ export function ModalURL({isOpen, setIsOpen, url}: ModalProps) {
                     </Box>
                     <Box display='flex' justifyContent='center' alignItems='center'>
                         <CopyToClipboard text={url}>
-                            <IconButton color={isCopy ? 'success' : 'primary'} onClick={() => setIsCopy(true)} size='small' sx={{width: '50%', height:'50%'}}>
+                            <IconButton color='primary' onClick={() => toast.success('Link do produto copiado!', {position: 'top-center'})} size='small' sx={{width: '50%', height:'50%'}}>
                                 <ContentCopyIcon sx={{fontSize: '1.4rem'}}/>
                             </IconButton>
                         </CopyToClipboard>

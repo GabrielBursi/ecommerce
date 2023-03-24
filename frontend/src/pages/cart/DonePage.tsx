@@ -1,21 +1,34 @@
-import { Box } from "@mui/material";
-import { Steps } from "../../components";
+import { useContext } from "react";
+
+import { Box, Typography } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+import { ButtonsComplete, CardPayment, PixPayment, Steps } from "../../components";
 import { LayoutBase } from "../../layouts";
+import { ResumeContext } from "../../contexts";
 
 export function DonePage() {
 
+    const { payment } = useContext(ResumeContext)
+
     return (
         <LayoutBase showUserInfo>
-            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%' border='1px solid red'>
-                <Box display='flex' flexDirection='column' width='75%' height='100%' alignItems='center' paddingY={2} gap={2} border='1px solid green'>
+            <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='100%'>
+                <Box display='flex' flexDirection='column' width='75%' height='100%' alignItems='center' paddingY={2} gap={2}>
                     <Steps/>
-                    <Box width='100%' height='100%' border='1px solid black' display='flex' gap={4}>
-                        <Box border='1px solid black' flex={1} display='flex' flexDirection='column' gap={4}>
-                            <Box height='40%' border='1px solid red'></Box>
-                            <Box flex={1} border='1px solid red'></Box>
+                    <Box width='100%' height='100%' display='flex' flexDirection='column' alignItems='center' gap={4}>
+                        <Box display='flex' alignItems='center' gap={1} height='auto'>
+                            <CheckCircleIcon color="success" sx={{fontSize: '2.3rem'}}/>
+                            <Typography variant="h4" fontWeight='bold' color='green'>
+                                PEDIDO REALIZADO COM SUCESSO!
+                            </Typography>
                         </Box>
-                        <Box border='1px solid red' width='25%' height='70%'>
-                        </Box>
+                        { payment === 'pix' ?
+                            <PixPayment/>
+                            :
+                            <CardPayment/>
+                        }
+                        <ButtonsComplete/>
                     </Box>
                 </Box>
             </Box>

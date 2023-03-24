@@ -5,7 +5,6 @@ import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage } from "../pages";
 import { ApiTest, convertCurrency } from "../services";
 import { IProducts } from "../types";
-import { ChildrenProp } from '../types/children'
 
 export function RoutesApp() {
 
@@ -275,7 +274,12 @@ export function RoutesApp() {
     );
 
 }
-function PrivateRoute({ children }: ChildrenProp){
+
+interface PrivateRouteChildren {
+    children: JSX.Element
+}
+
+function PrivateRoute({ children }: PrivateRouteChildren){
 
     const { isLogged } = useContext(LoginContext)
     
@@ -285,7 +289,7 @@ function PrivateRoute({ children }: ChildrenProp){
     return children
 }
 
-function CartEmptyRoute({ children }: ChildrenProp){
+function CartEmptyRoute({ children }: PrivateRouteChildren){
 
     const { productsInCart } = useContext(ProductsContext)
 

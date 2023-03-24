@@ -16,7 +16,7 @@ function LoginContextProvider({children}:ChildrenProp) {
 
     const [formLogin, setFormLogin] = useState<YupSchemaLogin>();
 
-    const [isLogged, setIsLogged] = useState<boolean>(false);
+    const [isLogged, setIsLogged] = useState<boolean>(true);
 
     return (
         <LoginContext.Provider value={{ 
