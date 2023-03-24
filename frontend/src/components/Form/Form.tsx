@@ -10,6 +10,8 @@ import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField, Typogra
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
 
 import { YupSchemaLogin } from "../../types";
+import MaskedInput from "react-text-mask";
+import { MaskInputCpf } from "../Cart/Step2/utils";
 
 interface LoginPageProps {
     nameForm: string,
@@ -87,6 +89,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                 }}
             >
                 {create &&
+                <>
                     <Controller
                         name="name"
                         control={control}
@@ -102,6 +105,28 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                             />
                         }
                     />
+                    <Controller
+                        name="cpf"
+                        control={control}
+                        render={({ field }) => 
+                            <TextField
+                                {...field}
+                                required
+                                label="CPF"
+                                fullWidth
+                                error={!!errors.cpf}
+                                helperText={errors.cpf?.message}
+                                InputProps={{
+                                    inputComponent: MaskedInput as any,
+                                    inputProps: {
+                                        mask: MaskInputCpf,
+                                        type: 'text',
+                                    },
+                                }}
+                            />
+                        }
+                    />
+                </>
                 }
                 <Controller
                     name='email'

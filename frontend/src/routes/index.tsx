@@ -3,14 +3,14 @@ import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage } from "../pages";
-import { ApiTest, convertCurrency } from "../services";
+import { ApiTest, convertCurrency, userIsLogged } from "../services";
 import { IProducts } from "../types";
 
 export function RoutesApp() {
 
     const { setProductsTabBar, setArrImgBanner } = useContext(HeaderContext)
     const { toggleDrawerOptions } = useContext(DrawerContext)
-    const { isLogged } = useContext(LoginContext)
+    const { isLogged, setFormLogin, setIsLogged } = useContext(LoginContext)
     const { setProducts, setProductsDepartments } = useContext(ProductsContext)
 
     const arrayTESTE: IProducts[] = [
@@ -103,6 +103,13 @@ export function RoutesApp() {
     }
 
     useEffect(() => {
+        userIsLogged().then(data => {
+            if(data){
+                setFormLogin(data)
+                setIsLogged(true)
+            }
+        })
+        
         getProducts()
         setArrImgBanner([
             {

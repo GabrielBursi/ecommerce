@@ -55,9 +55,14 @@ export function FormCard({ formRef }: FormCardProps) {
 
     return (
         <Box flex={1} display='flex' flexDirection='column' gap={2}>
-            <Typography variant="h6" fontWeight='bold'>
-                Cartão de crédito
-            </Typography>
+            <Box display='flex' alignItems='center' gap={1}>
+                <Typography variant="h6" fontWeight='bold'>
+                    Cartão de crédito
+                </Typography>
+                <Typography variant="body2" fontWeight='light'>
+                    (esse site é somente um projeto pessoal, não coloque dados reais)
+                </Typography>
+            </Box>
             <Box width='100%' height='80%'>
                 <form onSubmit={handleSubmit(onSubmit)} ref={formRef}> 
                     <Grid container spacing={2} height='100%'>
@@ -185,12 +190,12 @@ export function FormCard({ formRef }: FormCardProps) {
                                         label='CPF'
                                         autoComplete='off'
                                         InputProps={{
-                                        inputComponent: MaskedInput as any,
-                                        inputProps: {
-                                            mask: MaskInputCpf,
-                                            type: 'text',
-                                        },
-                                    }}
+                                            inputComponent: MaskedInput as any,
+                                            inputProps: {
+                                                mask: MaskInputCpf,
+                                                type: 'text',
+                                            },
+                                        }}
                                     />
                                 }
                             />

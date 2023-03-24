@@ -3,4 +3,8 @@ export interface YupSchemaLogin {
     email: string,
     password: string,
     confirmPassword: string,
+    cpf:string
+}
+export interface DataApiTeste extends YupSchemaLogin{
+    id: number
 }

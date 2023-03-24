@@ -70,7 +70,8 @@ export function UserInfo (){
                             noWrap
                             sx={{ cursor: 'pointer' }}
                         >
-                            MINHA CONTA
+                            
+                            MEUS PEDIDOS
                         </Typography>
                         <Divider orientation="vertical" variant="middle" />
                         <Typography

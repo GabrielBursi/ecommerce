@@ -10,7 +10,7 @@ export function InfoRequest(){
     const { formLogin } = useContext(LoginContext)
 
     const dataUser: info[] = [
-        { nome: 'CPF', dados: '09093123971' },
+        { nome: 'CPF', dados: formLogin?.cpf },
         { nome: 'E-mail', dados: formLogin?.email },
         { nome: 'CEP', dados: formData?.cep },
     ]

@@ -1,13 +1,15 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/material";
+import { toast } from "react-toastify";
+import * as yup from 'yup'
+import '../TraducoesYup'
+
 import { Form } from "../components";
 import { LoginContext } from "../contexts";
 import { LayoutBase } from "../layouts";
-
-import '../TraducoesYup'
-import * as yup from 'yup'
 import { YupSchemaLogin } from "../types";
+import { createUser, login } from "../services";
 
 export function Login() {
 
@@ -28,6 +30,7 @@ export function Login() {
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
         confirmPassword: yup.string().oneOf([yup.ref('password')]).required(),
+        cpf: yup.string().required().matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
     })
 
 
@@ -36,7 +39,11 @@ export function Login() {
         //! melhorar código
         if (create)  {
             createLoginSchema.validate(data, {abortEarly: false})
-                .then(valid => {
+                .then( async (valid) => {
+                    const data = await createUser(valid)
+                    localStorage.setItem('idUserLogged', JSON.stringify(data.id))
+                    toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
+                    
                     setFormLogin(valid)
                     setIsLogged(true)
                     navigate('/')
@@ -49,9 +56,19 @@ export function Login() {
         }
 
         loginSchema.validate(data, { abortEarly: false })
-            .then(valid => { 
-                console.log(valid);
-                // setFormLogin(valid)
+            .then( async (valid) => { 
+                const data = await login(valid)
+
+                if(data === 'Esse usuario nao existe.'){
+                    return toast.error(data,{position: 'top-center'});
+                    
+                }
+                localStorage.setItem('idUserLogged', JSON.stringify(data.id))
+                toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
+
+                setFormLogin(data)
+                setIsLogged(true)
+                navigate('/')
             })
             .catch((errors: yup.ValidationError) => {
                 console.log(errors);
