@@ -7,7 +7,9 @@ interface LoginContextData{
     setFormLogin: (value: YupSchemaLogin) => void,
 
     isLogged: boolean,
-    setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
+    setIsLogged: React.Dispatch<React.SetStateAction<boolean>>,
+
+    logOut: () => void
 }
 
 const LoginContext = createContext({} as LoginContextData)
@@ -18,12 +20,19 @@ function LoginContextProvider({children}:ChildrenProp) {
 
     const [isLogged, setIsLogged] = useState<boolean>(false);
 
+    function logOut(){
+        setFormLogin(undefined)
+        localStorage.removeItem('userIsLogged');
+        setIsLogged(false);
+    }
+
     return (
         <LoginContext.Provider value={{ 
             formLogin, 
             setFormLogin,
             isLogged,
-            setIsLogged
+            setIsLogged,
+            logOut
         }}>
             {children}
         </LoginContext.Provider>

@@ -19,7 +19,6 @@ export function Login() {
     const { setFormLogin, setIsLogged } = useContext(LoginContext)
 
 
-    //!temporário
     const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
@@ -36,7 +35,6 @@ export function Login() {
 
     function onSubmit(data: YupSchemaLogin) {
 
-        //! melhorar código
         if (create)  {
             createLoginSchema.validate(data, {abortEarly: false})
                 .then( async (valid) => {

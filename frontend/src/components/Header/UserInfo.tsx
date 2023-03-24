@@ -6,7 +6,7 @@ import { LoginContext } from "../../contexts";
 
 export function UserInfo (){
 
-    const { isLogged, formLogin } = useContext(LoginContext)
+    const { isLogged, formLogin, logOut } = useContext(LoginContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -53,7 +53,7 @@ export function UserInfo (){
 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
-            <Avatar sx={{ bgcolor: deepPurple[700] }} >G</Avatar>
+            <Avatar sx={{ bgcolor: deepPurple[700] }}>{formLogin?.name[0].toLocaleUpperCase()}</Avatar>
             {!mdDown &&
 
                 <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
@@ -78,6 +78,7 @@ export function UserInfo (){
                             variant="caption"
                             noWrap
                             sx={{ cursor: 'pointer' }}
+                            onClick={logOut}
                         >
                             SAIR
                         </Typography>
