@@ -17,14 +17,16 @@ export function InfoUser({infos, principalInfo}: InfoUserProps) {
                 {principalInfo}
             </Typography>
             {infos.map((info, index) => 
-                <Box key={index} display='flex' gap={1}>
-                    <Typography variant="subtitle1" fontWeight='bold'>
-                        {info.nome}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                        {info.dados}
-                    </Typography>
-                </Box>
+                ( info.dados && 
+                    <Box key={index} display='flex' gap={1}>
+                        <Typography variant="subtitle1" fontWeight='bold'>
+                            {info.nome}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                            {info.dados}
+                        </Typography>
+                    </Box>
+                )
             )}
         </Box>
     );

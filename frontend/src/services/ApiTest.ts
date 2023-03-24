@@ -6,25 +6,43 @@ export const ApiTest = axios.create({
 })
 
 export async function getAllUser(){
-    const { data } = await ApiTest('/login')
-    return data as DataApiTeste[];
+    try {
+        const { data } = await ApiTest('/login')
+        return data as DataApiTeste[];
+    }catch (error){
+        return new Error('API FAKE DESLIGADA: ' + error)
+    }
 }
 
 export async function getUserById(id: number) {
-    const { data } = await ApiTest(`/login/${id}`)
-    return data as DataApiTeste;
+    try {
+        const { data } = await ApiTest(`/login/${id}`)
+        return data as DataApiTeste;
+    }catch (error){
+        return new Error('API FAKE DESLIGADA: ' + error)
+    }
 }
 
-export async function createUser(user: YupSchemaLogin): Promise<DataApiTeste>{
-    const { data } = await ApiTest.post('/login', user)
-    return data as DataApiTeste;
+export async function createUser(user: YupSchemaLogin){
+    try {
+        const { data } = await ApiTest.post('/login', user)
+        return data as DataApiTeste;
+    }catch(error){
+        return new Error('API FAKE DESLIGADA: ' + error)
+    }
 }
 
 export async function login(user: Pick<YupSchemaLogin, 'email' | 'password'>){
+    
     const users = await getAllUser();
+
+    if(users instanceof Error){
+        return users
+    }
     const login = users.find(userCreated => userCreated.email === user.email)
 
     return login ?? 'Esse usuario nao existe.'
+    
 }
 
 export async function userIsLogged(){

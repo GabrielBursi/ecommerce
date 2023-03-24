@@ -104,7 +104,7 @@ export function RoutesApp() {
 
     useEffect(() => {
         userIsLogged().then(data => {
-            if(data){
+            if(data && !(data instanceof Error)){
                 setFormLogin(data)
                 setIsLogged(true)
             }

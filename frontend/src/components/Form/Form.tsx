@@ -6,23 +6,24 @@ import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup";
 import '../../TraducoesYup'
 
-import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
 
 import { YupSchemaLogin } from "../../types";
 import MaskedInput from "react-text-mask";
 import { MaskInputCpf } from "../Cart/Step2/utils";
 
-interface LoginPageProps {
+interface FormProps {
     nameForm: string,
     textButton: string,
     create: boolean,
     onSubmit: (data: YupSchemaLogin) => void,
     schemaCreate: yup.ObjectSchema<YupSchemaLogin, yup.AnyObject, any, "">,
-    schemaLogin: yup.ObjectSchema<Pick<YupSchemaLogin, "email" | "password">, yup.AnyObject, any, "">
+    schemaLogin: yup.ObjectSchema<Pick<YupSchemaLogin, "email" | "password">, yup.AnyObject, any, "">,
+    isLoading: boolean,
 }
 
-export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, schemaLogin }: LoginPageProps) {
+export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, schemaLogin, isLoading }: FormProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -96,6 +97,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                         render={({ field }) => 
                             <TextField
                                 {...field}
+                                disabled={isLoading}
                                 required
                                 label="Nome"
                                 fullWidth
@@ -111,6 +113,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                         render={({ field }) => 
                             <TextField
                                 {...field}
+                                disabled={isLoading}
                                 required
                                 label="CPF"
                                 fullWidth
@@ -134,6 +137,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                     render={({ field }) => 
                         <TextField
                             {...field}
+                            disabled={isLoading}
                             required
                             label="Email"
                             fullWidth
@@ -152,6 +156,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                                 render={({ field }) => 
                                     <TextField
                                         {...field}
+                                        disabled={isLoading}
                                         required
                                         type={showPassword ? 'text' : 'password'}
                                         label="Senha"
@@ -181,6 +186,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                                 render={({ field }) => 
                                     <TextField
                                         {...field}
+                                        disabled={isLoading}
                                         required
                                         type={showConfirmPassword ? 'text' : 'password'}
                                         label="Confirme sua senha"
@@ -211,6 +217,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                     render={({ field }) => 
                         <TextField
                             {...field}
+                            disabled={isLoading}
                             required
                             type={showPassword ? 'text' : 'password'}
                             label="Senha"
@@ -234,13 +241,14 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                     />
                 }
                 <Button 
+                    disabled={isLoading}
                     variant="contained" 
                     size="large" 
                     fullWidth 
                     startIcon={textButton === 'criar' ? '' : <LoginOutlined />}
                     onClick={handleSubmit(onSubmit)}
                 >
-                    {textButton}
+                    {isLoading ? <CircularProgress color="primary" sx={{fontSize: '0.6rem'}} /> : textButton}
                 </Button>
                 <Box
                     sx={{
