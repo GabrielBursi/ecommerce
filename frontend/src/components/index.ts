@@ -4,7 +4,7 @@ export * from './Form'
 
 export * from './Sidebar'
 
-export * from './Favorites'
+export * from './Lists'
 
 export * from './Cart'
 

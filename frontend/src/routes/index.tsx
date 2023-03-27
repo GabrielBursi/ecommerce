@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
-import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyOrders } from "../pages";
 import { ApiTest, convertCurrency, userIsLogged } from "../services";
 import { IProducts } from "../types";
 
@@ -266,17 +266,18 @@ export function RoutesApp() {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
+
             //!privado
             <Route path="/favorite" element={<PrivateRoute><FavoritePage /></PrivateRoute>} /> 
-            //!privado
+
+            <Route path="/precart/:id" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
             <Route path="/cart_empty" element={<PrivateRoute><CartEmptyPage /></PrivateRoute>} />
             <Route path="/cart" element={<PrivateRoute><CartEmptyRoute><CartPage /></CartEmptyRoute></PrivateRoute>} />
             <Route path="/cart/identification" element={<PrivateRoute><IndentificationPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment/confirm" element={<PrivateRoute><ConfirmPage /></PrivateRoute>} />
-            <Route path="/cart/identification/payment/confirm/done" element={<PrivateRoute><DonePage /></PrivateRoute>} /> 
-            //!privado
-            <Route path="/precart/:id" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
+            <Route path="/cart/identification/payment/confirm/done" element={<PrivateRoute><DonePage /></PrivateRoute>} />
+            <Route path="/my-orders" element={<PrivateRoute><MyOrders /></PrivateRoute>} /> 
         </Routes>
     );
 
