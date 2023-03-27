@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useMatch } from "react-router-dom";
 
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
@@ -11,14 +10,15 @@ import { ModalClearCart } from "../../Modal";
 import { ListOptionsCep } from "./ListOptionsCep";
 import { ProductInCart } from "./ProductInCart";
 
-export function ListProductsInCart() {
+interface ListProductsInCartProps {
+    showDetails?: boolean;
+}
+
+export function ListProductsInCart({ showDetails = false }: ListProductsInCartProps) {
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
 
     const [isOpen, setIsOpen] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-    const match = useMatch('/cart/identification/payment/confirm')
-    const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
     
     function clearCart() {
         setProductsInCart([])
@@ -32,10 +32,10 @@ export function ListProductsInCart() {
                 <Box display='flex' alignItems='center' gap={1} height='auto'>
                     <ShoppingBasketIcon color="primary" />
                     <Typography variant="h5" fontWeight='bold'>
-                        {isConfirmationPage ? 'LISTA DE PRODUTOS' : 'PRODUTO E FRETE'}  
+                        {showDetails ? 'LISTA DE PRODUTOS' : 'PRODUTO E FRETE'}  
                     </Typography>
                 </Box>
-                { !isConfirmationPage &&
+                { !showDetails &&
                     <Box display='flex' alignItems='center'>
                         <Button variant="outlined" color="error" startIcon={<DeleteIcon/>} onClick={() => setIsOpen(true)}>
                             REMOVER TODOS OS PRODUTOS
@@ -52,9 +52,10 @@ export function ListProductsInCart() {
                         name={product.name}
                         img={product.img}
                         price={product.price}
+                        hideDetails
                     />
                 ))}
-                { !isConfirmationPage && <ListOptionsCep/> }
+                { !showDetails && <ListOptionsCep/> }
             </Box>
         </Box>
     );

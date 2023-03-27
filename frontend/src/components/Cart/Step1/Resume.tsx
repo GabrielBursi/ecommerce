@@ -1,11 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export function Resume() {
+interface ResumeProps { 
+    showDetails?: boolean;
+}
+
+export function Resume({ showDetails = false }: ResumeProps) {
 
     const { productsInCart } = useContext(ProductsContext)
     const { addressList } = useContext(AddressContext)
@@ -14,8 +18,6 @@ export function Resume() {
     const [reCaptcha, setReCaptcha] = useState(true);
 
     const navigate = useNavigate()
-    const match = useMatch('/cart/identification/payment/confirm')
-    const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
     useEffect(() => {
         const soma = productsInCart.reduce((acumulador, product) => { 
@@ -57,7 +59,7 @@ export function Resume() {
                     </Typography>
                 </Box>
                 <Box display='flex' bgcolor='#e5fff1' flexDirection='column' justifyContent='center' alignItems='center' height='100%' paddingX={2}>
-                    {isConfirmationPage &&
+                    {showDetails &&
                         <Typography variant="caption">
                             FORMA DE PAGAMENTO: <b>{payment.toUpperCase()}</b>
                         </Typography>
@@ -71,7 +73,7 @@ export function Resume() {
                 </Box>
             </Box>
             <Box height='50%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' gap={2}>
-                {isConfirmationPage && 
+                {showDetails && 
                     <Box height='60%' width='100%' display='flex' justifyContent='center' alignItems='center'>
                         <Button>
                             <ReCAPTCHA
@@ -88,19 +90,19 @@ export function Resume() {
                         fullWidth 
                         size="large" 
                         sx={{ fontSize: '1.2rem' }} 
-                        disabled={isConfirmationPage ?  reCaptcha : addressList.length === 0} 
-                        onClick={() => isConfirmationPage ? navigate('/cart/identification/payment/confirm/done') : navigate('/cart/identification')}
+                        disabled={showDetails ?  reCaptcha : addressList.length === 0} 
+                        onClick={() => showDetails ? navigate('/cart/identification/payment/confirm/done') : navigate('/cart/identification')}
                     >
-                        {isConfirmationPage ? 'FINALIZAR' : 'IR PARA O PAGAMENTO'}
+                        {showDetails ? 'FINALIZAR' : 'IR PARA O PAGAMENTO'}
                     </Button>
                     <Button 
                         variant="outlined" 
                         fullWidth 
                         size="large" 
                         sx={{ fontSize: '1.2rem' }} 
-                        onClick={() => isConfirmationPage ? navigate('/cart/identification/payment') : navigate('/')}
+                        onClick={() => showDetails ? navigate('/cart/identification/payment') : navigate('/')}
                     >
-                        {isConfirmationPage ? 'VOLTAR' : 'CONTINUAR COMPRANDO'}
+                        {showDetails ? 'VOLTAR' : 'CONTINUAR COMPRANDO'}
                     </Button>
                 </Stack>
             </Box>
