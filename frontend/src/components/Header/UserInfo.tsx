@@ -1,8 +1,9 @@
+import { useContext, useState } from "react";
 import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../../contexts";
+import { ModalAction } from "../Modal";
 
 export function UserInfo (){
 
@@ -12,6 +13,8 @@ export function UserInfo (){
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     const navigate = useNavigate()
+
+    const [isOpen, setIsOpen] = useState(false);
 
     if (!isLogged) 
     return (
@@ -79,13 +82,20 @@ export function UserInfo (){
                             variant="caption"
                             noWrap
                             sx={{ cursor: 'pointer' }}
-                            onClick={logOut}
+                            onClick={() => setIsOpen(true)}
                         >
                             SAIR
                         </Typography>
                     </Box>
                 </Box>
             }
+            <ModalAction
+                action={logOut}
+                isOpen={isOpen}
+                question="Tem certeza que deseja sair da conta?"
+                title="SAIR DA CONTA"
+                setIsOpen={setIsOpen}
+            />
         </Box>
     );
 }

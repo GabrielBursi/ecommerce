@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IProducts, id } from "../../../types";
 import { MyImage } from "../../Products";
 import { ProductsContext } from "../../../contexts";
-import { ModalClearCart } from "../../Modal";
+import { ModalAction } from "../../Modal";
 
 interface ProductInCartProps extends IProducts{
     hideDetails?: boolean
@@ -56,7 +56,13 @@ export function ProductInCart({ id, img, name, price, hideDetails = false }: Pro
 
     return (
         <Box width='100%' height='160px' display='flex' alignItems='center' justifyContent='center' gap={2}>
-            <ModalClearCart action={removeProductCart} question='Você tem certeza que deseja remover esse produto do carrinho?' isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ModalAction 
+                action={removeProductCart} 
+                question='Você tem certeza que deseja remover esse produto do carrinho?' 
+                isOpen={isOpen} 
+                setIsOpen={setIsOpen}
+                title='REMOVER PRODUTO'
+            />
             <Box width='auto' minWidth='10%' height='auto' maxHeight='200px' display='flex' alignItems='center' justifyContent='center'>
                 <MyImage alt={name} src={img} height='auto' width='100px'/>
             </Box>

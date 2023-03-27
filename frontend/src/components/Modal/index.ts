@@ -1,5 +1,5 @@
 export * from './ModalCEP'
 export * from './ModalURL'
-export * from './ModalClearCart'
+export * from './ModalAction'
 export * from './ModalAddress'
 export * from './ModalAddressList'

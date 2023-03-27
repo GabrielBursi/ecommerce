@@ -5,7 +5,8 @@ interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
     action: () => void,
-    question: string
+    question: string,
+    title: string,
 }
 
 const customStyles = {
@@ -21,14 +22,14 @@ const customStyles = {
 
 Modal.setAppElement('#root')
 
-export function ModalClearCart({ isOpen, setIsOpen, question, action }: ModalProps) {
+export function ModalAction({ isOpen, setIsOpen, question, action, title }: ModalProps) {
 
     return (
         <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
             <Box display='flex' flexDirection='column' gap={2}>
                 <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                     <Typography variant='h5' fontWeight='bold'>
-                        REMOVER PRODUTOS
+                        {title}
                     </Typography>
                     <Typography variant='subtitle1' fontWeight='light'>
                         {question}

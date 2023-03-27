@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { ProductsContext } from "../../../contexts";
 
-import { ModalClearCart } from "../../Modal";
+import { ModalAction } from "../../Modal";
 import { ListOptionsCep } from "./ListOptionsCep";
 import { ProductInCart } from "./ProductInCart";
 
@@ -27,7 +27,13 @@ export function ListProductsInCart({ showDetails = false }: ListProductsInCartPr
 
     return (
         <Box height='auto' component={Paper} elevation={2} padding={2} display='flex' flexDirection='column' gap={2}>
-            <ModalClearCart isOpen={isOpen} setIsOpen={setIsOpen} question='Você tem certeza que deseja remover todos os produtos do carrinho?' action={clearCart} />
+            <ModalAction 
+                isOpen={isOpen} 
+                setIsOpen={setIsOpen} 
+                question='Você tem certeza que deseja remover todos os produtos do carrinho?' 
+                action={clearCart} 
+                title='REMOVER PRODUTOS'
+            />
             <Box display='flex' alignItems='center' justifyContent='space-between'>
                 <Box display='flex' alignItems='center' gap={1} height='auto'>
                     <ShoppingBasketIcon color="primary" />
