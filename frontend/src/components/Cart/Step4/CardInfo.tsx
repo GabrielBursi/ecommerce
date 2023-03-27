@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Box } from '@mui/material'
-import Cards from 'react-credit-cards';
-import 'react-credit-cards/es/styles-compiled.css';
+import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/es/styles-compiled.css';
 import { ResumeContext } from '../../../contexts';
 
 export const CardInfo = () => {
