@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Box, Grid, TextField, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import '../../../TraducoesYup'
 
 import MaskedInput from "react-text-mask";
 import { MaskInputCardNumber, MaskInputCpf, MaskInputCvv, MaskInputDate, MaskInputValidate } from "./utils";
+import { ResumeContext } from "../../../contexts";
 
 interface FormCardData {
     name: string;
@@ -34,6 +36,8 @@ interface FormCardProps {
 
 export function FormCard({ formRef }: FormCardProps) {
 
+    const { setCreditCardData } = useContext(ResumeContext)
+
     const navigate = useNavigate()
 
     const {
@@ -48,7 +52,7 @@ export function FormCard({ formRef }: FormCardProps) {
     function onSubmit(data: FormCardData){
         cardSchema.validate(data, { abortEarly: false })
         .then(validData => {
-                console.log('valid', validData)
+                setCreditCardData(validData)
                 navigate('/cart/identification/payment/confirm')
             })
     }

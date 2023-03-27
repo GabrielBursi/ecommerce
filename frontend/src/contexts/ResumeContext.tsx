@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { CepOptions, ChildrenProp } from "../types";
+import { CepOptions, ChildrenProp, CreditCardData } from "../types";
 
 interface ResumeContextData {
     frete: number,
@@ -12,6 +12,8 @@ interface ResumeContextData {
     setSomeProducts: (value: number) => void,
     payment: string, 
     setPayment: (value: string) => void,
+    creditCardData: CreditCardData | undefined, 
+    setCreditCardData: (value: CreditCardData) => void
 }
 
 export const ResumeContext = createContext({} as ResumeContextData)
@@ -33,6 +35,7 @@ export function ResumeContextProvider({children}: ChildrenProp){
     const [someProducts, setSomeProducts] = useState<number>(0);
 
     const [payment, setPayment] = useState<string>('');
+    const [creditCardData, setCreditCardData] = useState<CreditCardData>();
 
     return (
         <ResumeContext.Provider value={{
@@ -45,7 +48,9 @@ export function ResumeContextProvider({children}: ChildrenProp){
             someProducts, 
             setSomeProducts,
             payment, 
-            setPayment
+            setPayment,
+            creditCardData, 
+            setCreditCardData
         }}>
             {children}
         </ResumeContext.Provider>
