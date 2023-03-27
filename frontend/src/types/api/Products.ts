@@ -20,3 +20,10 @@ export interface DepartmentCardProps {
     src: string,
     to: string
 }
+
+export interface MyOrdersData {
+    number: string,
+    status: boolean,
+    date: string,
+    payment: string,
+}

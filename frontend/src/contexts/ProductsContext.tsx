@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { ChildrenProp, DepartmentCardProps, id, IProducts } from "../types";
+import { ChildrenProp, DepartmentCardProps, id, IProducts, MyOrdersData } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -19,6 +19,8 @@ interface ProductsContextData {
     removeProductFavorited(id: id): void,
 
     filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
+    myOrders: MyOrdersData[], 
+    setMyOrders: (value: MyOrdersData[]) => void
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -28,6 +30,7 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [products, setProducts] = useState<IProducts[]>([]); 
     const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
+    const [myOrders, setMyOrders] = useState<MyOrdersData[]>([]);
 
     const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
 
@@ -95,6 +98,8 @@ function ProductsProvider({ children }: ChildrenProp) {
             addProductInFavorited,
             removeProductFavorited,
             filterProductsAndSetFavoriteOrInCart,
+            myOrders, 
+            setMyOrders
         }}>
             {children}
         </ProductsContext.Provider>

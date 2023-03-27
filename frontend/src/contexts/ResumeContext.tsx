@@ -13,7 +13,7 @@ interface ResumeContextData {
     payment: string, 
     setPayment: (value: string) => void,
     creditCardData: CreditCardData | undefined, 
-    setCreditCardData: (value: CreditCardData) => void
+    setCreditCardData: (value: CreditCardData) => void,
 }
 
 export const ResumeContext = createContext({} as ResumeContextData)
@@ -50,7 +50,7 @@ export function ResumeContextProvider({children}: ChildrenProp){
             payment, 
             setPayment,
             creditCardData, 
-            setCreditCardData
+            setCreditCardData,
         }}>
             {children}
         </ResumeContext.Provider>

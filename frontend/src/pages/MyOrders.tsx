@@ -1,12 +1,14 @@
+import { useContext } from "react";
 import { Box, Typography } from "@mui/material"
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 import { LayoutBase } from "../layouts"
 import { ListMyOrders } from "../components";
+import { ProductsContext } from "../contexts";
 
 export const MyOrders = () => {
 
-    const date = new Date(Date.now()).toLocaleString().split(',')[0];
+    const { myOrders } = useContext(ProductsContext)
 
     return (
         <LayoutBase showActions showResearchInput showTabBar showUserInfo>
@@ -18,7 +20,15 @@ export const MyOrders = () => {
                         </Typography>
                     </Box>
                     <Box flex={1} display='flex' flexDirection='column' gap={2}>
-                        <ListMyOrders date={date} number='#33378187' payment={"pix".toUpperCase()} status={true}/>
+                        {myOrders.map(order => 
+                            <ListMyOrders 
+                                key={order.number}
+                                date={order.date} 
+                                number={order.number}
+                                payment={order.payment} 
+                                status={order.status}
+                            />
+                        )}
                     </Box>
                 </Box>
             </Box>
