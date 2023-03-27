@@ -245,7 +245,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                     variant="contained" 
                     size="large" 
                     fullWidth 
-                    startIcon={textButton === 'criar' ? '' : <LoginOutlined />}
+                    startIcon={textButton === 'criar' ? '' :  isLoading ? '' : <LoginOutlined />}
                     onClick={handleSubmit(onSubmit)}
                 >
                     {isLoading ? <CircularProgress color="primary" sx={{fontSize: '0.6rem'}} /> : textButton}
