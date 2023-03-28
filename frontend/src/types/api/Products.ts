@@ -21,7 +21,7 @@ export interface DepartmentCardProps {
     to: string
 }
 
-export interface MyOrdersData {
+export interface MyRequestsData {
     number: string,
     status: boolean,
     date: string,

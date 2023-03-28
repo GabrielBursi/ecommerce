@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
-import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyOrders } from "../pages";
+import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
 import { getAllProducts, userIsLogged } from "../services";
 
 export function RoutesApp() {
@@ -22,7 +22,9 @@ export function RoutesApp() {
         
         getAllProducts(false, false)
             .then(products => {
-                setProducts(products)
+                if(Array.isArray(products)){
+                    setProducts(products)
+                }
             })
         setArrImgBanner([
             {
@@ -190,7 +192,7 @@ export function RoutesApp() {
             <Route path="/cart/identification/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment/confirm" element={<PrivateRoute><ConfirmPage /></PrivateRoute>} />
             <Route path="/cart/identification/payment/confirm/done" element={<PrivateRoute><DonePage /></PrivateRoute>} />
-            <Route path="/my-orders" element={<PrivateRoute><MyOrders /></PrivateRoute>} /> 
+            <Route path="/my-requests" element={<PrivateRoute><MyRequests /></PrivateRoute>} /> 
         </Routes>
     );
 

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material"
 import { IProducts } from "../../types"
 import { MyImage } from "./MyImage"
 
-export const MyOrdersList = ({ img, name, price, quant }: IProducts) => {
+export const MyRequestsList = ({ img, name, price, quant }: IProducts) => {
 
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')

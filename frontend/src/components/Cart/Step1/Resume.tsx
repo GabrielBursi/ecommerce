@@ -4,11 +4,11 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 import ReCAPTCHA from "react-google-recaptcha";
-import { MyOrdersData } from "../../../types";
+import { MyRequestsData } from "../../../types";
 
 export function Resume() {
 
-    const { productsInCart, setProductsInCart, setMyOrders, myOrders } = useContext(ProductsContext)
+    const { productsInCart, setProductsInCart, setMyRequests, myRequests } = useContext(ProductsContext)
     const { addressList } = useContext(AddressContext)
     const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
 
@@ -23,7 +23,7 @@ export function Resume() {
 
         const orderNumber = Math.floor(Math.random() * 999999)
 
-        const newOrder: MyOrdersData = {
+        const newOrder: MyRequestsData = {
             date: new Date(Date.now()).toISOString(),
             number: `#${orderNumber}`,
             payment: payment.toUpperCase(),
@@ -31,7 +31,7 @@ export function Resume() {
             products: productsInCart
         }
 
-        setMyOrders([...myOrders, newOrder])
+        setMyRequests([...myRequests, newOrder])
         setProductsInCart([])
         setOrderNumber(orderNumber);
         navigate('/cart/identification/payment/confirm/done')

@@ -72,7 +72,7 @@ export function UserInfo (){
                             variant="caption"
                             noWrap
                             sx={{ cursor: 'pointer' }}
-                            onClick={() => navigate('/my-orders')}
+                            onClick={() => navigate('/my-requests')}
                         >
                             
                             MEUS PEDIDOS

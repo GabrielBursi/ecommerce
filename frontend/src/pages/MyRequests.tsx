@@ -3,18 +3,18 @@ import { Box, Typography } from "@mui/material"
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 import { LayoutBase } from "../layouts"
-import { EmptyMessage, ListMyOrders } from "../components";
+import { EmptyMessage, ListMyRequests } from "../components";
 import { ProductsContext } from "../contexts";
 
-export const MyOrders = () => {
+export const MyRequests = () => {
 
-    const { myOrders } = useContext(ProductsContext)
+    const { myRequests } = useContext(ProductsContext)
 
     return (
         <LayoutBase showActions showResearchInput showTabBar showUserInfo>
             <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='auto'>
                 <Box display='flex' flexDirection='column' width='75%' height='100%' paddingY={2} gap={2}>
-                    {myOrders.length > 0 ? 
+                    {myRequests.length > 0 ? 
                         <>
                             <Box height="10%" display='flex' alignItems='center'>
                                 <Typography variant="h2" color='primary'>
@@ -23,12 +23,12 @@ export const MyOrders = () => {
                             </Box>
                             <Box flex={1} display='flex' flexDirection='column' gap={2}>
                                 {
-                                    myOrders.sort((a, b) => {
+                                    myRequests.sort((a, b) => {
                                         let x = new Date(b.date).valueOf()
                                         let y = new Date(a.date).valueOf()
                                         return x - y
                                     }).map(order => 
-                                        <ListMyOrders 
+                                        <ListMyRequests 
                                             key={order.number}
                                             date={order.date} 
                                             number={order.number}

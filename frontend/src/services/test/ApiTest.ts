@@ -14,9 +14,12 @@ export async function getAllProducts(convert = false, urlRelativa = false ,lengh
 
         if(urlRelativa){
             const newUrl = `/products100?_page=${page}&_limit=${lenght}`
-            const { data } = await ApiTest(newUrl)
+            const { data, headers } = await ApiTest(newUrl)
 
-            return data as IProducts[]
+            return {
+                data: data as IProducts[],
+                totalCount: Number(headers['x-total-count'])
+            }
         }
 
         const res = await ApiTest(`/products${lenght}`)

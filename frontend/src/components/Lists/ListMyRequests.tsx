@@ -3,10 +3,10 @@ import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { AddressContext, ResumeContext } from "../../contexts";
-import { MyOrdersData } from "../../types";
-import { MyOrdersList } from "../Products";
+import { MyRequestsData } from "../../types";
+import { MyRequestsList } from "../Products";
 
-export const ListMyOrders = ({ date, number, payment, status, products }: MyOrdersData) => {
+export const ListMyRequests = ({ date, number, payment, status, products }: MyRequestsData) => {
 
     const [showDetails, setShowDetails] = useState(false);
 
@@ -78,7 +78,7 @@ export const ListMyOrders = ({ date, number, payment, status, products }: MyOrde
                             PRODUTO(S)
                         </Typography>
                         {products.map(product => 
-                            <MyOrdersList
+                            <MyRequestsList
                                 key={product.id}
                                 id={product.id}
                                 name={product.name}

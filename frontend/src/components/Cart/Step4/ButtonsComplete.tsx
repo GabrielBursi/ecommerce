@@ -7,7 +7,7 @@ export const ButtonsComplete = () => {
 
     return (
         <Box width='50%' display='flex' gap={2}>
-            <Button fullWidth size="large" sx={{fontSize: '1.2rem'}} variant="outlined" onClick={() => navigate('/my-orders')}>
+            <Button fullWidth size="large" sx={{fontSize: '1.2rem'}} variant="outlined" onClick={() => navigate('/my-requests')}>
                 VER MEUS PEDIDOS
             </Button>
             <Button fullWidth size="large" sx={{fontSize: '1.2rem'}} variant="contained" onClick={() => navigate('/')}>
