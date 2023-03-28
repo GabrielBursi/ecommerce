@@ -3,15 +3,15 @@ import { Box, MenuItem, Paper, Select, SelectChangeEvent, Slider, Typography, us
 import { ProductsContext } from "../../../contexts";
 
 interface FilterProps {
-    product?: string
+    product?: string,
+    filterPage: string, 
+    setFilterPage: (value: string) => void,
+    setNumberFilterPage: (value: number) => void
 }
 
-export function Filter({ product }: FilterProps) {
+export function Filter({ product, filterPage, setFilterPage, setNumberFilterPage }: FilterProps) {
 
     const { products } = useContext(ProductsContext)
-
-    const [filterPage, setFilterPage] = useState('20 por página');
-    const [numberFilterPage, setNumberFilterPage] = useState(Number(filterPage.split(' ')[0]));
 
     const [highestPrice, setHighestPrice] = useState(1000);
     const [lowestPrice, setLowestPrice] = useState(100);
@@ -41,8 +41,6 @@ export function Filter({ product }: FilterProps) {
     
     useEffect(() => {
         setNumberFilterPage(Number(filterPage.split(' ')[0]))
-        console.log('Filtro de página: ', numberFilterPage);
-        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterPage]);
 

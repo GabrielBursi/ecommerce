@@ -9,11 +9,11 @@ export const ApiTest = axios.create({
     baseURL: 'http://localhost:3333/'
 })
 
-export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = 1){
+export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = '1'){
     try {
 
         if(urlRelativa){
-            const newUrl = `/products/100?_page=${page}&_limit=${lenght}`
+            const newUrl = `/products100?_page=${page}&_limit=${lenght}`
             const { data } = await ApiTest(newUrl)
 
             return data as IProducts[]

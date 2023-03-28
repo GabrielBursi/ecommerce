@@ -32,7 +32,7 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
     }, [productsFavorited, productsInCart]);
 
     return (
-        <Card sx={{ width: 290, height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>
+        <Card sx={{ width: '100%', height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>
             <CardActionArea>
                 <Box
                     sx={{
