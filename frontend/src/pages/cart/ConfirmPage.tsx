@@ -13,9 +13,9 @@ export function ConfirmPage() {
                     <Box width='100%' height='100%' display='flex' gap={4}>
                         <Box flex={1} display='flex' flexDirection='column' gap={4}>
                             <InfoRequest/>
-                            <ListProductsInCart showDetails/>
+                            <ListProductsInCart/>
                         </Box>
-                        <Resume showDetails/>
+                        <Resume/>
                     </Box>
                 </Box>
             </Box>

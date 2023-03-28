@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useMatch } from "react-router-dom";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -8,17 +9,16 @@ import { MyImage } from "../../Products";
 import { ProductsContext } from "../../../contexts";
 import { ModalAction } from "../../Modal";
 
-interface ProductInCartProps extends IProducts{
-    hideDetails?: boolean
-}
-
-export function ProductInCart({ id, img, name, price, hideDetails = false }: ProductInCartProps) {
+export function ProductInCart({ id, img, name, price }: IProducts) {
 
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
     const [isOpen, setIsOpen] = useState(false);
 
     const product = productsInCart.filter(product => product.id === id)
     const [quant, setQuant] = useState(product[0].quant || 1);
+
+    const match = useMatch('/cart/identification/payment/confirm')
+    const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
     useEffect(() => {
         updateProductQuantity(id, quant)
@@ -87,7 +87,7 @@ export function ProductInCart({ id, img, name, price, hideDetails = false }: Pro
                     Quantidade
                 </Typography>
                 <Box width='60%' height='40%' display='flex' alignItems='center' justifyContent='center' gap={2}>
-                    { !hideDetails &&
+                    { !isConfirmationPage &&
                         <IconButton size="small" color="primary" onClick={removeQuant} disabled = {quant === 1}>
                             <ArrowBackIosIcon/>
                         </IconButton>
@@ -95,13 +95,13 @@ export function ProductInCart({ id, img, name, price, hideDetails = false }: Pro
                     <Typography color='black' variant='h6' fontWeight='bold'>
                         {quant}
                     </Typography>
-                    { !hideDetails &&
+                    { !isConfirmationPage &&
                         <IconButton size="small" color="primary" onClick={addQuant}>
                             <ArrowForwardIosIcon />
                         </IconButton>
                     }
                 </Box>
-                { !hideDetails &&
+                { !isConfirmationPage &&
                     <Button color="error" startIcon={<DeleteIcon />} size="small" onClick={() => setIsOpen(true)}>
                         REMOVER
                     </Button>
