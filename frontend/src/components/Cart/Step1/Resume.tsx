@@ -4,10 +4,11 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 import ReCAPTCHA from "react-google-recaptcha";
+import { MyOrdersData } from "../../../types";
 
 export function Resume() {
 
-    const { productsInCart } = useContext(ProductsContext)
+    const { productsInCart, setProductsInCart, setMyOrders, myOrders } = useContext(ProductsContext)
     const { addressList } = useContext(AddressContext)
     const { frete, setSomeProducts, setTotal, someProducts, total, payment } = useContext(ResumeContext)
 
@@ -17,6 +18,21 @@ export function Resume() {
 
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
+
+    function finishPurchase(){
+
+        const newOrder: MyOrdersData = {
+            date: new Date(Date.now()).toLocaleString().split(',')[0],
+            number: `#${Math.floor(Math.random() * 999999)}`,
+            payment: payment.toUpperCase(),
+            status: true,
+            products: productsInCart
+        }
+
+        setMyOrders([...myOrders, newOrder])
+        setProductsInCart([])
+        navigate('/cart/identification/payment/confirm/done')
+    }
 
     useEffect(() => {
         const soma = productsInCart.reduce((acumulador, product) => { 
@@ -90,7 +106,7 @@ export function Resume() {
                         size="large" 
                         sx={{ fontSize: '1.2rem' }} 
                         disabled={isConfirmationPage ?  reCaptcha : addressList.length === 0} 
-                        onClick={() => isConfirmationPage ? navigate('/cart/identification/payment/confirm/done') : navigate('/cart/identification')}
+                        onClick={() => isConfirmationPage ? finishPurchase() : navigate('/cart/identification')}
                     >
                         {isConfirmationPage ? 'FINALIZAR' : 'IR PARA O PAGAMENTO'}
                     </Button>

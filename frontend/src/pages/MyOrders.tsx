@@ -29,6 +29,7 @@ export const MyOrders = () => {
                                         number={order.number}
                                         payment={order.payment} 
                                         status={order.status}
+                                        products={order.products}
                                     />
                                 )}
                             </Box>

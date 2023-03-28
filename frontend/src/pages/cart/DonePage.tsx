@@ -1,26 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { Box, Typography } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import { ButtonsComplete, CardPayment, PixPayment, Steps } from "../../components";
 import { LayoutBase } from "../../layouts";
-import { ProductsContext, ResumeContext } from "../../contexts";
+import { ResumeContext } from "../../contexts";
 
 export function DonePage() {
 
     const { payment } = useContext(ResumeContext)
-    const { setMyOrders, myOrders } = useContext(ProductsContext)
-
-    useEffect(() => {
-        setMyOrders([...myOrders, { 
-            date: new Date(Date.now()).toLocaleString().split(',')[0], 
-            number: `#${Math.floor(Math.random() * 999999) }`,
-            payment: payment.toUpperCase(),
-            status: true
-        }])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <LayoutBase showUserInfo>

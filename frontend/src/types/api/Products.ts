@@ -26,4 +26,5 @@ export interface MyOrdersData {
     status: boolean,
     date: string,
     payment: string,
+    products: IProducts[],
 }

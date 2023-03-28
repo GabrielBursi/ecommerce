@@ -2,26 +2,19 @@ import { useContext, useState } from "react";
 import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { AddressContext, ProductsContext, ResumeContext } from "../../contexts";
-import { ProductInCart } from "../Cart";
+import { AddressContext, ResumeContext } from "../../contexts";
+import { MyOrdersData } from "../../types";
+import { MyOrdersList } from "../Products";
 
-interface ListMyOrdersProps {
-    number: string,
-    status: boolean,
-    date: string,
-    payment: string,
-}
-
-export const ListMyOrders = ({ date, number, payment, status }: ListMyOrdersProps) => {
+export const ListMyOrders = ({ date, number, payment, status, products }: MyOrdersData) => {
 
     const [showDetails, setShowDetails] = useState(false);
 
     const { formData } = useContext(AddressContext)
-    const { productsInCart } = useContext(ProductsContext)
     const { frete, someProducts, total } = useContext(ResumeContext)
 
     return (
-        <Box component={Paper} display='flex' alignItems='center' flexDirection='column' width='100%' height='auto' padding={2} gap={2} elevation={2}>
+        <Box component={Paper} display='flex' alignItems='center' flexDirection='column' width='100%' height='auto' padding={4} gap={2} elevation={2}>
             <Box display='flex' alignItems='center' width='100%' height='100%'>
                 <Box width='18%' height='100%' display='flex' alignItems='start' justifyContent='center' flexDirection='column' gap={3}>
                     <Typography variant="h6" fontWeight='bold'>
@@ -84,14 +77,14 @@ export const ListMyOrders = ({ date, number, payment, status }: ListMyOrdersProp
                         <Typography variant="subtitle1" fontWeight='bold'>
                             PRODUTO(S)
                         </Typography>
-                        {productsInCart.map(product => 
-                            <ProductInCart
+                        {products.map(product => 
+                            <MyOrdersList
                                 key={product.id}
                                 id={product.id}
                                 name={product.name}
                                 img={product.img}
                                 price={product.price}
-                                hideDetails
+                                quant={product.quant}
                             />
                         )}
                     </Box>
