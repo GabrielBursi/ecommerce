@@ -37,7 +37,7 @@ export const ListMyOrders = ({ date, number, payment, status, products }: MyOrde
                         DATA
                     </Typography>
                     <Typography variant="subtitle1">
-                        {date}
+                        {new Date(date).toLocaleString().split(',')[0]}
                     </Typography>
                 </Box>
                 <Box width='18%' height='100%' display='flex' alignItems='start' justifyContent='center' flexDirection='column' gap={3}>

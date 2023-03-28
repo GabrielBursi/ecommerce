@@ -10,7 +10,7 @@ export function Resume() {
 
     const { productsInCart, setProductsInCart, setMyOrders, myOrders } = useContext(ProductsContext)
     const { addressList } = useContext(AddressContext)
-    const { frete, setSomeProducts, setTotal, someProducts, total, payment } = useContext(ResumeContext)
+    const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
 
     const [reCaptcha, setReCaptcha] = useState(true);
 
@@ -21,9 +21,11 @@ export function Resume() {
 
     function finishPurchase(){
 
+        const orderNumber = Math.floor(Math.random() * 999999)
+
         const newOrder: MyOrdersData = {
-            date: new Date(Date.now()).toLocaleString().split(',')[0],
-            number: `#${Math.floor(Math.random() * 999999)}`,
+            date: new Date(Date.now()).toISOString(),
+            number: `#${orderNumber}`,
             payment: payment.toUpperCase(),
             status: true,
             products: productsInCart
@@ -31,6 +33,7 @@ export function Resume() {
 
         setMyOrders([...myOrders, newOrder])
         setProductsInCart([])
+        setOrderNumber(orderNumber);
         navigate('/cart/identification/payment/confirm/done')
     }
 

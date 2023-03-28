@@ -22,16 +22,22 @@ export const MyOrders = () => {
                                 </Typography>
                             </Box>
                             <Box flex={1} display='flex' flexDirection='column' gap={2}>
-                                {myOrders.map(order => 
-                                    <ListMyOrders 
-                                        key={order.number}
-                                        date={order.date} 
-                                        number={order.number}
-                                        payment={order.payment} 
-                                        status={order.status}
-                                        products={order.products}
-                                    />
-                                )}
+                                {
+                                    myOrders.sort((a, b) => {
+                                        let x = new Date(b.date).valueOf()
+                                        let y = new Date(a.date).valueOf()
+                                        return x - y
+                                    }).map(order => 
+                                        <ListMyOrders 
+                                            key={order.number}
+                                            date={order.date} 
+                                            number={order.number}
+                                            payment={order.payment} 
+                                            status={order.status}
+                                            products={order.products}
+                                        />
+                                    )
+                                }
                             </Box>
                         </>
                         : 
