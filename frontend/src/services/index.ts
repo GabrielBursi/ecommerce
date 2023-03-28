@@ -1,3 +1,3 @@
 export * from './ApiConfig'
-export * from './ApiTest'
+export * from './test/ApiTest'
 export * from './ApiExchangeRate'
