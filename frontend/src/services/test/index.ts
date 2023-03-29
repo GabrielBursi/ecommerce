@@ -1,1 +1,1 @@
-export * from './arrayTeste'
+export * from './ApiTest'

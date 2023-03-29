@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { DataApiTeste, IProducts, YupSchemaLogin } from '../../types';
 import { convertCurrency } from '../ApiExchangeRate';
-import { arrayTESTE } from './arrayTeste';
+import { arrayTESTE, formaProductPrice } from '../utils';
 
 type lenght = 20 | 40 | 60 | 80 | 100
 
@@ -12,19 +12,34 @@ export const ApiTest = axios.create({
 export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = '1'){
     try {
 
-        if(urlRelativa){
+        if(urlRelativa && !convert){ 
             const newUrl = `/products100?_page=${page}&_limit=${lenght}`
             const { data, headers } = await ApiTest(newUrl)
 
+            const dataWithProductPriceNumber = formaProductPrice(data as IProducts[])
+
             return {
-                data: data as IProducts[],
+                data: dataWithProductPriceNumber,
+                totalCount: Number(headers['x-total-count'])
+            }
+        }
+
+        if (urlRelativa && convert) {
+            const newUrl = `/products100?_page=${page}&_limit=${lenght}`
+            const { data, headers } = await ApiTest(newUrl)
+
+            const dataWithProductPriceNumber = formaProductPrice(data as IProducts[])
+            const dataPriceConverted = await convertCurrency(dataWithProductPriceNumber)
+
+            return {
+                data: dataPriceConverted,
                 totalCount: Number(headers['x-total-count'])
             }
         }
 
         const res = await ApiTest(`/products${lenght}`)
 
-        if(convert){
+        if(convert && !urlRelativa){
             const productsWithPriceConverted = await convertCurrency(res.data)
             return productsWithPriceConverted
         }
@@ -33,21 +48,14 @@ export async function getAllProducts(convert = false, urlRelativa = false ,lengh
 
     } catch (error) {
         alert(error + ' API FAKE NÃO ESTA NO AR, COMANDO PARA API FAKE: npm run server - USANDO ARRAY DE TESTE COM 10 PRODUTOS');
-        const arrayTESTEsemNumero = arrayTESTE.map(product => {
-            if (typeof product.price === 'string') {
-                return {
-                    ...product,
-                    price: Number(product.price.replace('R$', '').replace('$', '').replace(',', ''))
-                }
-            }
-            return product;
-        })
+        const arrayTesteSemNumero = formaProductPrice(arrayTESTE)
+
         if(convert){
-            const productsWithPriceConverted = await convertCurrency(arrayTESTEsemNumero)
+            const productsWithPriceConverted = await convertCurrency(arrayTesteSemNumero)
             return productsWithPriceConverted
         }
 
-        return arrayTESTEsemNumero
+        return arrayTesteSemNumero
     }
 }
 
