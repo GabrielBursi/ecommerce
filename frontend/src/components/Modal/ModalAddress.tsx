@@ -26,7 +26,7 @@ interface ModalProps {
     isNewAddress?: boolean
 }
 
-const addressSchema: yup.ObjectSchema<AddressFormData> = yup.object({
+const addressSchema: yup.ObjectSchema<Omit<AddressFormData, 'isSelected'>> = yup.object({
     cep: yup.string().required(),
     identification: yup.string().required(),
     street: yup.string().required(),
@@ -127,8 +127,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
     const onSubmit = (data: AddressFormData) => {
         addressSchema.validate(data, { abortEarly: false })
             .then(validData => { 
-                setAddressList([...addressList, validData])
-                setFormData(validData) 
+                setFormData({...validData, isSelected: true});
+                setAddressList([...addressList, validData]);
                 setIsOpen(false) 
             })
     };
@@ -157,6 +157,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             fullWidth 
                                             label='CEP'
@@ -183,6 +184,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             error={!!errors.identification}
                                             helperText={errors?.identification?.message}
@@ -200,6 +202,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             error={!!errors.street}
                                             helperText={errors?.street?.message}
@@ -219,6 +222,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field: {ref, ...field} }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             inputRef={ref}
                                             variant='outlined'
                                             error={!!errors.number}
@@ -237,6 +241,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             error={!!errors.complement}
                                             helperText={errors?.complement?.message}
@@ -254,6 +259,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             error={!!errors.ref}
                                             helperText={errors?.ref?.message}
@@ -271,6 +277,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='outlined'
                                             error={!!errors.neighborhood}
                                             helperText={errors?.neighborhood?.message}
@@ -289,6 +296,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='filled'
                                             error={!!errors.city}
                                             helperText={errors?.city?.message}
@@ -308,6 +316,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                     render={({ field }) => 
                                         <TextField 
                                             {...field}
+                                            autoComplete='off'
                                             variant='filled'
                                             error={!!errors.state}
                                             helperText={errors?.state?.message}

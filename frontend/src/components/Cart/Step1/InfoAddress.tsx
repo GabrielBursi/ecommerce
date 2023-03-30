@@ -37,7 +37,7 @@ export function InfoAddress({ street, complement, number, cep, city, state, iden
                     
                         <Box height='20%' display='flex' alignItems='center' justifyContent='end' gap={1}>
                             <ButtonEdit/>
-                            {!isSelected && <ButtonSelect addressSelected={{ street, complement, number, cep, city, state, identification, neighborhood: '' }}/>}
+                            {!isSelected && <ButtonSelect addressSelected={{ street, complement, number, cep, city, state, identification, neighborhood: '', isSelected: true }}/>}
                         </Box>
                     }
                 </>

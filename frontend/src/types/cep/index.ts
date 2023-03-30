@@ -16,9 +16,6 @@ export interface AddressFormData {
     identification: string;
     street: string;
     neighborhood: string;
-}
-
-export interface AddressList extends Omit<AddressFormData, | 'neighborhood'> {
     isSelected?: boolean;
 }
 

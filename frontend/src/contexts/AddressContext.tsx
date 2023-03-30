@@ -1,29 +1,37 @@
 import { createContext, useState } from "react";
-import { AddressFormData, ChildrenProp, AddressList } from "../types";
+import { AddressFormData, ChildrenProp } from "../types";
 
 interface AddressContextData {
     formData: AddressFormData | undefined,
     setFormData: React.Dispatch<React.SetStateAction<AddressFormData | undefined>>,
-    addressList: AddressList[],
-    setAddressList: React.Dispatch<React.SetStateAction<AddressList[]>>,
+    addressList: AddressFormData[],
+    setAddressList: React.Dispatch<React.SetStateAction<AddressFormData[]>>,
 
-    handleAddressSelect: (address: AddressFormData) => void,
+    handleAddressSelect: (address: AddressFormData | undefined) => void,
 }
 const AddressContext = createContext({} as AddressContextData)
 
 function AddressContextProvider({ children }: ChildrenProp) {
     
     const [formData, setFormData] = useState<AddressFormData>();
-    const [addressList, setAddressList] = useState<AddressList[]>([]);
+    const [addressList, setAddressList] = useState<AddressFormData[]>([]);
 
-    function handleAddressSelect(addressSelected: AddressFormData) {
-        setFormData(addressSelected);
-
-        const updatedAddress = addressList.map((option) =>
-            option.cep === addressSelected.cep ? { ...option, isSelected: true } : { ...option, isSelected: false }
-        );
-
-        setAddressList(updatedAddress);
+    function handleAddressSelect(addressSelected: AddressFormData | undefined) {
+        if(addressSelected){
+            setFormData(addressSelected);
+            if(addressList.length > 0){
+    
+                const updatedAddress: AddressFormData[] = addressList.map((option) => {
+                    console.log('option',option);
+                    
+                    return option.cep === addressSelected.cep ? { ...option, isSelected: true } : { ...option, isSelected: false }
+                });
+                
+                setAddressList(updatedAddress);
+                console.log('updatedAddress', addressList);
+            }
+            console.log('vazio');
+        }
     }
 
     return (

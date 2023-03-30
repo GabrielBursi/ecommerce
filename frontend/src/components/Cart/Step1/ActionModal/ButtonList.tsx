@@ -4,7 +4,7 @@ import { AddressContext } from "../../../../contexts";
 import { ModalAddressList } from "../../../Modal";
 
 export function ButtonList() {
-    const { addressList } = useContext(AddressContext)
+    const { addressList, formData, handleAddressSelect } = useContext(AddressContext)
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -16,7 +16,10 @@ export function ButtonList() {
             />
             <Button 
                 disabled={addressList.length === 0}
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    handleAddressSelect(formData)
+                    setIsOpen(true)
+                }}
             >
                 SELECIONAR OUTRO
             </Button>
