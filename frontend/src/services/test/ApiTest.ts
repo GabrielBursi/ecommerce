@@ -9,14 +9,23 @@ export const ApiTest = axios.create({
     baseURL: 'http://localhost:3333/'
 })
 
-export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = '1'){
+export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = '1', minPrice: number = 0, maxPrice: number = 999999){
     try {
 
         if(urlRelativa && !convert){ 
             const newUrl = `/products100?_page=${page}&_limit=${lenght}`
+
             const { data, headers } = await ApiTest(newUrl)
 
-            const dataWithProductPriceNumber = formaProductPrice(data as IProducts[])
+            const filteredPriceData = data.filter((product: IProducts) => {
+                if(typeof product.price === 'string'){
+                    const price = parseFloat(product.price.replace('$ ', ''))
+                    return price >= minPrice && price <= maxPrice
+                }
+                return product.price >= minPrice && product.price <= maxPrice
+            })
+
+            const dataWithProductPriceNumber = formaProductPrice(filteredPriceData as IProducts[])
 
             return {
                 data: dataWithProductPriceNumber,
@@ -28,7 +37,15 @@ export async function getAllProducts(convert = false, urlRelativa = false ,lengh
             const newUrl = `/products100?_page=${page}&_limit=${lenght}`
             const { data, headers } = await ApiTest(newUrl)
 
-            const dataWithProductPriceNumber = formaProductPrice(data as IProducts[])
+            const filteredPriceData = data.filter((product: IProducts) => {
+                if (typeof product.price === 'string') {
+                    const price = parseFloat(product.price.replace('$ ', ''))
+                    return price >= minPrice && price <= maxPrice
+                }
+                return product.price >= minPrice && product.price <= maxPrice
+            })
+
+            const dataWithProductPriceNumber = formaProductPrice(filteredPriceData as IProducts[])
             const dataPriceConverted = await convertCurrency(dataWithProductPriceNumber)
 
             return {
@@ -44,7 +61,8 @@ export async function getAllProducts(convert = false, urlRelativa = false ,lengh
             return productsWithPriceConverted
         }
 
-        return res.data as IProducts[]
+        const dataWithProductPriceNumber = formaProductPrice(res.data as IProducts[])
+        return  dataWithProductPriceNumber
 
     } catch (error) {
         alert(error + ' API FAKE NÃO ESTA NO AR, COMANDO PARA API FAKE: npm run server - USANDO ARRAY DE TESTE COM 10 PRODUTOS');

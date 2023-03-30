@@ -1,21 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box, MenuItem, Paper, Select, SelectChangeEvent, Slider, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { ProductsContext } from "../../../contexts";
 
 interface FilterProps {
-    product?: string,
     filterPage: string, 
     setFilterPage: (value: string) => void,
-    setNumberFilterPage: (value: number) => void
+    setFilterNumberPerPage: (value: number) => void,
+    setPriceFilter: (value: number[]) => void,
+    priceFilter: number[],
+    highestPrice: number,
+    lowestPrice: number,
 }
 
-export function Filter({ product, filterPage, setFilterPage, setNumberFilterPage }: FilterProps) {
+export function Filter({ 
+    filterPage, 
+    setFilterPage, 
+    setFilterNumberPerPage, 
+    setPriceFilter,
+    highestPrice, 
+    lowestPrice,
+    priceFilter
+}: FilterProps) {
 
-    const { products } = useContext(ProductsContext)
-
-    const [highestPrice, setHighestPrice] = useState(1000);
-    const [lowestPrice, setLowestPrice] = useState(100);
-    const [priceFilter, setPriceFilter] = useState<number[]>([lowestPrice, highestPrice]);
 
     function handleChangePrice(_: Event, newValue: number | number[], activeThumb: number){
         if (!Array.isArray(newValue)) {
@@ -40,20 +45,10 @@ export function Filter({ product, filterPage, setFilterPage, setNumberFilterPage
     }
     
     useEffect(() => {
-        setNumberFilterPage(Number(filterPage.split(' ')[0]))
+        setFilterNumberPerPage(Number(filterPage.split(' ')[0]))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterPage]);
 
-    useEffect(() => {
-        const menorValor = products.reduce((anterior, atual) => anterior.price < atual.price ? anterior : atual);
-        const maiorValor = products.reduce((anterior, atual) => anterior.price > atual.price ? anterior : atual);
-        if(typeof menorValor.price === 'number' && typeof maiorValor.price === 'number'){
-            setHighestPrice(maiorValor.price)
-            setLowestPrice(menorValor.price)
-        }
-        setPriceFilter([lowestPrice, highestPrice])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product]);
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
