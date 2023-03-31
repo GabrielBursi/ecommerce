@@ -36,7 +36,7 @@ export function InfoAddress({ street, complement, number, cep, city, state, iden
                     { isOnModal && 
                     
                         <Box height='20%' display='flex' alignItems='center' justifyContent='end' gap={1}>
-                            <ButtonEdit/>
+                            <ButtonEdit cep={cep}/>
                             {!isSelected && <ButtonSelect addressSelected={{ street, complement, number, cep, city, state, identification, neighborhood: '', isSelected: true }}/>}
                         </Box>
                     }

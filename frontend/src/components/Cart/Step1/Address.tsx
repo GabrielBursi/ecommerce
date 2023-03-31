@@ -29,7 +29,7 @@ export function Address() {
                 />
                 <Box height='20%' display='flex' alignItems='center' justifyContent='end'>
                     <Stack direction='row' spacing={2}>
-                        <ButtonEdit />
+                        <ButtonEdit cep={formData?.cep}/>
                         <ButtonList />
                         <ButtonNew />
                     </Stack>

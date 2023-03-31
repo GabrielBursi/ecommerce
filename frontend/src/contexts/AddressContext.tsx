@@ -22,15 +22,12 @@ function AddressContextProvider({ children }: ChildrenProp) {
             if(addressList.length > 0){
     
                 const updatedAddress: AddressFormData[] = addressList.map((option) => {
-                    console.log('option',option);
                     
                     return option.cep === addressSelected.cep ? { ...option, isSelected: true } : { ...option, isSelected: false }
                 });
                 
                 setAddressList(updatedAddress);
-                console.log('updatedAddress', addressList);
             }
-            console.log('vazio');
         }
     }
 

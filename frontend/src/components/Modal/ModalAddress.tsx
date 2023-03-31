@@ -23,7 +23,8 @@ interface ModalProps {
     setIsOpen: (value: boolean) => void,
     title: string,
     btnText: string,
-    isNewAddress?: boolean
+    isNewAddress?: boolean,
+    addressFind?: AddressFormData
 }
 
 const addressSchema: yup.ObjectSchema<Omit<AddressFormData, 'isSelected'>> = yup.object({
@@ -53,8 +54,7 @@ const customStyles = {
 
 Modal.setAppElement('#root')
 
-export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress = true }: ModalProps) {
-
+export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress = true, addressFind }: ModalProps) {
     const { 
             control, 
             handleSubmit, 
@@ -122,16 +122,38 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
             setValue('state', formData.state)
             setValue('number', formData.number)
         }
+        if(addressFind){
+            setValue('cep', addressFind.cep)
+            setValue('city', addressFind.city)
+            setValue('complement', addressFind.complement)
+            setValue('identification', addressFind.identification)
+            setValue('neighborhood', addressFind.neighborhood)
+            setValue('ref', addressFind.ref)
+            setValue('street', addressFind.street)
+            setValue('state', addressFind.state)
+            setValue('number', addressFind.number)
+        }
     }, [isOpen]);
 
-    const onSubmit = (data: AddressFormData) => {
+    function onSubmit(data: AddressFormData) {
         addressSchema.validate(data, { abortEarly: false })
-            .then(validData => { 
-                setFormData({...validData, isSelected: true});
-                setAddressList([...addressList, validData]);
-                setIsOpen(false) 
+        .then(validData => { 
+                if(addressFind){
+                    if(addressFind.cep === formData?.cep){
+                        setFormData({...validData, isSelected: true})
+                    }
+                    const addressChanged = addressList.findIndex(address => address.cep === addressFind.cep)
+                    addressList.splice(addressChanged, 1)
+                    setAddressList([...addressList, validData]);
+                    setIsOpen(false) 
+                    
+                }else{
+                    setFormData({...validData, isSelected: true});
+                    setAddressList([...addressList, validData]);
+                    setIsOpen(false) 
+                }
             })
-    };
+    }
 
     return (
         <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
