@@ -35,6 +35,7 @@ export const MyRequests = () => {
                                             payment={order.payment} 
                                             status={order.status}
                                             products={order.products}
+                                            address={order.address}
                                         />
                                     )
                                 }

@@ -1,3 +1,5 @@
+import { AddressFormData } from "../cep"
+
 export interface IProducts {
     id: id, //! a api tem uma propriedade asin que é única e string
     name: string,
@@ -27,4 +29,5 @@ export interface MyRequestsData {
     date: string,
     payment: string,
     products: IProducts[],
+    address: AddressFormData | undefined
 }

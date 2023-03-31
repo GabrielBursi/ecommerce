@@ -2,15 +2,14 @@ import { useContext, useState } from "react";
 import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { AddressContext, ResumeContext } from "../../contexts";
 import { MyRequestsData } from "../../types";
 import { MyRequestsList } from "../Products";
+import { ResumeContext } from "../../contexts";
 
-export const ListMyRequests = ({ date, number, payment, status, products }: MyRequestsData) => {
+export const ListMyRequests = ({ date, number, payment, status, products, address }: MyRequestsData) => {
 
     const [showDetails, setShowDetails] = useState(false);
 
-    const { formData } = useContext(AddressContext)
     const { frete, someProducts, total } = useContext(ResumeContext)
 
     return (
@@ -66,10 +65,10 @@ export const ListMyRequests = ({ date, number, payment, status, products }: MyRe
                             ENDEREÇO
                         </Typography>
                         <Typography variant="body1">
-                            {formData?.street}, Nº {formData?.number} - {formData?.complement},
+                            {address?.street}, Nº {address?.number}{ address?.complement && ` - ${address?.complement}`}
                         </Typography>
                         <Typography variant="body1">
-                            {formData?.neighborhood}, CEP {formData?.cep} - {formData?.city}, {formData?.state}
+                            {address?.neighborhood && ` - ${address?.neighborhood},`} CEP {address?.cep} - {address?.city}, {address?.state}
                         </Typography>
                     </Box>
                     <Divider flexItem/>

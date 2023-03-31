@@ -9,7 +9,7 @@ import { MyRequestsData } from "../../../types";
 export function Resume() {
 
     const { productsInCart, setProductsInCart, setMyRequests, myRequests } = useContext(ProductsContext)
-    const { addressList } = useContext(AddressContext)
+    const { addressList, formData } = useContext(AddressContext)
     const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
 
     const [reCaptcha, setReCaptcha] = useState(true);
@@ -28,7 +28,8 @@ export function Resume() {
             number: `#${orderNumber}`,
             payment: payment.toUpperCase(),
             status: true,
-            products: productsInCart
+            products: productsInCart,
+            address: formData
         }
 
         setMyRequests([...myRequests, newOrder])
