@@ -9,11 +9,19 @@ export const ApiTest = axios.create({
     baseURL: 'http://localhost:3333/'
 })
 
-export async function getAllProducts(convert = false, urlRelativa = false ,lenght: lenght = 20, page = '1', minPrice: number = 0, maxPrice: number = 999999){
+export async function getAllProducts(
+        convert = false, 
+        urlRelativa = false , 
+        category: string = '100', 
+        lenght: lenght = 20, 
+        page = '1', 
+        minPrice: number = 0,
+        maxPrice: number = 999999
+    ){
     try {
 
         if(urlRelativa && !convert){ 
-            const newUrl = `/products100?_page=${page}&_limit=${lenght}`
+            const newUrl = `/products${category}?_page=${page}&_limit=${lenght}`
 
             const { data, headers } = await ApiTest(newUrl)
 
@@ -34,7 +42,7 @@ export async function getAllProducts(convert = false, urlRelativa = false ,lengh
         }
 
         if (urlRelativa && convert) {
-            const newUrl = `/products100?_page=${page}&_limit=${lenght}`
+            const newUrl = `/products${category}?_page=${page}&_limit=${lenght}`
             const { data, headers } = await ApiTest(newUrl)
 
             const filteredPriceData = data.filter((product: IProducts) => {

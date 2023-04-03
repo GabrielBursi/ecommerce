@@ -9,6 +9,7 @@ interface FilterProps {
     priceFilter: number[],
     highestPrice: number,
     lowestPrice: number,
+    handleSliderEnd: (e: React.SyntheticEvent) => void
 }
 
 export function Filter({ 
@@ -18,7 +19,8 @@ export function Filter({
     setPriceFilter,
     highestPrice, 
     lowestPrice,
-    priceFilter
+    priceFilter,
+    handleSliderEnd
 }: FilterProps) {
 
 
@@ -70,6 +72,7 @@ export function Filter({
                         disableSwap
                         value={priceFilter}
                         onChange={handleChangePrice}
+                        onMouseUp={handleSliderEnd}
                         sx={{width: '95%'}}
                     />
                     <Box display='flex' alignItems='center' justifyContent='space-between' width='100%' paddingX={1}>

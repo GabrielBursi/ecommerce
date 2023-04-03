@@ -16,8 +16,8 @@ export function ProductList({ products }: ProductListProps) {
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
-        <Box height='auto'width='100%'>
-            <Grid container rowGap={2} columnGap={2} justifyContent='center'>
+        <Box height='auto' width='100%'>
+            <Grid container rowGap={2} columnGap={2} display='flex' justifyContent='center' alignItems='center'>
                 {products.map(product => (
                     <Grid item xs={12} sm={5} md={3} lg={2} key={product.id} display='flex' justifyContent='center' alignItems='center'>
                         {smDown ? 
