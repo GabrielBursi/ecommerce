@@ -2,14 +2,13 @@ import { memo, useContext } from 'react';
 import { Box, Divider, Drawer, Icon, Link, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ChildrenProp } from '../../types';
-import { DrawerContext, ThemeContext } from '../../contexts';
+import { DrawerContext } from '../../contexts';
 import { ListItem } from './ListItem';
 
 
 function SideBarMemo({ children }: ChildrenProp) {
 
     const { drawerOptions, toggleDrawer, isDrawerOpen } = useContext(DrawerContext)
-    const { themeName, toggleTheme } = useContext(ThemeContext)
 
     const theme = useTheme();
 
@@ -58,12 +57,6 @@ function SideBarMemo({ children }: ChildrenProp) {
                                     <Icon color='primary'>help</Icon>
                                 </ListItemIcon>
                                 <ListItemText primary='Sobre o projeto' />
-                            </ListItemButton>
-                            <ListItemButton onClick={toggleTheme}>
-                                <ListItemIcon>
-                                    <Icon color='primary'>{themeName === 'light' ? 'dark' : 'light'}_mode</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary='Mudar tema' />
                             </ListItemButton>
                         </List>
                     </Box>

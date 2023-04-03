@@ -2,22 +2,20 @@ import { useContext } from "react";
 import { Box, Button, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { LoginContext, ProductsContext, ThemeContext } from "../contexts";
+import { LoginContext, ProductsContext } from "../contexts";
 import {LayoutBase} from "../layouts";
-import { Carousel, DepartmentCard, ProductCard } from "../components";
+import { Carousel, DepartmentCard } from "../components";
 
 export function HomePage() {
 
-    const { toggleTheme } = useContext(ThemeContext)
     const { isLogged, setIsLogged } = useContext(LoginContext)
-    const { productsDepartments, products } = useContext(ProductsContext)
+    const { productsDepartments } = useContext(ProductsContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
         <LayoutBase showResearchInput showUserInfo showBanner showTabBar showActions = {isLogged}>
-            <Button variant="contained" color="primary" onClick={toggleTheme}>Mudar tema</Button>
             <Button variant="contained" color="primary" onClick={() => setIsLogged(!isLogged)}>{isLogged ? 'Logout' : 'Login'}</Button>
             <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='auto'>
                 <Box display='flex' flexDirection='column' width='75%' height='100%' gap={2}>
@@ -50,17 +48,6 @@ export function HomePage() {
                                 ))}
                             </Grid>
                         </Box>
-                        {products.map(product => (
-                            <ProductCard
-                                key={product.id}
-                                id={product.id}  
-                                img={product.img}
-                                price={product.price}
-                                name={product.name}
-                                rating={product.rating}
-                                mdDown={mdDown}
-                            />
-                        ))}
                     </Box>
                 </Box>
             </Box>

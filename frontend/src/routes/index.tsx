@@ -13,11 +13,12 @@ export function RoutesApp() {
     const { setProducts, setProductsDepartments } = useContext(ProductsContext)
 
     useEffect(() => {
-        userIsLogged().then(data => {
-            if(data && !(data instanceof Error)){
-                setFormLogin(data)
-                setIsLogged(true)
-            }
+        userIsLogged()
+            .then(data => {
+                if(data && !(data instanceof Error)){
+                    setFormLogin(data)
+                    setIsLogged(true)
+                }
         })
         
         getAllProducts(false, false)
@@ -26,6 +27,7 @@ export function RoutesApp() {
                     setProducts(products)
                 }
             })
+            
         setArrImgBanner([
             {
                 alt: 'Oferta do dia',
@@ -66,7 +68,7 @@ export function RoutesApp() {
             },
             {
                 name: "vídeo games",
-                to: '/products/vídeo_games'
+                to: '/products/video_games'
             },
             {
                 name: "mundo geek",
