@@ -27,7 +27,7 @@ export async function getAllProducts(
 
             const filteredPriceData = data.filter((product: IProducts) => {
                 if(typeof product.price === 'string'){
-                    const price = parseFloat(product.price.replace('$ ', ''))
+                    const price = parseFloat(product.price.replace('R$', '').replace('$', '').replace(',', ''))
                     return price >= minPrice && price <= maxPrice
                 }
                 return product.price >= minPrice && product.price <= maxPrice
