@@ -1,18 +1,16 @@
 import express from "express";
-import { ControllerProducts, ControllerUsers } from "../controllers";
+import { AddressController, ProductsController, UsersController } from "../controllers";
 
 export const router = express.Router();
 
-
 //!USERS
+router.post('/create', UsersController.createUserValidation, UsersController.CreateUser)
+router.post('/login', UsersController.LoginUser)
 
-router.post('/create', ControllerUsers.createUserValidation, ControllerUsers.CreateUser)
-router.post('/login', ControllerUsers.LoginUser)
-
-router.post('/address/new', ControllerUsers.CreateNewAddress)
-router.get('/address/select', ControllerUsers.SelectAddress)
+//!ADDRESS
+router.post('/address/new', AddressController.CreateNewAddress)
+router.get('/address/select', AddressController.SelectAddress)
 
 //!PRODUCTS
-
-router.get('/products', ControllerProducts.GetAllProducts)
-router.get('/products/:id', ControllerProducts.GetProductById)
+router.get('/products', ProductsController.GetAllProducts)
+router.get('/products/:id', ProductsController.GetProductById)
