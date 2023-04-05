@@ -1,0 +1,365 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+import '../../TraducoesYup'
+
+import Modal from 'react-modal';
+import MaskedInput from 'react-text-mask';
+
+import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
+
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LockIcon from '@mui/icons-material/Lock';
+import CloseIcon from '@mui/icons-material/Close';
+
+import { MaskInputCep } from './utils';
+import { AddressContext } from '../../contexts';
+import { AddressFormData, DataApiCep } from '../../types';
+interface ModalProps {
+    isOpen: boolean,
+    setIsOpen: (value: boolean) => void,
+    title: string,
+    btnText: string,
+    isNewAddress?: boolean,
+    addressFind?: AddressFormData
+}
+
+const addressSchema: yup.ObjectSchema<Omit<AddressFormData, 'isSelected'>> = yup.object({
+    cep: yup.string().required(),
+    identification: yup.string().required(),
+    street: yup.string().required(),
+    number: yup.string().required(),
+    complement: yup.string(),
+    ref: yup.string(),
+    neighborhood: yup.string().required(),
+    city: yup.string(),
+    state: yup.string(),
+    
+}) 
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: '50%',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        padding: '10px',
+    },
+};
+
+Modal.setAppElement('#root')
+
+export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress = true, addressFind }: ModalProps) {
+    const { 
+            control, 
+            handleSubmit, 
+            formState: {errors}, 
+            setValue, 
+            setFocus, 
+            watch, 
+            setError, 
+            clearErrors, 
+            reset 
+        } = useForm<AddressFormData>({ 
+        mode: 'onSubmit', 
+        resolver: yupResolver(addressSchema) 
+    })
+
+    const cep = watch('cep', '')
+
+    const { formData, setFormData, setAddressList, addressList } = useContext(AddressContext)
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        
+        clearErrors('cep')
+
+        if(!cep.includes('_') && cep !== ''){
+
+            setIsLoading(true)
+
+            axios(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`)
+                .then(({data}) => {
+                    setIsLoading(false)
+                    
+                    if(data.erro){
+                        return setError('cep', { type: 'custom', message: 'CEP não encontrado' });
+                    }
+
+                    clearErrors('neighborhood')
+                    clearErrors('street')
+                    
+                    const dataTyped: DataApiCep = data
+                    setValue('city', dataTyped.localidade)
+                    setValue('state', dataTyped.uf)
+                    setValue('neighborhood', dataTyped.bairro)
+                    setValue('street', dataTyped.logradouro)
+                    setFocus('number')
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        
+    }, [cep]);
+
+    useEffect(() => {
+        reset()
+        if(!isNewAddress && formData){
+            setValue('cep', formData.cep)
+            setValue('city', formData.city)
+            setValue('complement', formData.complement)
+            setValue('identification', formData.identification)
+            setValue('neighborhood', formData.neighborhood)
+            setValue('ref', formData.ref)
+            setValue('street', formData.street)
+            setValue('state', formData.state)
+            setValue('number', formData.number)
+        }
+        if(addressFind){
+            setValue('cep', addressFind.cep)
+            setValue('city', addressFind.city)
+            setValue('complement', addressFind.complement)
+            setValue('identification', addressFind.identification)
+            setValue('neighborhood', addressFind.neighborhood)
+            setValue('ref', addressFind.ref)
+            setValue('street', addressFind.street)
+            setValue('state', addressFind.state)
+            setValue('number', addressFind.number)
+        }
+    }, [isOpen]);
+
+    function onSubmit(data: AddressFormData) {
+        addressSchema.validate(data, { abortEarly: false })
+        .then(validData => { 
+                if(addressFind){
+                    if(addressFind.cep === formData?.cep){
+                        setFormData({...validData, isSelected: true})
+                    }
+                    const addressChanged = addressList.findIndex(address => address.cep === addressFind.cep)
+                    addressList.splice(addressChanged, 1)
+                    setAddressList([...addressList, validData]);
+                    setIsOpen(false) 
+                    
+                }else{
+                    setFormData({...validData, isSelected: true});
+                    setAddressList([...addressList, validData]);
+                    setIsOpen(false) 
+                }
+            })
+    }
+
+    return (
+        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
+            <Box display='flex' flexDirection='column' gap={1}>
+                <Box display='flex' justifyContent='space-between' alignItems='center' gap={2} height='20%'>
+                    <Box display='flex' alignItems='center' gap={1}>
+                        <LocationOnIcon color='primary' />
+                        <Typography variant='subtitle1' color='black' fontWeight='bold'>    
+                            {title}
+                        </Typography>
+                    </Box>
+                    <IconButton onClick={() => setIsOpen(false)} color='primary'>
+                        <CloseIcon sx={{ fontSize: '1.2rem' }} />
+                    </IconButton>
+                </Box>
+                <Box>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Controller
+                                    name='cep'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            fullWidth 
+                                            label='CEP'
+                                            placeholder='Insira o CEP'
+                                            error={!!errors.cep}
+                                            helperText={errors?.cep?.message}
+                                            disabled={isLoading || !isNewAddress}
+                                            InputProps={{
+                                                inputComponent: MaskedInput as any,
+                                                inputProps: {
+                                                    mask: MaskInputCep,
+                                                    type: 'tel',
+                                                },
+                                                endAdornment: (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>)
+                                            }}
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Controller
+                                    name='identification'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            error={!!errors.identification}
+                                            helperText={errors?.identification?.message}
+                                            fullWidth 
+                                            label='Indentificação'
+                                            placeholder='Minha casa'
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Controller
+                                    name='street'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            error={!!errors.street}
+                                            helperText={errors?.street?.message}
+                                            fullWidth 
+                                            label='Rua'
+                                            placeholder='Ex: Rua dos Dados Falsos'
+                                            disabled={isLoading || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Controller
+                                    name='number'
+                                    control={control}
+                                    render={({ field: {ref, ...field} }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            inputRef={ref}
+                                            variant='outlined'
+                                            error={!!errors.number}
+                                            helperText={errors?.number?.message}
+                                            fullWidth 
+                                            label='Número'
+                                            placeholder='000'
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Controller
+                                    name='complement'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            error={!!errors.complement}
+                                            helperText={errors?.complement?.message}
+                                            fullWidth 
+                                            label='Complemento'
+                                            placeholder='Ex: Bloco 99 Apto 999'
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Controller
+                                    name='ref'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            error={!!errors.ref}
+                                            helperText={errors?.ref?.message}
+                                            fullWidth 
+                                            label='Referência'
+                                            placeholder='Ex: Casa do portão roxo'
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Controller
+                                    name='neighborhood'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='outlined'
+                                            error={!!errors.neighborhood}
+                                            helperText={errors?.neighborhood?.message}
+                                            fullWidth 
+                                            label='Bairro'
+                                            disabled={isLoading || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Controller
+                                    name='city'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='filled'
+                                            error={!!errors.city}
+                                            helperText={errors?.city?.message}
+                                            fullWidth 
+                                            label='Cidade' 
+                                            required 
+                                            disabled 
+                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                        />
+                                    }
+                                />
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Controller
+                                    name='state'
+                                    control={control}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            autoComplete='off'
+                                            variant='filled'
+                                            error={!!errors.state}
+                                            helperText={errors?.state?.message}
+                                            fullWidth 
+                                            label='UF' 
+                                            required 
+                                            disabled 
+                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                        />
+                                    }
+                                />
+                            </Grid>
+                        </Grid>
+                        <Box display='flex' justifyContent='end' mt={2} height='50px'>
+                            <Button type='submit' variant='contained' sx={{fontSize: '1rem'}}>
+                                {btnText}
+                            </Button>
+                        </Box>
+                    </form>
+                </Box>
+            </Box>
+        </Modal>
+    );
+}
