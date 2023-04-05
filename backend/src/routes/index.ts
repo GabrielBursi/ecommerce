@@ -6,7 +6,7 @@ export const router = express.Router();
 
 //!USERS
 
-router.post('/create', ControllerUsers.CreateUser)
+router.post('/create', ControllerUsers.createUserValidation, ControllerUsers.CreateUser)
 router.post('/login', ControllerUsers.LoginUser)
 
 router.post('/address/new', ControllerUsers.CreateNewAddress)
