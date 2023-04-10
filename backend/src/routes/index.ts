@@ -6,12 +6,15 @@ export const router = express.Router();
 
 //!USERS
 router.post('/create', UsersController.createUserValidation, UsersController.CreateUser)
-router.post('/login', UsersController.LoginUser)
+router.post('/login', UsersController.loginUserValidation, UsersController.LoginUser)
 
 //!ADDRESS
-router.post('/address/new', ensureAuthenticated, AddressController.CreateNewAddress)
-router.get('/address/select', ensureAuthenticated, AddressController.SelectAddress)
+router.post('/address/new', ensureAuthenticated, AddressController.CreateNewAddress) //* PRIVATE
+router.get('/address/select', ensureAuthenticated, AddressController.SelectAddress) //* PRIVATE
 
 //!PRODUCTS
 router.get('/products', ProductsController.GetAllProducts)
 router.get('/products/:id', ProductsController.GetProductById)
+router.post('/favorites/add/:id', ensureAuthenticated, ProductsController.AddFavorites) //* PRIVATE
+router.post('/cart/add/:id', ensureAuthenticated, ProductsController.AddCart) //* PRIVATE
+router.post('/cart/done', ensureAuthenticated, ProductsController.Purchase) //* PRIVATE
