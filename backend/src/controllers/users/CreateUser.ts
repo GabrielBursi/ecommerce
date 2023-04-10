@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware"
 import { NewUser } from "../../types"
-import '../../TraducoesYup'
+import '../../shared/services/TraducoesYup'
 
 const bodySchemaValidation: yup.ObjectSchema<NewUser> = yup.object({
     name: yup.string().min(2).required(),
