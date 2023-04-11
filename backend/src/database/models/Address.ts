@@ -1,11 +1,11 @@
 import { Schema, Types, model } from "mongoose";
-import { AddressFormData } from "../../types";
+import { NewAddress } from "../../types";
 
-const addressSchema = new Schema<AddressFormData>({
+const addressSchema = new Schema<NewAddress>({
     complement: { type: String, required: false },
     ref: { type: String, required: false },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
+    city: { type: String, required: false },
+    state: { type: String, required: false },
     number: { type: String, required: true },
     cep: { type: String, required: true },
     identification: { type: String, required: true },
@@ -18,5 +18,5 @@ const userAddressSchema = new Schema({
     address: [addressSchema],
 });
 
-export const Address = model<AddressFormData>('Address', addressSchema);
-export const UserAddress = model<AddressFormData>('UserAddress', userAddressSchema);
+export const Address = model<NewAddress>('Address', addressSchema);
+export const UserAddress = model('UserAddress', userAddressSchema);

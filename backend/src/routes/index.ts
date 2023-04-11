@@ -10,7 +10,7 @@ router.post('/login', UsersController.loginUserValidation, UsersController.Login
 
 //!ADDRESS
 router.post('/address/new', ensureAuthenticated, AddressController.createAddressValidation, AddressController.CreateNewAddress) //* PRIVATE
-router.get('/address/select', ensureAuthenticated, AddressController.SelectAddress) //* PRIVATE
+router.post('/address/select', ensureAuthenticated, AddressController.selectAddressValidation, AddressController.SelectAddress) //* PRIVATE
 
 //!PRODUCTS
 router.get('/products', ProductsController.GetAllProducts)
