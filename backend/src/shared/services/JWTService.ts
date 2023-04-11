@@ -1,15 +1,17 @@
-import * as jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 interface JWTData {
-    uid: number
+    uid: number | string
 }
 
-const signIn = (data: JWTData): string | 'JWT_NOT_FOUND' => {
+const signIn = (data: JWTData): string | 'JWT_SECRET_NOT_FOUND' => {
+    
     if (!process.env.JWT_SECRET)
-        return 'JWT_NOT_FOUND'
-
+    return 'JWT_SECRET_NOT_FOUND'
+    
     return jwt.sign(data, process.env.JWT_SECRET, { expiresIn: '24h' })
 }
+
 
 const verify = (token: string): JWTData | 'INVALID_TOKEN' | 'JWT_NOT_FOUND' => {
     if (!process.env.JWT_SECRET)

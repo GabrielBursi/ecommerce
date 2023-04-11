@@ -19,4 +19,7 @@ connectToDatabase()
             console.error(data);
         }
     })
+    .catch((error) => {
+        console.log(error + 'Não conectou ao banco' );
+    })
 
