@@ -30,16 +30,3 @@ export interface IProducts {
 }
 
 type id = number | string
-
-export interface AddressFormData {
-    complement?: string;
-    ref?: string;
-    city?: string;
-    state?: string;
-    number: string;
-    cep: string;
-    identification: string;
-    street: string;
-    neighborhood: string;
-    isSelected?: boolean;
-}

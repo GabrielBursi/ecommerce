@@ -9,7 +9,7 @@ router.post('/create', UsersController.createUserValidation, UsersController.Cre
 router.post('/login', UsersController.loginUserValidation, UsersController.LoginUser)
 
 //!ADDRESS
-router.post('/address/new', ensureAuthenticated, AddressController.CreateNewAddress) //* PRIVATE
+router.post('/address/new', ensureAuthenticated, AddressController.createAddressValidation, AddressController.CreateNewAddress) //* PRIVATE
 router.get('/address/select', ensureAuthenticated, AddressController.SelectAddress) //* PRIVATE
 
 //!PRODUCTS
