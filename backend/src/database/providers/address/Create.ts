@@ -2,7 +2,7 @@ import { NewAddress } from "../../../types";
 import { Address, UserAddress } from "../../models";
 
 
-export const createAddress = async (userId: string, address: NewAddress) => {
+export const create = async (userId: string, address: NewAddress) => {
     try {
         const newAddress = new Address({...address})
 

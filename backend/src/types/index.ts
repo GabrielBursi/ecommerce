@@ -20,7 +20,7 @@ export interface NewAddress {
 }
 
 export interface IProducts {
-    _id: id,
+    id: id,
     name: string,
     description?: string,
     price: number | string,

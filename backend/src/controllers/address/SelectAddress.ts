@@ -17,7 +17,7 @@ export const SelectAddress = async (req: Request<{}, {}, Pick<NewAddress, 'cep'>
 
     const { cep } = req.body
 
-    const address = await AddressProviders.selectAddress('643549a20c776a5adff14835', cep)
+    const address = await AddressProviders.select('643549a20c776a5adff14835', cep)
 
     if (address instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

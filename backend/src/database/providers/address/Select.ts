@@ -1,6 +1,6 @@
 import { UserAddress } from "../../models"
 
-export const selectAddress = async (userId: string, cep: string) => {
+export const select = async (userId: string, cep: string) => {
     try {
         const userAddress = await UserAddress.findOne({ userId }).exec()
 

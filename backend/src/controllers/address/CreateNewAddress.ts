@@ -25,7 +25,7 @@ export const createAddressValidation = validation({
 
 export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Response) => {
 
-    const address = await AddressProviders.createAddress('643549a20c776a5adff14835', req.body)
+    const address = await AddressProviders.create('643549a20c776a5adff14835', req.body)
 
     if (address instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
