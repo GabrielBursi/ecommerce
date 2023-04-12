@@ -30,3 +30,7 @@ export interface IProducts {
 }
 
 type id = number | string
+
+export interface IParamProps {
+    id?: string
+}

@@ -14,7 +14,7 @@ router.post('/address/select', ensureAuthenticated, AddressController.selectAddr
 
 //!PRODUCTS
 router.get('/products', ProductsController.GetAllProducts)
-router.get('/products/:id', ProductsController.GetProductById)
-router.post('/favorites/add/:id', ensureAuthenticated, ProductsController.AddFavorites) //* PRIVATE
-router.post('/cart/add/:id', ensureAuthenticated, ProductsController.AddCart) //* PRIVATE
-router.post('/cart/done', ensureAuthenticated, ProductsController.Purchase) //* PRIVATE
+router.get('/products/:id', ProductsController.getByIdValidation, ProductsController.GetProductById)
+router.post('/favorites/add/:id', ensureAuthenticated, ProductsController.addProductInFavoriteValidation, ProductsController.AddFavorite) //* PRIVATE
+router.post('/cart/add/:id', ensureAuthenticated, ProductsController.addProductInCartValidation, ProductsController.AddCart) //* PRIVATE
+router.post('/cart/done', ensureAuthenticated, ProductsController.createMyOrderValidation, ProductsController.Purchase) //* PRIVATE
