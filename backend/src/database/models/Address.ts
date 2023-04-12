@@ -1,7 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 import { NewAddress } from "../../types";
 
-const addressSchema = new Schema<NewAddress>({
+export const addressSchema = new Schema<NewAddress>({
     complement: { type: String, required: false },
     ref: { type: String, required: false },
     city: { type: String, required: false },

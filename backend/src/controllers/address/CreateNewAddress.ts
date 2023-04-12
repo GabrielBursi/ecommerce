@@ -7,7 +7,7 @@ import { AddressProviders } from "../../database/providers";
 import { validation } from "../../shared/middleware";
 import '../../shared/services/TraducoesYup'
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<NewAddress, 'isSelected'>> = yup.object({
+export const bodyAddressSchemaValidation: yup.ObjectSchema<Omit<NewAddress, 'isSelected'>> = yup.object({
     cep: yup.string().required(),
     identification: yup.string().required(),
     street: yup.string().required(),
@@ -20,12 +20,12 @@ const bodySchemaValidation: yup.ObjectSchema<Omit<NewAddress, 'isSelected'>> = y
 })
 
 export const createAddressValidation = validation({
-    body: bodySchemaValidation,
+    body: bodyAddressSchemaValidation,
 })
 
 export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Response) => {
 
-    const address = await AddressProviders.create('643549a20c776a5adff14835', req.body)
+    const address = await AddressProviders.create('6436ad8cff997f78476ca08d', req.body)
 
     if (address instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

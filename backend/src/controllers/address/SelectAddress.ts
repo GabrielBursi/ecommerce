@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { AddressProviders } from "../../database/providers";
 import { validation } from "../../shared/middleware";
 import { NewAddress } from "../../types";
+import '../../shared/services/TraducoesYup'
 
 const bodySchemaValidation: yup.ObjectSchema<Pick<NewAddress, 'cep'>>   = yup.object({
     cep: yup.string().required(),
