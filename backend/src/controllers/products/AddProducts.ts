@@ -10,7 +10,7 @@ import '../../shared/services/TraducoesYup'
 const bodySchemaValidation: yup.ObjectSchema<Omit<IProducts, 'uuid' | 'description'>> = yup.object({
     name: yup.string().required(),
     img: yup.string().required(),
-    price: yup.number().required(),
+    price: yup.string().required(),
     rating: yup.number().required(),
     quant: yup.number().required(),
 })
