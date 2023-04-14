@@ -2,17 +2,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { IProducts } from "../../../types"
 import { Products } from "../../models"
 
-export const createProduct = async (product: IProducts): Promise<IProducts | Error> => {
+export const createProduct = async (products: IProducts[]): Promise<IProducts[] | Error> => {
     try {
 
-        const newProduct = new Products({
-            ...product,
-            uuid: uuidv4(),
+        const newProducts = products.map(product => {
+            const newProduct = new Products({
+                ...product,
+                uuid: uuidv4(),
+            })
+
+            return newProduct
         })
-
-        await newProduct.save()
-
-        return newProduct
+        
+        const savedProducts = await Promise.all(newProducts.map(product => product.save()))
+        return [...savedProducts]
 
     } catch (error) {
         console.log(error);

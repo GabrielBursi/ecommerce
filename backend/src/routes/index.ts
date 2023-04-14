@@ -19,4 +19,4 @@ router.post('/favorites/add/:id', ensureAuthenticated, ProductsController.addPro
 router.post('/cart/add/:id', ensureAuthenticated, ProductsController.addProductInCartValidation, ProductsController.AddCart) //* PRIVATE
 router.post('/cart/done', ensureAuthenticated, ProductsController.createMyOrderValidation, ProductsController.Purchase) //* PRIVATE
 
-router.post('/products', myAuth, ProductsController.createProductValidation, ProductsController.AddProduct) //* PRIVATE
+router.post('/products', myAuth, ProductsController.AddProduct) //* PRIVATE
