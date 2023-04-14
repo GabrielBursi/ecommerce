@@ -1,6 +1,6 @@
 import express from "express";
 import { AddressController, ProductsController, UsersController } from "../controllers";
-import { ensureAuthenticated } from "../shared/middleware";
+import { ensureAuthenticated, myAuth } from "../shared/middleware";
 
 export const router = express.Router();
 
@@ -18,3 +18,5 @@ router.get('/products/:id', ProductsController.getByIdValidation, ProductsContro
 router.post('/favorites/add/:id', ensureAuthenticated, ProductsController.addProductInFavoriteValidation, ProductsController.AddFavorite) //* PRIVATE
 router.post('/cart/add/:id', ensureAuthenticated, ProductsController.addProductInCartValidation, ProductsController.AddCart) //* PRIVATE
 router.post('/cart/done', ensureAuthenticated, ProductsController.createMyOrderValidation, ProductsController.Purchase) //* PRIVATE
+
+router.post('/products', myAuth, ProductsController.createProductValidation, ProductsController.AddProduct) //* PRIVATE
