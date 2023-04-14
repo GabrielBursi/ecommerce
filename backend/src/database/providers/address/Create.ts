@@ -1,29 +1,19 @@
 import { NewAddress } from "../../../types";
-import { Address, UserAddress } from "../../models";
-
+import { User } from "../../models";
 
 export const create = async (userId: string, address: NewAddress) => {
     try {
-        const newAddress = new Address({...address})
+        const user = await User.findOne({uuid: userId}).exec();
+        if (!user){
+            return new Error('Usuário não encontrado')
+        } 
 
-        const userAddress = await UserAddress.findOne({ userId }).exec()
-        if (userAddress) {
-            userAddress.address.push(address)
-            await userAddress.save()
-        } else {
-            const newUserAddress = new UserAddress({
-                userId: userId,
-                address: [address]
-            })
-            await newUserAddress.save()
-        }
+        user.address?.address.push(address)
+        await user.save()
 
-        await newAddress.save()
-
-        return { newAddress }
-        
+        return { newAddress: address }
     } catch (error) {
-        console.log(error);
-        return new Error('Erro ao consultar o registro');
+        console.log(error)
+        return new Error('Erro ao consultar o registro')
     }
 }

@@ -7,7 +7,7 @@ import '../../shared/services/TraducoesYup'
 import { UsersProviders } from "../../database/providers";
 import { JWTService, PasswordCrypto } from "../../shared/services";
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<NewUser, 'name' | 'confirmPassword' | 'cpf'>> = yup.object({
+const bodySchemaValidation: yup.ObjectSchema<Omit<NewUser, 'name' | 'confirmPassword' | 'cpf' | 'uuid'>> = yup.object({
     email: yup.string().email().required(),
     password: yup.string().min(6).required(),
 })

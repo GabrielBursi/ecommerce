@@ -17,6 +17,7 @@ export interface MyOrdersSchema {
 }
 
 const productsSchema = new Schema<IProducts>({
+    uuid: { type: String, required: true },
     img: { type: String, required: true },
     name: { type: String, required: true },
     price: { type: String, required: true },
@@ -24,17 +25,17 @@ const productsSchema = new Schema<IProducts>({
     quant: { type: Number, required: false, default: 0 },
 })
 
-const favoritesSchema = new Schema({
+export const favoritesSchema = new Schema({
     userId: Types.ObjectId,
     products: [productsSchema],
 });
 
-const cartSchema = new Schema({
+export const cartSchema = new Schema({
     userId: Types.ObjectId,
     products: [productsSchema],
 });
 
-const myOrders = new Schema({
+export const myOrders = new Schema({
     userId: Types.ObjectId,
     products: [productsSchema],
     number: { type: String, required: true },

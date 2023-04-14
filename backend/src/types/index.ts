@@ -1,4 +1,5 @@
 export interface NewUser {
+    uuid: id
     name: string,
     email: string,
     password: string,
@@ -20,7 +21,7 @@ export interface NewAddress {
 }
 
 export interface IProducts {
-    id: id,
+    uuid: id,
     name: string,
     description?: string,
     price: number | string,

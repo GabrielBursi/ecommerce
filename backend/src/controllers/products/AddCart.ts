@@ -18,14 +18,14 @@ export const AddCart = async (req: Request<IParamProps>, res: Response) => {
 
     const productId = req.params.id
 
-    const productInCart = await ProductsProviders.addInCart('6436ad8cff997f78476ca08d', productId || '')
+    const products = await ProductsProviders.addInCart('64393fbfae7265b0c9da8a77', productId || '')
 
-    if (productInCart instanceof Error)
+    if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: productInCart.message
+                default: products.message
             }
         });
     
-    return res.status(StatusCodes.OK).json({ productInCart })
+    return res.status(StatusCodes.OK).json({ products })
 }
