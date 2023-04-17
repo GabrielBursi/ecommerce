@@ -27,7 +27,7 @@ export interface IProducts {
     price: number | string,
     rating?: number,
     img: string,
-    quant?: number
+    quant: number
 }
 
 type id = number | string
