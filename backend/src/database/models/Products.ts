@@ -1,9 +1,9 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { IProducts, NewAddress } from "../../types";
 import { addressSchema } from "./Address";
 export interface CartSchema {
     userId: string;
-    products: IProducts[];
+    products: IProducts[] | [];
 }
 
 export interface MyOrdersSchema {
@@ -26,23 +26,20 @@ const productsSchema = new Schema<IProducts>({
 })
 
 export const favoritesSchema = new Schema({
-    userId: Types.ObjectId,
-    products: [productsSchema],
+    products: {type: [productsSchema], required: true},
 });
 
 export const cartSchema = new Schema({
-    userId: Types.ObjectId,
-    products: [productsSchema],
+    products: {type: [productsSchema], required: true},
 });
 
 export const myOrders = new Schema({
-    userId: Types.ObjectId,
-    products: [productsSchema],
+    products: {type: [productsSchema], required: true},
     number: { type: String, required: true },
     status: { type: Boolean, required: false, default: true },
-    date: { type: String, required: true },
+    date: { type: String, required: false, default: new Date().toLocaleString().split(',')[0] },
     payment: { type: String, required: true },
-    address: addressSchema
+    address: {type: addressSchema, required: true}
 });
 
 export const Products = model<IProducts>('Products', productsSchema)

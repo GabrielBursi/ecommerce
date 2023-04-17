@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 import { NewUser } from "../../types";
-import { UserAddressSchema, userAddressSchema } from "./Address";
-import { CartSchema, MyOrdersSchema, cartSchema, favoritesSchema, myOrders } from "./Products";
+import { UserAddressSchema } from "./Address";
+import { CartSchema, MyOrdersSchema } from "./Products";
 
 export interface UserSchema extends NewUser {
-    address: UserAddressSchema | null,
-    favorites: CartSchema | null,
-    cart: CartSchema | null,
-    myOrders: MyOrdersSchema | null,
+    address: UserAddressSchema,
+    favorites: CartSchema,
+    cart: CartSchema,
+    myOrders: MyOrdersSchema,
 }
 
 const userSchema = new Schema<UserSchema>({
@@ -17,10 +17,10 @@ const userSchema = new Schema<UserSchema>({
     password: { type: String, required: true },
     confirmPassword: { type: String, required: true },
     cpf: { type: String, required: true },
-    address: userAddressSchema,
-    favorites: favoritesSchema,
-    cart: cartSchema,
-    myOrders: myOrders,
+    address: { type: Schema.Types.Mixed, default: {address: []} },
+    favorites: { type: Schema.Types.Mixed, default: {products: []} },
+    cart: { type: Schema.Types.Mixed, default: {products: []} },
+    myOrders: { type: Schema.Types.Mixed, default: {orders: []} },
 });
 
 export const User = model<UserSchema>('User', userSchema);

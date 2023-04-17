@@ -1,5 +1,10 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { NewAddress } from "../../types";
+
+export interface UserAddressSchema{
+    userId: string,
+    address: NewAddress[]
+}
 
 export const addressSchema = new Schema<NewAddress>({
     complement: { type: String, required: false },
@@ -13,10 +18,9 @@ export const addressSchema = new Schema<NewAddress>({
     neighborhood: { type: String, required: true },
 });
 
-const userAddressSchema = new Schema({
-    userId: Types.ObjectId,
-    address: [addressSchema],
+export const userAddressSchema = new Schema({
+    address: { type: addressSchema, required: true },
 });
 
 export const Address = model<NewAddress>('Address', addressSchema);
-export const UserAddress = model('UserAddress', userAddressSchema);
+export const UserAddress = model<UserAddressSchema>('UserAddress', userAddressSchema);
