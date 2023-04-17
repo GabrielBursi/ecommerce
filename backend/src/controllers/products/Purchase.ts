@@ -25,7 +25,7 @@ export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'produc
 
     const order = req.body
 
-    const myOrders = await ProductsProviders.createMyOrder('0a8897b3-02f5-4088-9183-d4d1062738f7', order)
+    const myOrders = await ProductsProviders.createMyOrder(process.env.USER_ID || '', order)
 
     if (myOrders instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

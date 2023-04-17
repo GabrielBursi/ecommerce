@@ -18,7 +18,7 @@ export const AddFavorite = async (req: Request<IParamProps>, res: Response) => {
 
     const productId = req.params.id
 
-    const favorites = await ProductsProviders.addInFavorite('0a8897b3-02f5-4088-9183-d4d1062738f7', productId || '')
+    const favorites = await ProductsProviders.addInFavorite(process.env.USER_ID || '', productId || '')
 
     if (favorites instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
