@@ -13,8 +13,11 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
             return new Error('O carrinho está vazio.');
         }
 
-        const productIsAlreadyOrder = user.myOrders.find((product) => product.number === order.number)
-        if (user.myOrders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
+        console.log(user.myOrders.orders);
+        
+
+        const productIsAlreadyOrder = user.myOrders.orders.find((product) => product.number === order.number)
+        if (user.myOrders.orders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
             const newOrder: MyOrdersSchema[] = [
                 {
                     address: {
@@ -36,10 +39,10 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
                     status: true,
                 }
             ];
-            user.myOrders = newOrder;
-        } else if (user.myOrders.length > 0 && !productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO NÃO ESTÁ NO CARRINHO
+            user.myOrders.orders = newOrder;
+        } else if (user.myOrders.orders.length > 0 && !productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO NÃO ESTÁ NO CARRINHO
             const newCart: MyOrdersSchema[] = [
-                ...user.myOrders,
+                ...user.myOrders.orders,
                 {
                     address: {
                         cep: order.address.cep,
@@ -59,13 +62,13 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
                     status: true,
                 }
             ];
-            user.myOrders = newCart;
-        } else if (user.myOrders.length > 0 && productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
+            user.myOrders.orders = newCart;
+        } else if (user.myOrders.orders.length > 0 && productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
             return new Error('O numero de pedido já existe.');
         }
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { myOrders: user.myOrders, cart: {products: []} }, { new: true }).populate('myOrders.orders').exec();
-        return updatedUser?.myOrders;
+        return updatedUser?.myOrders.orders;
 
     } catch (error) {
         return new Error('Erro ao consultar registro: ' + error)
