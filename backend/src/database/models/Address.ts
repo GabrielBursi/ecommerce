@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import { NewAddress } from "../../types";
 
 export interface UserAddressSchema{
-    userId: string,
     address: NewAddress[]
 }
 

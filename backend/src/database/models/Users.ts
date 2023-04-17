@@ -7,7 +7,7 @@ export interface UserSchema extends NewUser {
     address: UserAddressSchema,
     favorites: CartSchema,
     cart: CartSchema,
-    myOrders: MyOrdersSchema,
+    myOrders: MyOrdersSchema[],
 }
 
 const userSchema = new Schema<UserSchema>({

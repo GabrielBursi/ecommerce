@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import { IProducts, NewAddress } from "../../types";
 import { addressSchema } from "./Address";
 export interface CartSchema {
-    userId: string;
     products: IProducts[] | [];
 }
 
