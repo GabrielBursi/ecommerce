@@ -18,10 +18,6 @@ export const create = async (user: NewUser): Promise<NewUser | Error | string> =
             uuid: uuidv4(), 
             password: hashedPassword,
             confirmPassword: hashedPassword,
-            address: null,
-            cart: null,
-            favorites: null,
-            myOrders: null
         })
 
         await newUser.save()

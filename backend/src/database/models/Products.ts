@@ -7,13 +7,12 @@ export interface CartSchema {
 }
 
 export interface MyOrdersSchema {
-    userId: string;
     products: IProducts[];
     number: string,
     status: boolean,
     date: string,
     payment: string,
-    address: NewAddress | undefined
+    address: NewAddress
 }
 
 const productsSchema = new Schema<IProducts>({

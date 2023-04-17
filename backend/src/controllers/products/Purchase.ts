@@ -9,8 +9,7 @@ import { ProductsProviders } from "../../database/providers";
 
 import '../../shared/services/TraducoesYup'
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'userId'>> = yup.object({
-    products: yup.array().required(),
+const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products'>> = yup.object({
     number: yup.string().required(),
     status: yup.boolean().default(true).required(),
     date: yup.string().required(),
@@ -22,18 +21,18 @@ export const createMyOrderValidation = validation({
     body: bodySchemaValidation,
 })
 
-export const Purchase = async (req: Request<{}, {}, MyOrdersSchema>, res: Response) => {
+export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products'>>, res: Response) => {
 
     const order = req.body
 
-    const myOrder = await ProductsProviders.createMyOrder('6436ad8cff997f78476ca08d', order)
+    const myOrders = await ProductsProviders.createMyOrder('0a8897b3-02f5-4088-9183-d4d1062738f7', order)
 
-    if (myOrder instanceof Error)
+    if (myOrders instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: myOrder.message
+                default: myOrders.message
             }
         });
 
-    return res.status(StatusCodes.OK).json({ myOrder })
+    return res.status(StatusCodes.OK).json({ myOrders })
 }

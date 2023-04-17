@@ -18,14 +18,14 @@ export const AddFavorite = async (req: Request<IParamProps>, res: Response) => {
 
     const productId = req.params.id
 
-    const productInFavorite = await ProductsProviders.addInFavorite('643549a20c776a5adff14835', productId || '')
+    const favorites = await ProductsProviders.addInFavorite('0a8897b3-02f5-4088-9183-d4d1062738f7', productId || '')
 
-    if (productInFavorite instanceof Error)
+    if (favorites instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: productInFavorite.message
+                default: favorites.message
             }
         });
 
-    return res.status(StatusCodes.OK).json({ productInFavorite })
+    return res.status(StatusCodes.OK).json({ favorites })
 }

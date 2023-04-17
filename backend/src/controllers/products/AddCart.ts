@@ -18,7 +18,7 @@ export const AddCart = async (req: Request<IParamProps>, res: Response) => {
 
     const productId = req.params.id
 
-    const products = await ProductsProviders.addInCart('64393fbfae7265b0c9da8a77', productId || '')
+    const products = await ProductsProviders.addInCart('0a8897b3-02f5-4088-9183-d4d1062738f7', productId || '')
 
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
