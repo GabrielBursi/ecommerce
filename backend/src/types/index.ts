@@ -32,7 +32,12 @@ export interface IProducts {
     quant: number
 }
 export interface IParamProps {
-    id?: string
+    id?: string,
+}
+
+export interface IParamExcludeProps {
+    userId?: string,
+    productId?: string,
 }
 export interface MyResponse extends Locals {
     userId: string | string[];

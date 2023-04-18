@@ -4,6 +4,10 @@ import * as addInCart from './AddCart'
 import * as addInFavorites from './AddFavorite'
 import * as createMyOrder from './Purchase'
 import * as create from './Create'
+import * as clear from './ClearCart'
+import * as excludeCart from './ExcludeProductCart'
+import * as excludeFavorite from './ExcludeProductFavorite'
+import * as alterQuant from './AlterQuantProd'
 
 export const ProductsProviders = {
     ...getAll,
@@ -11,5 +15,9 @@ export const ProductsProviders = {
     ...addInCart,
     ...addInFavorites,
     ...createMyOrder,
-    ...create
+    ...create,
+    ...clear,
+    ...excludeCart,
+    ...excludeFavorite,
+    ...alterQuant
 }
