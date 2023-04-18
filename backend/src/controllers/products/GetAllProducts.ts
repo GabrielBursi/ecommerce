@@ -9,7 +9,7 @@ export const GetAllProducts = async (req: Request, res: Response) => {
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: 'Erro ao consultar registros'
+                default: products.message
             }
         });
     
