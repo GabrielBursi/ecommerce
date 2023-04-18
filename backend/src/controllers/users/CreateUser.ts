@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middleware"
 import { UsersProviders } from "../../database/providers";
 import { NewUser } from "../../types"
+import { JWTService } from "../../shared/services";
 import '../../shared/services/TraducoesYup'
 
 const bodySchemaValidation: yup.ObjectSchema<Omit<NewUser , 'uuid'>> = yup.object({
@@ -35,6 +36,14 @@ export const CreateUser = async (req: Request<{}, {}, NewUser>, res: Response) =
                 default: user
             }
         });
+    
+    const accessToken = JWTService.signIn({ uid: user.uuid });
+    if (accessToken === 'JWT_SECRET_NOT_FOUND')
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: 'Erro ao gerar token de acesso',
+            },
+        });
 
-    return res.status(StatusCodes.CREATED).json(user)
+    return res.status(StatusCodes.OK).json({ accessToken })
 }
