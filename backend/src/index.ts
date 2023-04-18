@@ -10,16 +10,4 @@ app.use(cors())
 app.use(express.json())
 app.use(router)
 
-connectToDatabase()
-    .then((data) => {
-        if(typeof data === 'string'){
-            app.listen(process.env.PORT || 3001)
-            console.log('rodando')
-        }else{
-            console.error(data);
-        }
-    })
-    .catch((error) => {
-        console.log(error + 'Não conectou ao banco' );
-    })
-
+app.listen(process.env.PORT || 3001, async () => await connectToDatabase())
