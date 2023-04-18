@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import { NewAddress } from "../../types";
 
 export interface UserAddressSchema{
@@ -20,6 +20,3 @@ export const addressSchema = new Schema<NewAddress>({
 export const userAddressSchema = new Schema({
     address: { type: addressSchema, required: true },
 });
-
-export const Address = model<NewAddress>('Address', addressSchema);
-export const UserAddress = model<UserAddressSchema>('UserAddress', userAddressSchema);

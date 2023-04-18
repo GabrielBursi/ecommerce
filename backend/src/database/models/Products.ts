@@ -41,6 +41,3 @@ export const myOrders = new Schema({
 });
 
 export const Products = model<IProducts>('Products', productsSchema)
-export const FavoritesProducts = model<CartSchema>('FavoritesProducts', favoritesSchema)
-export const ProductsInCart = model<CartSchema>('ProductsInCart', cartSchema)
-export const MyOrders = model<MyOrdersSchema>('MyOrders', myOrders)
