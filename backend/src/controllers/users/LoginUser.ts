@@ -44,5 +44,7 @@ export const LoginUser = async (req: Request, res: Response) => {
             },
         });
 
+    res.header("x-user-id", user.uuid);
+
     return res.status(StatusCodes.OK).json({ accessToken })
 }

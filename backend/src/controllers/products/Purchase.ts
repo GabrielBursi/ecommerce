@@ -8,6 +8,7 @@ import { bodyAddressSchemaValidation } from "../address/CreateNewAddress";
 import { ProductsProviders } from "../../database/providers";
 
 import '../../shared/services/TraducoesYup'
+import { MyResponse } from "../../types";
 
 const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products'>> = yup.object({
     number: yup.string().required(),
@@ -21,11 +22,12 @@ export const createMyOrderValidation = validation({
     body: bodySchemaValidation,
 })
 
-export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products'>>, res: Response) => {
+export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products'>>, res: Response<{}, MyResponse>) => {
 
     const order = req.body
+    const userId = res.locals.userId
 
-    const myOrders = await ProductsProviders.createMyOrder(process.env.USER_ID || '', order)
+    const myOrders = await ProductsProviders.createMyOrder(userId, order)
 
     if (myOrders instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

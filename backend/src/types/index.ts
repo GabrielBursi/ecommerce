@@ -1,5 +1,7 @@
+import { Locals } from "express";
+
 export interface NewUser {
-    uuid: id
+    uuid: string,
     name: string,
     email: string,
     password: string,
@@ -21,7 +23,7 @@ export interface NewAddress {
 }
 
 export interface IProducts {
-    uuid: id,
+    uuid: string,
     name: string,
     description?: string,
     price: number | string,
@@ -29,9 +31,9 @@ export interface IProducts {
     img: string,
     quant: number
 }
-
-type id = number | string
-
 export interface IParamProps {
     id?: string
+}
+export interface MyResponse extends Locals {
+    userId: string | string[];
 }

@@ -1,7 +1,7 @@
 import { IProducts } from "../../../types";
 import { Products, User } from "../../models";
 
-export const addInFavorite = async (userId: string, productId: string) => {
+export const addInFavorite = async (userId: string | string[], productId: string | undefined) => {
     try {
         const user = await User.findOne({ uuid: userId }).exec();
         const product = await Products.findOne({ uuid: productId }).exec();

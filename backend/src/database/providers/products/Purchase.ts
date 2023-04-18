@@ -1,7 +1,6 @@
 import { MyOrdersSchema, User } from "../../models";
 
-export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 'products'>) => {
-
+export const createMyOrder = async (userId: string | string[], order: Omit<MyOrdersSchema, 'products'>) => {
     try {
         const user = await User.findOne({ uuid: userId }).exec();
 
@@ -12,9 +11,6 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
         if (user.cart.products.length === 0) {
             return new Error('O carrinho está vazio.');
         }
-
-        console.log(user.myOrders.orders);
-        
 
         const productIsAlreadyOrder = user.myOrders.orders.find((product) => product.number === order.number)
         if (user.myOrders.orders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)

@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 
-import { NewAddress } from "../../types"
+import { MyResponse, NewAddress } from "../../types"
 import { AddressProviders } from "../../database/providers";
 import { validation } from "../../shared/middleware";
 import '../../shared/services/TraducoesYup'
@@ -23,9 +23,12 @@ export const createAddressValidation = validation({
     body: bodyAddressSchemaValidation,
 })
 
-export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Response) => {
+export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Response<{}, MyResponse>) => {
 
-    const address = await AddressProviders.create('6436ad8cff997f78476ca08d', req.body)
+    const userId = res.locals.userId
+    const newAddress = req.body
+
+    const address = await AddressProviders.create(userId, newAddress)
 
     if (address instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
