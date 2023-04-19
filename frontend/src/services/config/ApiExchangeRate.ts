@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IProducts } from './../types/api/Products';
+import { IProducts } from '../../types/api/Products';
 
 export async function convertCurrency(products: IProducts[]) {
     try {

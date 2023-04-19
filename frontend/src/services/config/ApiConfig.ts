@@ -15,3 +15,7 @@ export function Api(item: string): Promise<AxiosResponse<any, any>>{
     
     return axios.request(options)
 }   
+
+export const MyApi = axios.create({
+    baseURL: "http://localhost:3001",
+})
