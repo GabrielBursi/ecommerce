@@ -8,12 +8,19 @@ export const create = async (userId: string | string[], address: NewAddress) => 
             return new Error('Usuário não encontrado')
         } 
 
-        user.address?.address.push(address)
-        await user.save()
+        const alreadyInAddress = user.address.find(ads => ads.cep === address.cep)
+        if(alreadyInAddress){
+            return new Error('Já existe endereço com esse CEP: ' + address.cep)
+        }
 
-        return { newAddress: address }
+        const newAddress: NewAddress[] = [
+            ...user.address,
+            address
+        ]
+
+        const addressUpdated = await User.findOneAndUpdate({ uuid: userId }, { address: newAddress }).exec()
+        return addressUpdated?.address
     } catch (error) {
-        console.log(error)
         return new Error('Erro ao consultar o registro')
     }
 }

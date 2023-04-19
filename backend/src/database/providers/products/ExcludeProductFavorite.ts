@@ -12,14 +12,14 @@ export const excludeProductFavorite = async (userId: string | undefined, product
             return new Error("Usuário não encontrado.")
         }
 
-        const indexDeleted = user.favorites.products.findIndex(product => product.uuid === productId)
+        const indexDeleted = user.favorites.findIndex(product => product.uuid === productId)
         if(indexDeleted === -1) {
             return new Error("Produto não encontrado nos favoritos.")
         }
-        user.favorites.products.splice(indexDeleted, 1)
+        user.favorites.splice(indexDeleted, 1)
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { favorites: user.favorites }, { new: true }).exec();
-        return updatedUser?.favorites.products;
+        return updatedUser?.favorites;
 
     } catch (error) {
         return new Error("Erro ao consultar registros." + error)

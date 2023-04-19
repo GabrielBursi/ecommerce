@@ -14,8 +14,8 @@ export const addInCart = async (userId: string | string[], productId: string | u
             return new Error('Usuário não encontrado id: ' + userId);
         }
 
-        const productIsAlreadyCart = user.cart.products.find((product) => product.uuid === productId)
-        if (user.cart.products.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
+        const productIsAlreadyCart = user.cart.find((product) => product.uuid === productId)
+        if (user.cart.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
             const newCart: IProducts[] = [
                 {
                     img: product.img,
@@ -26,10 +26,10 @@ export const addInCart = async (userId: string | string[], productId: string | u
                     quant: 1,
                 }
             ];
-            user.cart.products = newCart;
-        } else if (user.cart.products.length > 0 && !productIsAlreadyCart) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO NÃO ESTÁ NO CARRINHO
+            user.cart = newCart;
+        } else if (user.cart.length > 0 && !productIsAlreadyCart) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO NÃO ESTÁ NO CARRINHO
             const newCart: IProducts[] = [
-                ...user.cart.products,
+                ...user.cart,
                 {
                     img: product.img,
                     name: product.name,
@@ -39,14 +39,14 @@ export const addInCart = async (userId: string | string[], productId: string | u
                     quant: 1,
                 }
             ];
-            user.cart.products = newCart;
-        } else if (user.cart.products.length > 0 && productIsAlreadyCart) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
-            const existingProductIndex = user.cart.products.findIndex(p => p.uuid === productId);
-            user.cart.products[existingProductIndex].quant++
+            user.cart = newCart;
+        } else if (user.cart.length > 0 && productIsAlreadyCart) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
+            const existingProductIndex = user.cart.findIndex(p => p.uuid === productId);
+            user.cart[existingProductIndex].quant++
         }
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: user.cart }, { new: true }).populate('cart.products').exec();
-        return updatedUser?.cart?.products;
+        return updatedUser?.cart;
     } catch (error) {
         return new Error('Erro ao consultar registro: ' + error);
     }

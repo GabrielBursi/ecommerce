@@ -1,13 +1,12 @@
 import { Schema, model } from "mongoose";
-import { NewUser } from "../../types";
-import { UserAddressSchema } from "./Address";
-import { CartSchema, MyOrdersSchema } from "./Products";
+import { IProducts, NewAddress, NewUser } from "../../types";
+import { MyOrdersSchema } from "./Products";
 
 export interface UserSchema extends NewUser {
-    address: UserAddressSchema,
-    favorites: CartSchema,
-    cart: CartSchema,
-    myOrders: {orders: MyOrdersSchema[]},
+    address: NewAddress[],
+    favorites: IProducts[] | [],
+    cart: IProducts[] | [],
+    myOrders: MyOrdersSchema[],
 }
 
 const userSchema = new Schema<UserSchema>({
@@ -17,10 +16,10 @@ const userSchema = new Schema<UserSchema>({
     password: { type: String, required: true },
     confirmPassword: { type: String, required: true },
     cpf: { type: String, required: true },
-    address: { type: Schema.Types.Mixed, default: {address: []} },
-    favorites: { type: Schema.Types.Mixed, default: {products: []} },
-    cart: { type: Schema.Types.Mixed, default: {products: []} },
-    myOrders: { type: Schema.Types.Mixed, default: {orders: []} },
+    address: { type: Schema.Types.Mixed, default: [] },
+    favorites: { type: Schema.Types.Mixed, default: [] },
+    cart: { type: Schema.Types.Mixed, default: [] },
+    myOrders: { type: Schema.Types.Mixed, default: [] },
 });
 
 export const User = model<UserSchema>('User', userSchema);

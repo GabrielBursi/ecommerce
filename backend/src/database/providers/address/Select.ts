@@ -8,7 +8,7 @@ export const select = async (userId: string | string[], cep: string) => {
             return new Error('Usuário não existe');
         }
 
-        const selectedAddress = user.address?.address.find(address => address.cep === cep);
+        const selectedAddress = user.address.find(address => address.cep === cep);
 
         return selectedAddress || new Error('Não existe nenhum endereço cadastrado com esse CEP.');
     } catch (error) {
