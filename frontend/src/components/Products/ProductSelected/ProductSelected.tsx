@@ -8,7 +8,7 @@ import { ProductSelectedMobile } from "../../mobile";
 
 interface ProductSelectedProps extends IProducts, MyImageProps {}
 
-export function ProductSelected({ name, rating, alt, src, price, id, img }: ProductSelectedProps) {
+export function ProductSelected({ name, rating, alt, src, price, uuid, img }: ProductSelectedProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -19,7 +19,7 @@ export function ProductSelected({ name, rating, alt, src, price, id, img }: Prod
     return <ProductSelectedMobile
                 alt={name}
                 src={img}
-                id={id}
+                uuid={uuid}
                 img={img}
                 price={price}
                 rating={rating}
@@ -33,7 +33,7 @@ export function ProductSelected({ name, rating, alt, src, price, id, img }: Prod
                 <Box flex={1} display='flex' flexDirection='column'>
                     <Box flex={1} width='100%' display='flex' flexDirection='column'>
                         <ActionsProduct 
-                            product={{id, name, img, price, rating}} 
+                            product={{uuid, name, img, price, rating}} 
                         /> 
                         <Box flex={1} width='100%' display='flex'>
                             { !lgDown &&
@@ -49,7 +49,7 @@ export function ProductSelected({ name, rating, alt, src, price, id, img }: Prod
                 <Box width='50%' display='flex' flexDirection='column'>
                     <Box flex={1} width='100%' display='flex' flexDirection='column'>
                         <Price 
-                            product={{ id, name, img, price, rating }}
+                            product={{ uuid, name, img, price, rating }}
                         />
                         <Box height='20%' display='flex' alignItems='end'>
                             <Box display='flex' justifyContent='start' alignItems='center' width='auto' gap={1}>

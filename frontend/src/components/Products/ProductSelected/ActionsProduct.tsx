@@ -26,12 +26,12 @@ export function ActionsProduct({ product }: ActionsProductProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsFavorited, product.id, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, product.uuid, setIsFavorite)
         setUrl(window.location.href)
         
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product.id, productsFavorited]);
+    }, [product.uuid, productsFavorited]);
 
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between' gap={1}>
@@ -50,7 +50,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
                     <ShareIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} />
                 </IconButton>
                 <IconButton size={mdDown ? "small" : "medium"} onClick={() => {
-                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, product, product.id)
+                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, product, product.uuid)
                 }}>
                     <FavoriteIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>

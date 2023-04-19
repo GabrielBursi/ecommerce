@@ -9,7 +9,7 @@ import { MyImage } from "../Products/MyImage";
 import { LoginContext, ProductsContext } from "../../contexts";
 import { ListFavoriteMobile } from "../mobile";
 
-export function ListFavorites({ name, img, price, rating, id }: IProducts) {
+export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -28,7 +28,7 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsFavorited]);
 
@@ -36,8 +36,8 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
 
     if(smDown) 
     return <ListFavoriteMobile
-            id={id}
-            key={id}
+            uuid={uuid}
+            key={uuid}
             img={img}
             name={name}
             price={price}
@@ -79,7 +79,7 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductFavorited(id)}/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductFavorited(uuid)}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -94,7 +94,7 @@ export function ListFavorites({ name, img, price, rating, id }: IProducts) {
                         fullWidth 
                         size="large" 
                         onClick={() => {
-                            id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
+                            uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
                         }}
                     >
                         { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

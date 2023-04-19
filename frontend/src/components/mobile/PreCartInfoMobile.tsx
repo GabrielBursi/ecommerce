@@ -8,14 +8,14 @@ interface PreCartInfoMobileProps extends IProducts {
     nameWithoutBrand: string
 }
 
-export function PreCartInfoMobile({ img, price, name, id, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
+export function PreCartInfoMobile({ img, price, name, uuid, brand, nameWithoutBrand }: PreCartInfoMobileProps) {
 
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
         setOpen(true)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [uuid]);
 
     return (
         <Box height='100%' width='100%' display='flex' flexDirection='column' padding={2} component={Paper} elevation={10}>

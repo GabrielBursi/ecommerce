@@ -17,17 +17,17 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { MaskInputCep } from './utils';
 import { AddressContext } from '../../contexts';
-import { AddressFormData, DataApiCep } from '../../types';
+import { IAddress, IViaCep } from '../../types';
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
     title: string,
     btnText: string,
     isNewAddress?: boolean,
-    addressFind?: AddressFormData
+    addressFind?: IAddress
 }
 
-const addressSchema: yup.ObjectSchema<Omit<AddressFormData, 'isSelected'>> = yup.object({
+const addressSchema: yup.ObjectSchema<Omit<IAddress, 'isSelected'>> = yup.object({
     cep: yup.string().required(),
     identification: yup.string().required(),
     street: yup.string().required(),
@@ -65,7 +65,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
             setError, 
             clearErrors, 
             reset 
-        } = useForm<AddressFormData>({ 
+        } = useForm<IAddress>({ 
         mode: 'onSubmit', 
         resolver: yupResolver(addressSchema) 
     })
@@ -95,7 +95,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                     clearErrors('neighborhood')
                     clearErrors('street')
                     
-                    const dataTyped: DataApiCep = data
+                    const dataTyped: IViaCep = data
                     setValue('city', dataTyped.localidade)
                     setValue('state', dataTyped.uf)
                     setValue('neighborhood', dataTyped.bairro)
@@ -135,7 +135,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
         }
     }, [isOpen]);
 
-    function onSubmit(data: AddressFormData) {
+    function onSubmit(data: IAddress) {
         addressSchema.validate(data, { abortEarly: false })
         .then(validData => { 
                 if(addressFind){

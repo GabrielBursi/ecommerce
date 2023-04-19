@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { ChildrenProp, DepartmentCardProps, id, IProducts, MyRequestsData } from "../types";
+import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -14,13 +14,13 @@ interface ProductsContextData {
     productsDepartments: DepartmentCardProps[],
     setProductsDepartments: React.Dispatch<React.SetStateAction<DepartmentCardProps[]>>,
 
-    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, id: id) => void,
-    addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, id: id) => void,
-    removeProductFavorited(id: id): void,
+    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, uuid: string) => void,
+    addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, uuid: string) => void,
+    removeProductFavorited(uuid: string): void,
 
-    filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
-    myRequests: MyRequestsData[], 
-    setMyRequests: (value: MyRequestsData[]) => void
+    filterProductsAndSetFavoriteOrInCart(arr: IProducts[], uuid: string, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
+    myRequests: IMyOrders[], 
+    setMyRequests: (value: IMyOrders[]) => void
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -30,7 +30,7 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [products, setProducts] = useState<IProducts[]>([]); 
     const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
-    const [myRequests, setMyRequests] = useState<MyRequestsData[]>([]);
+    const [myRequests, setMyRequests] = useState<IMyOrders[]>([]);
 
     const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
 
@@ -46,7 +46,7 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (isAlreadyInCart)
             return navigate('/cart')
         setProductsInCart([...productsInCart, product])
-        navigate(`/precart/${product.id}`)
+        navigate(`/precart/${product.uuid}`)
     }
 
     function addProductInFavorited(
@@ -55,7 +55,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, 
             isFavorite: boolean, 
             product: IProducts, 
-            id: id
+            uuid: string
         ) {
 
         if (!isLogged)
@@ -65,22 +65,22 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (!isFavorite) {
             setProductsFavorited([...productsFavorited, product ])
         } else {
-            const productsFavoritedWithout = productsFavorited.filter(product => product.id !== id)
+            const productsFavoritedWithout = productsFavorited.filter(product => product.uuid !== uuid)
             setProductsFavorited(productsFavoritedWithout)
         }
     }
 
-    function removeProductFavorited(id: id) {
-        const productsFavoritedWithout = productsFavorited.filter(product => product.id !== id)
+    function removeProductFavorited(uuid: string) {
+        const productsFavoritedWithout = productsFavorited.filter(product => product.uuid !== uuid)
         setProductsFavorited(productsFavoritedWithout)
     }
 
-    function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], id: id, setState: React.Dispatch<React.SetStateAction<boolean>>){
+    function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], uuid: string, setState: React.Dispatch<React.SetStateAction<boolean>>){
 
-        const productNotFavoritedOrInCart = arr.filter(product => product.id !== id)
+        const productNotFavoritedOrInCart = arr.filter(product => product.uuid !== uuid)
         productNotFavoritedOrInCart.forEach(() => setState(false))
 
-        const productFavoritedOrInCart = arr.filter(product => product.id === id)
+        const productFavoritedOrInCart = arr.filter(product => product.uuid === uuid)
         productFavoritedOrInCart.forEach(() => setState(true))
     }
 

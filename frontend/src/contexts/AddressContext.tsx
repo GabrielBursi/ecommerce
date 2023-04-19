@@ -1,27 +1,27 @@
 import { createContext, useState } from "react";
-import { AddressFormData, ChildrenProp } from "../types";
+import { IAddress, ChildrenProp } from "../types";
 
 interface AddressContextData {
-    formData: AddressFormData | undefined,
-    setFormData: React.Dispatch<React.SetStateAction<AddressFormData | undefined>>,
-    addressList: AddressFormData[],
-    setAddressList: React.Dispatch<React.SetStateAction<AddressFormData[]>>,
+    formData: IAddress| undefined,
+    setFormData: React.Dispatch<React.SetStateAction<IAddress| undefined>>,
+    addressList: IAddress[],
+    setAddressList: React.Dispatch<React.SetStateAction<IAddress[]>>,
 
-    handleAddressSelect: (address: AddressFormData | undefined) => void,
+    handleAddressSelect: (address: IAddress| undefined) => void,
 }
 const AddressContext = createContext({} as AddressContextData)
 
 function AddressContextProvider({ children }: ChildrenProp) {
     
-    const [formData, setFormData] = useState<AddressFormData>();
-    const [addressList, setAddressList] = useState<AddressFormData[]>([]);
+    const [formData, setFormData] = useState<IAddress>();
+    const [addressList, setAddressList] = useState<IAddress[]>([]);
 
-    function handleAddressSelect(addressSelected: AddressFormData | undefined) {
+    function handleAddressSelect(addressSelected: IAddress| undefined) {
         if(addressSelected){
             setFormData(addressSelected);
             if(addressList.length > 0){
     
-                const updatedAddress: AddressFormData[] = addressList.map((option) => {
+                const updatedAddress: IAddress[] = addressList.map((option) => {
                     
                     return option.cep === addressSelected.cep ? { ...option, isSelected: true } : { ...option, isSelected: false }
                 });

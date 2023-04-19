@@ -9,7 +9,7 @@ import '../../TraducoesYup'
 import { Box, Button, CircularProgress, Grid, IconButton, InputAdornment, Link, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
 
-import { YupSchemaLogin } from "../../types";
+import { IUser } from "../../types";
 import MaskedInput from "react-text-mask";
 import { MaskInputCpf } from "../Cart/Step2/utils";
 
@@ -17,9 +17,9 @@ interface FormProps {
     nameForm: string,
     textButton: string,
     create: boolean,
-    onSubmit: (data: YupSchemaLogin) => void,
-    schemaCreate: yup.ObjectSchema<YupSchemaLogin, yup.AnyObject, any, "">,
-    schemaLogin: yup.ObjectSchema<Pick<YupSchemaLogin, "email" | "password">, yup.AnyObject, any, "">,
+    onSubmit: (data: IUser) => void,
+    schemaCreate: yup.ObjectSchema<Omit<IUser, 'uuid'>, yup.AnyObject, any, "">,
+    schemaLogin: yup.ObjectSchema<Pick<IUser, "email" | "password">, yup.AnyObject, any, "">,
     isLoading: boolean,
 }
 
@@ -41,7 +41,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
         formState: { errors },
         clearErrors,
         reset
-    } = useForm<YupSchemaLogin>({
+    } = useForm<IUser>({
         mode: 'onSubmit',
         resolver: yupResolver(create ? schemaCreate : schemaLogin),
     })

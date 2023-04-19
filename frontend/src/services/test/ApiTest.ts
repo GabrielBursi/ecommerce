@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DataApiTeste, IProducts, YupSchemaLogin } from '../../types';
+import { DataApiTeste, IProducts, IUser } from '../../types';
 import { convertCurrency } from '../config/ApiExchangeRate';
 import { arrayTESTE, formaProductPrice } from '../utils';
 
@@ -94,16 +94,16 @@ export async function getAllUser(){
     }
 }
 
-export async function getUserById(id: number) {
+export async function getUserById(uuid: number) {
     try {
-        const { data } = await ApiTest(`/login/${id}`)
+        const { data } = await ApiTest(`/login/${uuid}`)
         return data as DataApiTeste;
     }catch (error){
         return new Error('API FAKE DESLIGADA: ' + error)
     }
 }
 
-export async function createUser(user: YupSchemaLogin){
+export async function createUser(user: Omit<IUser, 'uuid'>){
     try {
         const { data } = await ApiTest.post('/login', user)
         return data as DataApiTeste;
@@ -112,7 +112,7 @@ export async function createUser(user: YupSchemaLogin){
     }
 }
 
-export async function login(user: Pick<YupSchemaLogin, 'email' | 'password'>){
+export async function login(user: Pick<IUser, 'email' | 'password'>){
     
     const users = await getAllUser();
 
@@ -132,7 +132,7 @@ export async function userIsLogged(){
         return false
     }
 
-    const id = Number(dataUser)
-    const user = await getUserById(id)
+    const uuid = Number(dataUser)
+    const user = await getUserById(uuid)
     return user
 }

@@ -9,7 +9,7 @@ import '../TraducoesYup'
 import { Form } from "../components";
 import { LoginContext } from "../contexts";
 import { LayoutBase } from "../layouts";
-import { YupSchemaLogin } from "../types";
+import { IUser } from "../types";
 import { createUser, login } from "../services";
 
 export function Login() {
@@ -21,12 +21,12 @@ export function Login() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const loginSchema: yup.ObjectSchema<Pick<YupSchemaLogin, 'email' | 'password'>> = yup.object({
+    const loginSchema: yup.ObjectSchema<Pick<IUser, 'email' | 'password'>> = yup.object({
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
     })
 
-    const createLoginSchema: yup.ObjectSchema<YupSchemaLogin> = yup.object({
+    const createLoginSchema: yup.ObjectSchema<Omit<IUser, 'uuid'>> = yup.object({
         name: yup.string().min(2).required(),
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
@@ -35,7 +35,7 @@ export function Login() {
     })
 
 
-    function onSubmit(data: YupSchemaLogin) {
+    function onSubmit(data: IUser) {
 
         if (create)  {
 
@@ -51,7 +51,7 @@ export function Login() {
                         return toast.error(data.message, {position: 'top-center'})
                     }
 
-                    localStorage.setItem('idUserLogged', JSON.stringify(data.id))
+                    localStorage.setItem('idUserLogged', JSON.stringify(data.uuid))
                     toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
                     
                     setFormLogin(valid)
@@ -81,7 +81,7 @@ export function Login() {
                     return toast.error(data, {position: 'top-center'});
                 }
 
-                localStorage.setItem('idUserLogged', JSON.stringify(data.id))
+                localStorage.setItem('idUserLogged', JSON.stringify(data.uuid))
                 toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
 
                 setFormLogin(data)

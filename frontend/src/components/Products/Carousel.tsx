@@ -48,7 +48,7 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
             >
                 {products.map(product => (
                     <Box
-                        key={product.id}
+                        key={product.uuid}
                         sx={{
                             height: 'auto',
                             width: 'auto',
@@ -61,8 +61,8 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                     >
                         { showMiniCard ?
                             <MiniCardProduct
-                                id={product.id}
-                                key={product.id}
+                                uuid={product.uuid}
+                                key={product.uuid}
                                 img={product.img}
                                 price={product.price}
                                 rating={product.rating}
@@ -70,8 +70,8 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                             />
                             :
                             <ProductCard
-                                id={product.id}
-                                key={product.id}
+                                uuid={product.uuid}
+                                key={product.uuid}
                                 img={product.img}
                                 price={product.price}
                                 rating={product.rating}

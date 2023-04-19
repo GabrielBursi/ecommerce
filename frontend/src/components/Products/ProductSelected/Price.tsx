@@ -23,10 +23,10 @@ export function Price({ product }: PriceProps) {
     const { isLogged } = useContext(LoginContext)
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, product.id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, product.uuid, setIsAlreadyInCart)
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product.id, productsInCart]);
+    }, [product.uuid, productsInCart]);
 
     return (
         <Box flex={1}>
@@ -44,7 +44,7 @@ export function Price({ product }: PriceProps) {
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: mdDown ? '1rem' : '1.4rem' }}
                         onClick={() => {
-                            addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.id)
+                            addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.uuid)
                         }}
                     >
                         {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

@@ -8,7 +8,7 @@ import { ProductSelected } from "../components";
 
 export function ProductPage() {
 
-    const { id } = useParams<'id'>()
+    const { uuid } = useParams<'uuid'>()
 
     const { products } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
@@ -16,14 +16,14 @@ export function ProductPage() {
     const [productSelectedInfo, setProductSelectedInfo] = useState<IProducts>();
 
     useEffect(() => {
-        if(!id){
+        if(!uuid){
             return console.log('teste');
         }
-        const arrProductSelected = products.filter(product => product.id === id)
+        const arrProductSelected = products.filter(product => product.uuid === uuid)
         const [productSelected] = arrProductSelected
         setProductSelectedInfo(productSelected)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [uuid]);
 
 
     return (
@@ -32,7 +32,7 @@ export function ProductPage() {
                 <ProductSelected 
                     alt={productSelectedInfo?.name || '' } 
                     src={productSelectedInfo?.img || ''}
-                    id={id || 'não existe'} 
+                    uuid={uuid || 'não existe'} 
                     img={productSelectedInfo?.img || '' } 
                     price={productSelectedInfo?.price || 0} 
                     rating={productSelectedInfo?.rating || 0} 

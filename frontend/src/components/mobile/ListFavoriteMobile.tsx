@@ -9,7 +9,7 @@ import { MyImage } from "../Products/MyImage";
 import { LoginContext, ProductsContext } from "../../contexts";
 
 
-export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) {
+export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts) {
 
     const { isLogged } = useContext(LoginContext)
     const { addProductInCart, productsFavorited, productsInCart,filterProductsAndSetFavoriteOrInCart, removeProductFavorited } = useContext(ProductsContext)
@@ -19,7 +19,7 @@ export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) 
     const navigate = useNavigate()
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsFavorited]);
 
@@ -29,14 +29,14 @@ export function ListFavoriteMobile({ name, img, price, rating, id }: IProducts) 
                 <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                 <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%' >
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductFavorited(id)} />
+                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductFavorited(uuid)} />
                     </IconButton>
                     <IconButton size="medium" >
                         {isAlreadyInCart ?
                             <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
                             :
                             <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => {
-                                id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
+                                uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
                             }} />
                         }
                     </IconButton>

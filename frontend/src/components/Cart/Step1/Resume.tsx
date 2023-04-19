@@ -4,7 +4,7 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
 import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 import ReCAPTCHA from "react-google-recaptcha";
-import { MyRequestsData } from "../../../types";
+import { IMyOrders } from "../../../types";
 
 export function Resume() {
 
@@ -23,7 +23,7 @@ export function Resume() {
 
         const orderNumber = Math.floor(Math.random() * 999999)
 
-        const newOrder: MyRequestsData = {
+        const newOrder: IMyOrders = {
             date: new Date(Date.now()).toISOString(),
             number: `#${orderNumber}`,
             payment: payment.toUpperCase(),

@@ -5,16 +5,16 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import { Cep } from "../../CEP";
 import { ResumeContext } from "../../../contexts";
-import { CepOptions } from "../../../types";
+import { ICep } from "../../../types";
 
 export function ListOptionsCep() {
 
     const { cepOptions, setCepOptions } = useContext(ResumeContext)
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setSelectedOption] = useState<CepOptions>();
+    const [_, setSelectedOption] = useState<ICep>();
 
-    function handleOptionSelect(optionSelected: CepOptions) {
+    function handleOptionSelect(optionSelected: ICep) {
         setSelectedOption(optionSelected);
 
         const updatedOptions = cepOptions.map((option) =>

@@ -8,14 +8,14 @@ import { PriceMobile } from "./PriceMobile";
 interface ProductSelectedProps extends IProducts, MyImageProps { }
 
 
-export function ProductSelectedMobile({ name, rating, alt, src, price, id, img }: ProductSelectedProps) {
+export function ProductSelectedMobile({ name, rating, alt, src, price, uuid, img }: ProductSelectedProps) {
     return (
         <Box component={Paper} width='100%' height='100%' padding={2} display='flex' flexDirection='column' gap={2}>
             <Box width='100%' display='flex' flexDirection='column' gap={2} flex={1}>
                 <NameProduct name={name} /> 
-                <ActionsProduct product={{ id, name, img, price, rating }} />
+                <ActionsProduct product={{ uuid, name, img, price, rating }} />
                 <ImagemZoom alt={alt} src={src}/>
-                <PriceMobile product={{ id, name, img, price, rating }}/>
+                <PriceMobile product={{ uuid, name, img, price, rating }}/>
             </Box>
             <Box width='100%' height='20%' display='flex' flexDirection='column'>
                 <Box display='flex' justifyContent='start' alignItems='center' width='auto' gap={1}>

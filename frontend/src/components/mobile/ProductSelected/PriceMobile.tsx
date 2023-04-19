@@ -21,10 +21,10 @@ export function PriceMobile({ product }: PriceProps) {
     const { isLogged } = useContext(LoginContext)
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, product.id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, product.uuid, setIsAlreadyInCart)
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product.id, productsInCart]);
+    }, [product.uuid, productsInCart]);
 
     return (
         <Box height='40%' display='flex' flexDirection='column'  gap={2}>
@@ -45,7 +45,7 @@ export function PriceMobile({ product }: PriceProps) {
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: '1.2rem'}}
                         onClick={() => {
-                            addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.id)
+                            addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.uuid)
                         }}
                     >
                         {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

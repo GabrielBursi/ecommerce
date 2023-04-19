@@ -15,7 +15,7 @@ interface ProductCardProps extends IProducts{
     mdDown?: boolean
 }
 
-export function ProductCard({ img, price, name, rating, width = 270, height = 390, id, mdDown }: ProductCardProps) {
+export function ProductCard({ img, price, name, rating, width = 270, height = 390, uuid, mdDown }: ProductCardProps) {
 
     const [hover, setHover] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
@@ -28,13 +28,13 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const navigate = useNavigate()
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsFavorited, id, setIsFavorite)
-        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, uuid, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsFavorited, productsInCart]);
 
     function seeProduct(){
-        navigate(`/product/${id}`)
+        navigate(`/product/${uuid}`)
     }
 
     if(mdDown)
@@ -42,7 +42,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                 img={img}
                 price={price}
                 name={name}
-                id={id}
+                uuid={uuid}
                 rating={rating}
                 seeProduct={seeProduct}
             />
@@ -63,7 +63,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                         action={
                             hover ? 
                             <IconButton size="medium" onClick={ () => {
-                                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
+                                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, uuid }, uuid)
                                 }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="medium" />
                             </IconButton>
@@ -108,7 +108,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                     fullWidth
                     size="large"
                     onClick={() => {
-                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
+                        uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
                     }}
                     >
                     {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

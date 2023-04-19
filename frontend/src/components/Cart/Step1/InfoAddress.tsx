@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { Box, Typography } from "@mui/material";
 import { ButtonEdit, ButtonSelect } from "./ActionModal";
 import { AddressContext } from "../../../contexts";
-import { AddressFormData } from "../../../types";
+import { IAddress} from "../../../types";
 
-interface InfoAddressProps extends Omit<AddressFormData, | 'neighborhood'> {
+interface InfoAddressProps extends Omit<IAddress, | 'neighborhood'> {
     isOnModal?: boolean,
     isSelected?: boolean
 }

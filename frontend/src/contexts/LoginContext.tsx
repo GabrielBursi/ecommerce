@@ -1,10 +1,9 @@
 import { createContext, useState } from "react";
-import { ChildrenProp } from "../types";
-import { YupSchemaLogin } from "../types/login";
+import { ChildrenProp, IUser } from "../types";
 
 interface LoginContextData{
-    formLogin?: YupSchemaLogin,
-    setFormLogin: (value: YupSchemaLogin) => void,
+    formLogin?: Omit<IUser, 'uuid'>,
+    setFormLogin: (value: Omit<IUser, 'uuid'>) => void,
 
     isLogged: boolean,
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>,
@@ -16,7 +15,7 @@ const LoginContext = createContext({} as LoginContextData)
 
 function LoginContextProvider({children}:ChildrenProp) {
 
-    const [formLogin, setFormLogin] = useState<YupSchemaLogin>();
+    const [formLogin, setFormLogin] = useState<Omit<IUser, 'uuid'>>();
 
     const [isLogged, setIsLogged] = useState<boolean>(false);
 

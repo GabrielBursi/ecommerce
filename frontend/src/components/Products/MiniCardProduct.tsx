@@ -4,7 +4,7 @@ import { Box, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { IProducts } from "../../types";
 import { MyImage } from "./MyImage";
 
-export function MiniCardProduct({ img, price, name, id }: IProducts) {
+export function MiniCardProduct({ img, price, name, uuid }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -14,7 +14,7 @@ export function MiniCardProduct({ img, price, name, id }: IProducts) {
 
     return (
         <Box
-            onClick={() => navigate(`/product/${id}`)}
+            onClick={() => navigate(`/product/${uuid}`)}
             onMouseEnter={() => setHover(true)} 
             onMouseLeave={() => setHover(false)}
             component={Paper}

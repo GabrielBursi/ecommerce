@@ -4,24 +4,24 @@ import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IProducts, id } from "../../../types";
+import { IProducts } from "../../../types";
 import { MyImage } from "../../Products";
 import { ProductsContext } from "../../../contexts";
 import { ModalAction } from "../../Modal";
 
-export function ProductInCart({ id, img, name, price }: IProducts) {
+export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
     const { productsInCart, setProductsInCart } = useContext(ProductsContext)
     const [isOpen, setIsOpen] = useState(false);
 
-    const product = productsInCart.filter(product => product.id === id)
+    const product = productsInCart.filter(product => product.uuid === uuid)
     const [quant, setQuant] = useState(product[0].quant || 1);
 
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
     useEffect(() => {
-        updateProductQuantity(id, quant)
+        updateProductQuantity(uuid, quant)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [quant]);
 
@@ -36,9 +36,9 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
         setQuant(oldQuant => oldQuant - 1)
     }
 
-    function updateProductQuantity(id: id, quant: number) {
+    function updateProductQuantity(uuid: string, quant: number) {
         const updatedProducts = productsInCart.map(product => {
-            if (product.id === id) {
+            if (product.uuid === uuid) {
                 return {
                     ...product,
                     quant
@@ -50,7 +50,7 @@ export function ProductInCart({ id, img, name, price }: IProducts) {
     }
 
     function removeProductCart(){
-        const productRemoved = productsInCart.filter(product => product.id !== id)
+        const productRemoved = productsInCart.filter(product => product.uuid !== uuid)
         setProductsInCart(productRemoved)
     }
 

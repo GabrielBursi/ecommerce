@@ -2,11 +2,11 @@ import { useContext, useState } from "react";
 import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { MyRequestsData } from "../../types";
+import { IMyOrders } from "../../types";
 import { MyRequestsList } from "../Products";
 import { ResumeContext } from "../../contexts";
 
-export const ListMyRequests = ({ date, number, payment, status, products, address }: MyRequestsData) => {
+export const ListMyRequests = ({ date, number, payment, status, products, address }: IMyOrders) => {
 
     const [showDetails, setShowDetails] = useState(false);
 
@@ -78,8 +78,8 @@ export const ListMyRequests = ({ date, number, payment, status, products, addres
                         </Typography>
                         {products.map(product => 
                             <MyRequestsList
-                                key={product.id}
-                                id={product.id}
+                                key={product.uuid}
+                                uuid={product.uuid}
                                 name={product.name}
                                 img={product.img}
                                 price={product.price}

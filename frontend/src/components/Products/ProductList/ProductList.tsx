@@ -19,19 +19,19 @@ export function ProductList({ products }: ProductListProps) {
         <Box height='auto' width='100%'>
             <Grid container rowGap={2} columnGap={2} display='flex' justifyContent='center' alignItems='center'>
                 {products.map(product => (
-                    <Grid item xs={12} sm={5} md={3} lg={2} key={product.id} display='flex' justifyContent='center' alignItems='center'>
+                    <Grid item xs={12} sm={5} md={3} lg={2} key={product.uuid} display='flex' justifyContent='center' alignItems='center'>
                         {smDown ? 
                             <ProductCardMobile
-                                id={product.id}
+                                uuid={product.uuid}
                                 img={product.img}
                                 name={product.name}
                                 price={product.price}
                                 rating={product.rating}
-                                seeProduct={() => navigate(`/product/${product.id}`)}
+                                seeProduct={() => navigate(`/product/${product.uuid}`)}
                             />
                             :
                             <ProductCard
-                                id={product.id}
+                                uuid={product.uuid}
                                 img={product.img}
                                 name={product.name}
                                 price={product.price}

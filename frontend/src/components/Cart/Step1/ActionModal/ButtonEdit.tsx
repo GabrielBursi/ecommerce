@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { AddressContext } from "../../../../contexts";
 import { ModalAddress } from "../../../Modal";
-import { AddressFormData } from "../../../../types";
+import { IAddress} from "../../../../types";
 
 interface ButtonEditProps {
     cep:string | undefined;
@@ -13,7 +13,7 @@ export function ButtonEdit({ cep }: ButtonEditProps) {
     const { addressList } = useContext(AddressContext)
 
     const [isOpen, setIsOpen] = useState(false);
-    const [addressFind, setAddressFind] = useState<AddressFormData>();
+    const [addressFind, setAddressFind] = useState<IAddress>();
 
     useEffect(() => {
         const addressFindByFilter = addressList.find(address =>  address.cep === cep)

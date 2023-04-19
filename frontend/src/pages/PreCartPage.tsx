@@ -12,7 +12,7 @@ export function PreCartPage() {
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     
-    const { id } = useParams<'id'>();
+    const { uuid } = useParams<'uuid'>();
 
     const { isLogged } = useContext(LoginContext)
     const { productsInCart } = useContext(ProductsContext)
@@ -22,15 +22,15 @@ export function PreCartPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!id){
+        if(!uuid){
             return console.log('teste');
             
         }
-        const arrProductAdded = productsInCart.filter(product => product.id === id);
+        const arrProductAdded = productsInCart.filter(product => product.uuid === uuid);
         const [productAdded] = arrProductAdded
         setProductAddInCart(productAdded)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [uuid]);
 
 
     return (
@@ -38,7 +38,7 @@ export function PreCartPage() {
             <Box display='flex' justifyContent='center' alignItems='start' width='100%' height='100%' pt={2}>
                 <Grid container spacing={2} width={ mdDown ?  '100%' : '80%' } height='90%'>
                     <Grid item xs={12} height={mdDown ? '35%' : '55%'}>
-                        {productAddInCart && <PreCartInfo img={productAddInCart.img} price={productAddInCart.price} name={productAddInCart.name} id={id || 'id não existe'} />}
+                        {productAddInCart && <PreCartInfo img={productAddInCart.img} price={productAddInCart.price} name={productAddInCart.name} uuid={uuid || 'uuid não existe'} />}
                     </Grid>
                         { mdDown &&
                             <Grid item xs={12} height='auto'>

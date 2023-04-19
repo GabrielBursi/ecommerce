@@ -6,7 +6,7 @@ import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
 import { PreCartInfoMobile } from "../mobile";
 
-export function PreCartInfo({ img, price, name, id }: IProducts) {
+export function PreCartInfo({ img, price, name, uuid }: IProducts) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -25,7 +25,7 @@ export function PreCartInfo({ img, price, name, id }: IProducts) {
                 name={name}
                 img={img}
                 price={price}
-                id={id}
+                uuid={uuid}
                 brand={brand}
                 nameWithoutBrand={nameWithoutBrand}
             />

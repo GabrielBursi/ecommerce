@@ -32,8 +32,8 @@ export function FavoritePage() {
                             { 
                                 productsFavorited.map(product => (
                                     <ListFavorites
-                                        id={product.id}
-                                        key={product.id}
+                                        uuid={product.uuid}
+                                        key={product.uuid}
                                         img={product.img}
                                         name={product.name}
                                         price={product.price}

@@ -12,7 +12,7 @@ interface ProductCardProps extends IProducts {
     seeProduct: () => void,
 }
 
-export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }: ProductCardProps) {
+export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, }: ProductCardProps) {
 
     const [hover, setHover] = useState(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
@@ -26,8 +26,8 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
 
 
     useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsFavorited, id, setIsFavorite)
-        filterProductsAndSetFavoriteOrInCart(productsInCart, id, setIsAlreadyInCart)
+        filterProductsAndSetFavoriteOrInCart(productsFavorited, uuid, setIsFavorite)
+        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsFavorited, productsInCart]);
 
@@ -46,7 +46,7 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
                 >
                     <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                     <IconButton size="small" onClick={() => {
-                            addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, id }, id)
+                            addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, uuid }, uuid)
                         }}>
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>
@@ -101,7 +101,7 @@ export function ProductCardMobile({ img, price, name, rating, id, seeProduct, }:
                     fullWidth
                     size="medium"
                     onClick={() => {
-                        id && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, id }, id)
+                        uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
                     }}
                 >
                     {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

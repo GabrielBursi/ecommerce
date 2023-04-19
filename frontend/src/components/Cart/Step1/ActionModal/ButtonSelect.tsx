@@ -1,10 +1,10 @@
 import { Button } from "@mui/material";
 import { useContext } from "react";
 import { AddressContext } from "../../../../contexts";
-import { AddressFormData } from "../../../../types";
+import { IAddress} from "../../../../types";
 
 interface ButtonSelectProps {
-    addressSelected: AddressFormData
+    addressSelected: IAddress
 }
 
 export function ButtonSelect({ addressSelected }: ButtonSelectProps) {

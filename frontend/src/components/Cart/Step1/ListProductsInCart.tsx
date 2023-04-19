@@ -53,8 +53,8 @@ export function ListProductsInCart() {
             <Box height='auto' display='flex' flexDirection='column' gap={4}>
                 {productsInCart.map(product => (
                     <ProductInCart 
-                        key={product.id}
-                        id={product.id}
+                        key={product.uuid}
+                        uuid={product.uuid}
                         name={product.name}
                         img={product.img}
                         price={product.price}

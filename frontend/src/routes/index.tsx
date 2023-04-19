@@ -151,7 +151,7 @@ export function RoutesApp() {
                 },
                 {
                     icon: 'person',
-                    path: '/conta/:id',
+                    path: '/conta/:uuid',
                     label: 'Minha conta',
                 },
                 {
@@ -180,14 +180,14 @@ export function RoutesApp() {
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/products/:product" element={<ListProductsPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/product/:uuid" element={<ProductPage />} />
             <Route path="/login" element={<Login/>}/>
             <Route path="/login/:create" element={<Login />} />
 
             //!privado
             <Route path="/favorite" element={<PrivateRoute><FavoritePage /></PrivateRoute>} /> 
 
-            <Route path="/precart/:id" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
+            <Route path="/precart/:uuid" element={<PrivateRoute><PreCartPage/></PrivateRoute>}/> 
             <Route path="/cart_empty" element={<PrivateRoute><CartEmptyPage /></PrivateRoute>} />
             <Route path="/cart" element={<PrivateRoute><CartEmptyRoute><CartPage /></CartEmptyRoute></PrivateRoute>} />
             <Route path="/cart/identification" element={<PrivateRoute><IndentificationPage /></PrivateRoute>} />
