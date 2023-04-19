@@ -1,4 +1,4 @@
-export type CepOptions = {
+export type ICep = {
     name: string,
     rating: number,
     price: number,
@@ -6,7 +6,7 @@ export type CepOptions = {
     selected?: boolean,
 }
 
-export interface AddressFormData {
+export interface IAddress {
     complement?: string;
     ref?: string;
     city?: string;
@@ -19,7 +19,7 @@ export interface AddressFormData {
     isSelected?: boolean;
 }
 
-export interface DataApiCep {
+export interface IViaCep {
     logradouro: string,
     bairro: string,
     localidade: string,
