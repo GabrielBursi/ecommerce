@@ -1,21 +1,11 @@
 import { Request, Response } from "express";
-import * as yup from "yup";
 import { StatusCodes } from "http-status-codes";
 import { ProductsProviders } from "../../database/providers";
-import { validation } from "../../shared/middleware";
-import { IParamProps } from "../../types";
+import { MyResponse } from "../../types";
 
-const paramsSchemaValidation: yup.ObjectSchema<IParamProps> = yup.object({
-    id: yup.string().required()
-})
+export const ClearCart = async (req: Request, res: Response<{}, MyResponse>) => {
 
-export const excludeProductFavoriteValidation = validation({
-    params: paramsSchemaValidation
-})
-
-export const ClearCart = async (req: Request<IParamProps>, res: Response) => {
-
-    const userId = req.params.id
+    const userId = res.locals.userId
 
     const cartDeleted = await ProductsProviders.clear(userId)
 

@@ -1,7 +1,7 @@
 import { NewAddress } from "../../../types";
 import { User } from "../../models";
 
-export const create = async (userId: string | string[], address: NewAddress) => {
+export const create = async (userId: string, address: NewAddress) => {
     try {
         const user = await User.findOne({uuid: userId}).exec();
         if (!user){

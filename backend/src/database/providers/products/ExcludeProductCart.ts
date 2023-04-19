@@ -1,9 +1,9 @@
 import { User } from "../../models"
 
-export const excludeProductCart = async (userId: string | undefined, productId: string | undefined) => {
+export const excludeProductCart = async (userId: string, productId: string | undefined) => {
     try {
-        if (!userId || !productId) {
-            return new Error("ID do usuário ou ID do produto não encontrados.")
+        if (!productId) {
+            return new Error('ID do produto não encontrado: ' + productId);
         }
 
         const user = await User.findOne({ uuid: userId }).exec()

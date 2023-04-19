@@ -1,6 +1,6 @@
 import { MyOrdersSchema, User } from "../../models";
 
-export const createMyOrder = async (userId: string | string[], order: Omit<MyOrdersSchema, 'products'>) => {
+export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 'products'>) => {
     try {
         const user = await User.findOne({ uuid: userId }).exec();
 

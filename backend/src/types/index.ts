@@ -34,11 +34,6 @@ export interface IProducts {
 export interface IParamProps {
     id?: string,
 }
-
-export interface IParamExcludeProps {
-    userId?: string,
-    productId?: string,
-}
 export interface MyResponse extends Locals {
-    userId: string | string[];
+    userId: string;
 }

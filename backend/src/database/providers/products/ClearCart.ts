@@ -1,6 +1,6 @@
 import { User } from "../../models"
 
-export const clear = async (userId: string | string[] | undefined) => {
+export const clear = async (userId: string) => {
     try {
         if (!userId) {
             return new Error('ID do usuário não definido: ' + userId)

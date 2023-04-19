@@ -3,19 +3,19 @@ import * as yup from "yup";
 import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middleware";
 import { ProductsProviders } from "../../database/providers";
-import { IParamExcludeProps } from "../../types";
+import { IParamProps, MyResponse } from "../../types";
 
-const paramsSchemaValidation: yup.ObjectSchema<IParamExcludeProps> = yup.object({
-    userId: yup.string().required(),
-    productId: yup.string().required(),
+const paramsSchemaValidation: yup.ObjectSchema<IParamProps> = yup.object({
+    id: yup.string().required(),
 })
 
 export const excludeProductFavoriteValidation = validation({
     params: paramsSchemaValidation
 })
 
-export const ExcludeProductFavorite = async (req: Request<IParamExcludeProps>, res: Response) => {
-    const { userId, productId } = req.params
+export const ExcludeProductFavorite = async (req: Request<IParamProps>, res: Response<{}, MyResponse>) => {
+    const { id: productId } = req.params
+    const userId = res.locals.userId
 
     const productDeleted = await ProductsProviders.excludeProductFavorite(userId, productId)
 

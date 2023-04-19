@@ -1,8 +1,12 @@
 import { IProducts } from "../../../types";
 import { Products, User } from "../../models";
 
-export const addInFavorite = async (userId: string | string[], productId: string | undefined) => {
+export const addInFavorite = async (userId: string, productId: string | undefined) => {
     try {
+        if (!productId) {
+            return new Error('ID do produto não encontrado: ' + productId);
+        }
+        
         const user = await User.findOne({ uuid: userId }).exec();
         const product = await Products.findOne({ uuid: productId }).exec();
 

@@ -2,29 +2,29 @@ import { Request, Response } from "express";
 import * as yup from "yup";
 import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middleware";
-import { IParamExcludeProps } from "../../types";
+import { IParamProps, MyResponse } from "../../types";
 import { ProductsProviders } from "../../database/providers";
 
 export interface BodyValidation {
     action: '+' | '-'
 }
 
-const paramsSchemaValidation: yup.ObjectSchema<IParamExcludeProps> = yup.object({
-    userId: yup.string().required(),
-    productId: yup.string().required(),
-})
-
 const bodySchemaValidation = yup.object({
     action: yup.string().required().matches(/^[+-]+$/),
 })
 
-export const alterQuantProductValidation = validation({
+const paramsSchemaValidation: yup.ObjectSchema<IParamProps> = yup.object({
+    id: yup.string().required(),
+})
+
+export const excludeProductCartValidation = validation({
     params: paramsSchemaValidation,
     body: bodySchemaValidation
 })
 
-export const AlterQuantProduct = async (req: Request<IParamExcludeProps, {}, BodyValidation>, res: Response) => {
-    const { userId, productId } = req.params
+export const AlterQuantProduct = async (req: Request<IParamProps, {}, BodyValidation>, res: Response<{}, MyResponse>) => {
+    const { id: productId } = req.params
+    const userId = res.locals.userId
     const { action } = req.body
 
     const productAltered = await ProductsProviders.alterQuant(userId, productId, action)

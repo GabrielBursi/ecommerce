@@ -2,20 +2,20 @@ import { Request, Response } from "express";
 import * as yup from "yup";
 import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middleware";
-import { IParamExcludeProps } from "../../types";
+import { IParamProps, MyResponse } from "../../types";
 import { ProductsProviders } from "../../database/providers";
 
-const paramsSchemaValidation: yup.ObjectSchema<IParamExcludeProps> = yup.object({
-    userId: yup.string().required(),
-    productId: yup.string().required(),
+const paramsSchemaValidation: yup.ObjectSchema<IParamProps> = yup.object({
+    id: yup.string().required(),
 })
 
 export const excludeProductCartValidation = validation({
     params: paramsSchemaValidation
 })
 
-export const ExcludeProductCart = async (req: Request<IParamExcludeProps>, res: Response) => {
-    const { userId, productId } = req.params
+export const ExcludeProductCart = async (req: Request<IParamProps>, res: Response<{}, MyResponse>) => {
+    const { id: productId } = req.params
+    const userId = res.locals.userId
 
     const productDeleted = await ProductsProviders.excludeProductCart(userId, productId)
 
