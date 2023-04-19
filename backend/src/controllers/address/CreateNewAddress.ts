@@ -37,5 +37,5 @@ export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Re
             }
         });
 
-    return res.status(StatusCodes.CREATED).json(address)
+    return res.status(StatusCodes.CREATED).json({address})
 }

@@ -19,14 +19,14 @@ export const SelectAddress = async (req: Request<{}, {}, Pick<NewAddress, 'cep'>
     const { cep } = req.body
     const userId = res.locals.userId
 
-    const address = await AddressProviders.select(userId, cep)
+    const addressSelected = await AddressProviders.select(userId, cep)
 
-    if (address instanceof Error)
+    if (addressSelected instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: address.message
+                default: addressSelected.message
             }
         });
 
-    return res.status(StatusCodes.CREATED).json(address)
+    return res.status(StatusCodes.CREATED).json({addressSelected})
 }

@@ -12,7 +12,7 @@ router.post('/login', UsersController.loginUserValidation, UsersController.Login
 
 //!ADDRESS
 router.post('/address/new', ensureAuthenticated, searchId, AddressController.createAddressValidation, AddressController.CreateNewAddress) //* PRIVATE
-router.post('/address/select', ensureAuthenticated, searchId, AddressController.selectAddressValidation, AddressController.SelectAddress) //* PRIVATE
+router.patch('/address/select', ensureAuthenticated, searchId, AddressController.selectAddressValidation, AddressController.SelectAddress) //* PRIVATE
 
 //!PRODUCTS
 router.get('/products', ProductsController.GetAllProducts)

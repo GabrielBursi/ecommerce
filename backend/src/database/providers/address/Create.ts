@@ -13,14 +13,22 @@ export const create = async (userId: string, address: NewAddress) => {
             return new Error('Já existe endereço com esse CEP: ' + address.cep)
         }
 
-        const newAddress: NewAddress[] = [
-            ...user.address,
-            address
-        ]
+        const newAddress: NewAddress = {
+            ...address, isSelected: true
+        }
 
-        const addressUpdated = await User.findOneAndUpdate({ uuid: userId }, { address: newAddress }).exec()
+        user.address.push(newAddress)
+
+        const addressSelected: NewAddress[] = user.address.map(ads => {
+            if(ads.cep !== address.cep){
+                return {...ads, isSelected: false}
+            }
+            return newAddress
+        })
+
+        const addressUpdated = await User.findOneAndUpdate({ uuid: userId }, { address: addressSelected }, {new: true}).exec()
         return addressUpdated?.address
     } catch (error) {
         return new Error('Erro ao consultar o registro')
     }
-}
+}   
