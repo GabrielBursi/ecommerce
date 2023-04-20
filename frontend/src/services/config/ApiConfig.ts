@@ -19,3 +19,13 @@ export function Api(item: string): Promise<AxiosResponse<any, any>>{
 export const MyApi = axios.create({
     baseURL: "http://localhost:3001",
 })
+
+MyApi.interceptors.request.use(
+    config => {
+        config.headers['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);

@@ -1,9 +1,12 @@
+import { IAddress, IErrorAPI } from "../../../types"
 import { MyApi } from "../../config"
 
-export const create = async () => {
+export const create = async (newAddress: IAddress): Promise<IAddress[] | Error> => {
     try {
-        const { data } = await MyApi.post('/address/new')
-    } catch (error) {
-        return new Error('Não foi possível se conectar com a API: ' + error)
+        const { data } = await MyApi.post('/address/new', newAddress)
+        return data as IAddress[]
+    } catch (err) {
+        const erro = err as IErrorAPI
+        return new Error(erro.response.data.errors.default)
     }
 }
