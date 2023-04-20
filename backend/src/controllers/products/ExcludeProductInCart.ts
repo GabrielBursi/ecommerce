@@ -25,6 +25,13 @@ export const ExcludeProductCart = async (req: Request<IParamProps>, res: Respons
                 default: productDeleted.message
             }
         });
+    
+    if (productDeleted === 'ID do produto não encontrado' || productDeleted === 'Produto não encontrado no carrinho' || productDeleted === 'Usuário não encontrado')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: productDeleted
+            }
+        });
 
     return res.status(StatusCodes.NO_CONTENT).json({ productDeleted })
 }

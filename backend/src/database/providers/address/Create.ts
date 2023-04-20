@@ -1,16 +1,18 @@
 import { NewAddress } from "../../../types";
 import { User } from "../../models";
 
-export const create = async (userId: string, address: NewAddress) => {
+type ErrorMessage = 'Usuário não encontrado' | 'Já existe endereço com esse CEP'
+
+export const create = async (userId: string, address: NewAddress): Promise<ErrorMessage | NewAddress[] | Error> => {
     try {
         const user = await User.findOne({uuid: userId}).exec();
         if (!user){
-            return new Error('Usuário não encontrado')
+            return 'Usuário não encontrado'
         } 
 
         const alreadyInAddress = user.address.find(ads => ads.cep === address.cep)
         if(alreadyInAddress){
-            return new Error('Já existe endereço com esse CEP: ' + address.cep)
+            return 'Já existe endereço com esse CEP'
         }
 
         const newAddress: NewAddress = {
@@ -27,7 +29,10 @@ export const create = async (userId: string, address: NewAddress) => {
         })
 
         const addressUpdated = await User.findOneAndUpdate({ uuid: userId }, { address: addressSelected }, {new: true}).exec()
-        return addressUpdated?.address
+        if (!addressUpdated) {
+            return 'Usuário não encontrado'
+        }
+        return addressUpdated.address
     } catch (error) {
         return new Error('Erro ao consultar o registro')
     }

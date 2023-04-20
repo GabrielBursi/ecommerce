@@ -4,18 +4,18 @@ import { Products, User } from "../../models"
 export const addInCart = async (userId: string, productId: string | undefined) => {
     try {
         if(!productId){
-            return new Error('ID do produto não encontrado: ' + productId);
+            return 'ID do produto não encontrado'
         }
 
         const user = await User.findOne({ uuid: userId }).exec();
         const product = await Products.findOne({ uuid: productId }).exec();
 
         if (!product) {
-            return new Error('Produto não encontrado id: ' + productId);
+            return 'Produto não encontrado id'
         }
 
         if (!user) {
-            return new Error('Usuário não encontrado id: ' + userId);
+            return 'Usuário não encontrado id'
         }
 
         const productIsAlreadyCart = user.cart.find((product) => product.uuid === productId)

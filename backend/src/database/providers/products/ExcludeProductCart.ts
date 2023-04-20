@@ -3,18 +3,18 @@ import { User } from "../../models"
 export const excludeProductCart = async (userId: string, productId: string | undefined) => {
     try {
         if (!productId) {
-            return new Error('ID do produto não encontrado: ' + productId);
+            return 'ID do produto não encontrado'
         }
 
         const user = await User.findOne({ uuid: userId }).exec()
 
         if (!user) {
-            return new Error("Usuário não encontrado.")
+            return "Usuário não encontrado"
         }
 
         const indexDeleted = user.cart.findIndex(product => product.uuid === productId)
         if(indexDeleted === -1) {
-            return new Error("Produto não encontrado no carrinho.")
+            return "Produto não encontrado no carrinho"
         }
         user.cart.splice(indexDeleted, 1)
 

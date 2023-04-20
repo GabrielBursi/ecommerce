@@ -5,11 +5,11 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
         const user = await User.findOne({ uuid: userId }).exec();
 
         if(!user){
-            return new Error('Usuário não encontrado id: ' + userId);
+            return 'Usuário não encontrado id'
         }
 
         if (user.cart.length === 0) {
-            return new Error('O carrinho está vazio.');
+            return 'O carrinho está vazio.'
         }
 
         const productIsAlreadyOrder = user.myOrders.find((product) => product.number === order.number)
@@ -60,7 +60,7 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
             ];
             user.myOrders = newOrder;
         } else if (user.myOrders.length > 0 && productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
-            return new Error('O numero de pedido já existe.');
+            return 'O numero de pedido já existe.'
         }
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { myOrders: user.myOrders, cart: [] }, { new: true }).populate('myOrders.orders').exec();

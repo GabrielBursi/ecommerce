@@ -28,5 +28,20 @@ export const SelectAddress = async (req: Request<{}, {}, Pick<NewAddress, 'cep'>
             }
         });
 
+    if (addressSelected === 'Usuário não encontrado')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: addressSelected
+            }
+        });
+
+    if (addressSelected === 'Usuário não possui esse CEP cadastrado')
+        return res.status(StatusCodes.CONFLICT).json({
+            errors: {
+                default: addressSelected
+            }
+        });
+
+
     return res.status(StatusCodes.CREATED).json({addressSelected})
 }

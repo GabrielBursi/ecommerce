@@ -28,6 +28,13 @@ export const LoginUser = async (req: Request, res: Response) => {
             }
         });
 
+    if (typeof user === 'string')
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+            errors: {
+                default: user
+            }
+        });
+
     const compareHashPassword = await PasswordCrypto.verifyPassword(password, user.password)
     if (!compareHashPassword)
         return res.status(StatusCodes.UNAUTHORIZED).json({

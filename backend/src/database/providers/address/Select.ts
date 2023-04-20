@@ -6,13 +6,13 @@ export const select = async (userId: string, cep: string) => {
         const user = await User.findOne({ uuid: userId }).exec()
 
         if (!user) {
-            return new Error('Usuário não existe');
+            return 'Usuário não encontrado'
         }
 
         const selectedAddress = user.address.find(address => address.cep === cep);
 
         if(!selectedAddress){
-            return new Error('Usuário não possui esse CEP cadastrado: ' + cep);
+            return 'Usuário não possui esse CEP cadastrado'
         }
 
         const newArrayAddress: NewAddress[] = user.address.map(ads => {

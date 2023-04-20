@@ -4,18 +4,18 @@ import { Products, User } from "../../models";
 export const addInFavorite = async (userId: string, productId: string | undefined) => {
     try {
         if (!productId) {
-            return new Error('ID do produto não encontrado: ' + productId);
+            return 'ID do produto não encontrado'
         }
         
         const user = await User.findOne({ uuid: userId }).exec();
         const product = await Products.findOne({ uuid: productId }).exec();
 
         if (!product) {
-            return new Error('Produto não encontrado id: ' + productId);
+            return 'Produto não encontrado id'
         }
 
         if (!user) {
-            return new Error('Usuário não encontrado id: ' + userId);
+            return 'Usuário não encontrado id'
         }
 
         const productIsAlreadyFavorite = user.favorites.find((product) => product.uuid === productId)
@@ -45,7 +45,7 @@ export const addInFavorite = async (userId: string, productId: string | undefine
             ];
             user.favorites = newFavorite;
         } else if (user.favorites.length > 0 && productIsAlreadyFavorite) { //*QUANDO O FAVORITOS NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO JÁ ESTÁ NO CARRINHO
-            return new Error('Produto já está nos favoritos');
+            return 'Produto já está nos favoritos'
         }
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { favorites: user.favorites }, { new: true }).populate('favorites.products').exec();

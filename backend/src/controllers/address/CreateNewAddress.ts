@@ -36,6 +36,20 @@ export const CreateNewAddress = async (req: Request<{}, {}, NewAddress>, res: Re
                 default: address.message
             }
         });
+    
+    if (address === 'Usuário não encontrado')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: address
+            }
+        });
+    
+    if (address === 'Já existe endereço com esse CEP')
+        return res.status(StatusCodes.CONFLICT).json({
+            errors: {
+                default: address
+            }
+        });
 
     return res.status(StatusCodes.CREATED).json({address})
 }

@@ -10,7 +10,7 @@ export const create = async (user: NewUser): Promise<NewUser | Error | string> =
         const email = await User.findOne({email: user.email}).exec()
 
         if(email){
-            return new Error('Esse e-mail já existe.')
+            return 'Esse e-mail já existe'
         }
 
         const newUser = new User({
@@ -25,7 +25,6 @@ export const create = async (user: NewUser): Promise<NewUser | Error | string> =
         return newUser
 
     } catch (error) {
-        console.log(error);
         return new Error('Erro ao criar registro: ' + error)
     }
 }

@@ -35,6 +35,20 @@ export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'produc
                 default: myOrders.message
             }
         });
+    
+    if (myOrders === 'O carrinho está vazio.' || myOrders === 'O numero de pedido já existe.')
+        return res.status(StatusCodes.CONFLICT).json({
+            errors: {
+                default: myOrders
+            }
+        });
+
+    if (myOrders === 'Usuário não encontrado id')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: myOrders
+            }
+        });
 
     return res.status(StatusCodes.OK).json({ myOrders })
 }

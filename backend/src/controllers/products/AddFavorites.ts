@@ -27,6 +27,20 @@ export const AddFavorite = async (req: Request<IParamProps>, res: Response<{}, M
                 default: favorites.message
             }
         });
+    
+    if (favorites === 'ID do produto não encontrado' || favorites === 'Produto não encontrado id' || favorites === 'Usuário não encontrado id')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: favorites
+            }
+        });
+
+    if (favorites === 'Produto já está nos favoritos')
+        return res.status(StatusCodes.CONFLICT).json({
+            errors: {
+                default: favorites
+            }
+        });
 
     return res.status(StatusCodes.OK).json({ favorites })
 }

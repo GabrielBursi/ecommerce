@@ -27,5 +27,12 @@ export const GetProductById = async (req: Request<IParamProps>, res: Response) =
             }
         });
     
+    if (product === 'ID do produto não encontrado' || product === 'Produto não encontrado pelo id' )
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: product
+            }
+        });
+    
     return res.status(StatusCodes.OK).json({ product })
 }

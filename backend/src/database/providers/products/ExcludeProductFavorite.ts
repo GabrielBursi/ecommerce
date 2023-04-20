@@ -3,18 +3,18 @@ import { User } from "../../models"
 export const excludeProductFavorite = async (userId: string, productId: string | undefined) => {
     try {
         if (!productId) {
-            return new Error('ID do produto não encontrado: ' + productId);
+            return 'ID do produto não encontrado'
         }
 
         const user = await User.findOne({ uuid: userId }).exec()
 
         if (!user) {
-            return new Error("Usuário não encontrado.")
+            return "Usuário não encontrado."
         }
 
         const indexDeleted = user.favorites.findIndex(product => product.uuid === productId)
         if(indexDeleted === -1) {
-            return new Error("Produto não encontrado nos favoritos.")
+            return "Produto não encontrado nos favoritos."
         }
         user.favorites.splice(indexDeleted, 1)
 

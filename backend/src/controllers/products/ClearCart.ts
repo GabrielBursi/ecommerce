@@ -15,6 +15,13 @@ export const ClearCart = async (req: Request, res: Response<{}, MyResponse>) => 
                 default: cartDeleted.message
             }
         });
+    
+    if (cartDeleted === 'ID do usuário não encontrado' || cartDeleted === 'Usuário não encontrado id')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: cartDeleted
+            }
+        });
 
     return res.status(StatusCodes.NO_CONTENT).json({ cartDeleted })
 }

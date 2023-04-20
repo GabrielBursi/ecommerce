@@ -4,14 +4,13 @@ export const getByEmail = async (email: string) => {
     try {
         const user = await User.findOne({ email }).exec()
         
-        if(user){
-            return user
+        if(!user){
+            return 'Usuário não encontrado'
         }
 
-        return new Error('Registro não encontrado');
+        return user
 
     } catch (error) {
-        console.log(error);
         return new Error('Erro ao consultar o registro');
     }
 };

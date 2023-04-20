@@ -36,5 +36,19 @@ export const AlterQuantProduct = async (req: Request<IParamProps, {}, BodyValida
             }
         });
 
+    if (productAltered === 'Produto com uma quantidade.')
+        return res.status(StatusCodes.CONFLICT).json({
+            errors: {
+                default: productAltered
+            }
+        });
+
+    if (productAltered === 'ID do produto não encontrado' || productAltered === 'Produto não encontrado no carrinho.' || productAltered === 'Usuário não encontrado.')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: productAltered
+            }
+        });
+
     return res.status(StatusCodes.OK).json({ productAltered })
 }

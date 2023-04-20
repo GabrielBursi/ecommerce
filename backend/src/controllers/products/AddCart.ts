@@ -24,7 +24,14 @@ export const AddCart = async (req: Request<IParamProps>, res: Response<{}, MyRes
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: products.message
+                default: products
+            }
+        });
+
+    if (products === 'ID do produto não encontrado' || products === 'Produto não encontrado id' || products === 'Usuário não encontrado id')
+        return res.status(StatusCodes.NOT_FOUND).json({
+            errors: {
+                default: products
             }
         });
     

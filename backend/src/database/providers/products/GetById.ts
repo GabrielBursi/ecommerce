@@ -3,13 +3,13 @@ import { Products } from "../../models"
 export const getById = async (id: string | undefined) => {
     try {
         if(!id){
-            return new Error('ID do produto não encontrado: ' + id)
+            return 'ID do produto não encontrado' 
         }
 
         const product = await Products.findOne({uuid: id}).exec()
 
         if(!product){
-            return new Error('Produto não encontrado pelo id: ' + id)
+            return 'Produto não encontrado pelo id' 
         }
         return product
     } catch (error) {
