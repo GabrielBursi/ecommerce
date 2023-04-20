@@ -31,9 +31,12 @@ export interface DepartmentCardProps {
 }
 
 export interface IErrorAPI {
-    data: {
-        error: {
-            default: string;
+    response: {
+        data: {
+            errors: {
+                    default: string;
+                
+            }
+        }
         }
     }
-}

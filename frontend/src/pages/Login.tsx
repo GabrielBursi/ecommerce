@@ -10,7 +10,7 @@ import { Form } from "../components";
 import { LoginContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { IUser } from "../types";
-import { createUser, login } from "../services";
+import { ServicesUsers } from "../services/api";
 
 export function Login() {
 
@@ -43,7 +43,7 @@ export function Login() {
 
             createLoginSchema.validate(data, {abortEarly: false})
                 .then( async (valid) => {
-                    const data = await createUser(valid)
+                    const data = await ServicesUsers.create(valid)
 
                     setIsLoading(false)
 
@@ -51,16 +51,12 @@ export function Login() {
                         return toast.error(data.message, {position: 'top-center'})
                     }
 
-                    localStorage.setItem('idUserLogged', JSON.stringify(data.uuid))
-                    toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
+                    localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+                    toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
                     
                     setFormLogin(valid)
                     setIsLogged(true)
                     navigate('/')
-                })
-                .catch((errors: yup.ValidationError) => {
-                    console.log(errors);
-                    
                 })
             return
         }
@@ -69,7 +65,7 @@ export function Login() {
 
         loginSchema.validate(data, { abortEarly: false })
             .then( async (valid) => { 
-                const data = await login(valid)
+                const data = await ServicesUsers.login(valid)
 
                 setIsLoading(false)
 
@@ -77,20 +73,12 @@ export function Login() {
                     return toast.error(data.message, { position: 'top-center' })
                 }
 
-                if(data === 'Esse usuario nao existe.'){
-                    return toast.error(data, {position: 'top-center'});
-                }
+                localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+                toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
 
-                localStorage.setItem('idUserLogged', JSON.stringify(data.uuid))
-                toast.success(`Seja Bem-Vindo(a), ${data.name}`, { position: 'top-center' });
-
-                setFormLogin(data)
+                setFormLogin(data.user)
                 setIsLogged(true)
                 navigate('/')
-            })
-            .catch((errors: yup.ValidationError) => {
-                console.log(errors);
-                
             })
     }
 

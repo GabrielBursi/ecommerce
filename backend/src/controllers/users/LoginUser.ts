@@ -22,7 +22,7 @@ export const LoginUser = async (req: Request, res: Response) => {
     const user = await UsersProviders.getByEmail(email)
 
     if (user instanceof Error)
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(StatusCodes.UNAUTHORIZED).json({
             errors: {
                 default: 'Email ou senha incorretos.'
             }
