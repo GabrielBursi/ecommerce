@@ -5,7 +5,7 @@ import { LoginContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { Filter, ProductList } from "../components";
 import { IProducts } from "../types";
-import { getAllProducts } from "../services";
+import { TESTEgetAllProducts } from "../services/test";
 
 export function ListProductsPage() {
     const { isLogged } = useContext(LoginContext)
@@ -36,7 +36,7 @@ export function ListProductsPage() {
     const getFilterProduct = useCallback(async (lower?: number, higher?: number) => {
         setIsLoading(true);
         try {
-            const products = await getAllProducts(false, true, undefined, filterNumberPerPage as 20 | 40 | 60 | 80 | 100, page, lower, higher);
+            const products = await TESTEgetAllProducts(false, true, undefined, filterNumberPerPage as 20 | 40 | 60 | 80 | 100, page, lower, higher);
             if (typeof products === 'object' && 'data' in products && 'totalCount' in products) {
                 setProductList(products.data);
                 setTotalCount(products.totalCount);

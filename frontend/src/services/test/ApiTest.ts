@@ -9,7 +9,7 @@ export const ApiTest = axios.create({
     baseURL: 'http://localhost:3333/'
 })
 
-export async function getAllProducts(
+export async function TESTEgetAllProducts(
         convert = false, 
         urlRelativa = false , 
         category: string = '100', 
@@ -85,7 +85,7 @@ export async function getAllProducts(
     }
 }
 
-export async function getAllUser(){
+export async function TESTEgetAllUser(){
     try {
         const { data } = await ApiTest('/login')
         return data as DataApiTeste[];
@@ -94,7 +94,7 @@ export async function getAllUser(){
     }
 }
 
-export async function getUserById(uuid: number) {
+export async function TESTEgetUserById(uuid: number) {
     try {
         const { data } = await ApiTest(`/login/${uuid}`)
         return data as DataApiTeste;
@@ -103,7 +103,7 @@ export async function getUserById(uuid: number) {
     }
 }
 
-export async function createUser(user: Omit<IUser, 'uuid'>){
+export async function TESTEcreateUser(user: Omit<IUser, 'uuid'>){
     try {
         const { data } = await ApiTest.post('/login', user)
         return data as DataApiTeste;
@@ -112,9 +112,9 @@ export async function createUser(user: Omit<IUser, 'uuid'>){
     }
 }
 
-export async function login(user: Pick<IUser, 'email' | 'password'>){
+export async function TESTElogin(user: Pick<IUser, 'email' | 'password'>){
     
-    const users = await getAllUser();
+    const users = await TESTEgetAllUser();
 
     if(users instanceof Error){
         return users
@@ -125,7 +125,7 @@ export async function login(user: Pick<IUser, 'email' | 'password'>){
     
 }
 
-export async function userIsLogged(){
+export async function TESTEuserIsLogged(){
     const dataUser = localStorage.getItem('idUserLogged')
 
     if(!dataUser){
@@ -133,6 +133,6 @@ export async function userIsLogged(){
     }
 
     const uuid = Number(dataUser)
-    const user = await getUserById(uuid)
+    const user = await TESTEgetUserById(uuid)
     return user
 }

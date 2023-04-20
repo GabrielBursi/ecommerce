@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
-import { getAllProducts, userIsLogged } from "../services";
+import { TESTEgetAllProducts, TESTEuserIsLogged } from "../services/test";
 
 export function RoutesApp() {
 
@@ -13,7 +13,7 @@ export function RoutesApp() {
     const { setProducts, setProductsDepartments } = useContext(ProductsContext)
 
     useEffect(() => {
-        userIsLogged()
+        TESTEuserIsLogged()
             .then(data => {
                 if(data && !(data instanceof Error)){
                     setFormLogin(data)
@@ -21,7 +21,7 @@ export function RoutesApp() {
                 }
         })
         
-        getAllProducts(false, false)
+        TESTEgetAllProducts(false, false)
             .then(products => {
                 if(Array.isArray(products)){
                     setProducts(products)
