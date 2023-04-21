@@ -1,18 +1,53 @@
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { Box, Divider, Drawer, Icon, Link, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ChildrenProp } from '../../types';
-import { DrawerContext } from '../../contexts';
+import { DrawerContext, LoginContext } from '../../contexts';
 import { ListItem } from './ListItem';
 
 
 function SideBarMemo({ children }: ChildrenProp) {
 
-    const { drawerOptions, toggleDrawer, isDrawerOpen } = useContext(DrawerContext)
+    const { drawerOptions, toggleDrawer, isDrawerOpen, toggleDrawerOptions } = useContext(DrawerContext)
+    const { isLogged } = useContext(LoginContext)
 
     const theme = useTheme();
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isLogged) {
+            toggleDrawerOptions([
+                {
+                    icon: "home",
+                    label: "Página inicial",
+                    path: "/"
+                },
+                {
+                    icon: 'person',
+                    path: '/conta/:uuid',
+                    label: 'Minha conta',
+                },
+                {
+                    icon: "favorite",
+                    label: "Favoritos",
+                    path: "/favorite"
+                }
+                ,
+                {
+                    icon: "shopping_cart",
+                    label: "Carrinho",
+                    path: "/cart"
+                },
+                {
+                    icon: "shopping_basket",
+                    label: "Meus pedidos",
+                    path: "/requests"
+                }
+            ])
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLogged]);
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,20 @@ export function UserInfo (){
     const navigate = useNavigate()
 
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        userIsLogged()
+    }, []);
+
+    async function userIsLogged(){
+        const accessToken = localStorage.getItem('accessToken')
+
+        if (!accessToken) {
+            return false
+        }
+
+
+    }
 
     if (!isLogged) 
     return (

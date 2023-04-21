@@ -12,7 +12,6 @@ interface ProductsContextData {
     setProductsInCart: React.Dispatch<React.SetStateAction<IProducts[]>>,
 
     productsDepartments: DepartmentCardProps[],
-    setProductsDepartments: React.Dispatch<React.SetStateAction<DepartmentCardProps[]>>,
 
     addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, uuid: string) => void,
     addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, uuid: string) => void,
@@ -32,7 +31,68 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
     const [myRequests, setMyRequests] = useState<IMyOrders[]>([]);
 
-    const [productsDepartments, setProductsDepartments] = useState<DepartmentCardProps[]>([]);
+    const productsDepartments: DepartmentCardProps[] = [
+        {
+            name: 'hardware',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/HARDWARE_1648493892.png&w=384&h=280&q=70',
+            to: '/products/hardware'
+        },
+        {
+            name: 'periféricos',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/PERIFERICOS.png&w=384&h=280&q=70',
+            to: '/products/periféricos'
+        },
+        {
+            name: 'games',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/GAMER.png&w=384&h=280&q=70',
+            to: '/products/games'
+        },
+        {
+            name: 'computadores',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/COMPUTADORES.png&w=384&h=280&q=70',
+            to: '/products/computadores'
+        },
+        {
+            name: 'tv',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TV_1645045665.png&w=384&h=280&q=70',
+            to: '/products/TV'
+        },
+        {
+            name: 'celular & smartphone',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CELULAR-SMARTPHONE_1645045581.png&w=384&h=280&q=70',
+            to: '/products/celular_smartphone'
+        },
+        {
+            name: 'espaço gamer',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/ESPACO-GAMER_1658426219.png&w=384&h=280&q=70',
+            to: '/products/espaço_gamer'
+        },
+        {
+            name: 'tablets, ipads e e-readers',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TABLETS-IPADS-E-E-READERS_1645096620.png&w=384&h=280&q=70',
+            to: '/products/tablets'
+        },
+        {
+            name: 'áudio',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/AUDIO.png&w=384&h=280&q=70',
+            to: '/products/áudio'
+        },
+        {
+            name: 'casa inteligente',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CASA-INTELIGENTE_1661457250.png&w=384&h=280&q=70',
+            to: '/products/casa_inteligente'
+        },
+        {
+            name: 'câmeras e drones',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CAMERAS-E-DRONES_1659439533.png&w=384&h=280&q=70',
+            to: '/products/câmeras_drones'
+        },
+        {
+            name: 'serviços digitais e softwares',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/SERVICOS-DIGITAIS_1657908578.png&w=384&h=280&q=70',
+            to: '/products/serviços_digitais_softwares'
+        },
+    ]
 
     function addProductInCart(
             isLogged: boolean, 
@@ -93,7 +153,6 @@ function ProductsProvider({ children }: ChildrenProp) {
             productsInCart, 
             setProductsInCart, 
             productsDepartments, 
-            setProductsDepartments ,
             addProductInCart,
             addProductInFavorited,
             removeProductFavorited,
