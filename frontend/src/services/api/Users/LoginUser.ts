@@ -8,7 +8,11 @@ interface AccessToken {
 
 export const login = async (user: Pick<IUser, 'email' | 'password'>): Promise<AccessToken | Error> => {
     try {
-        const { data } = await MyApi.post<AccessToken | IErrorAPI>('/login', user)
+        const { data, headers } = await MyApi.post<AccessToken | IErrorAPI>('/login', user)
+
+        const userId = headers['x-user-id'];
+
+        MyApi.defaults.headers.common['x-user-id'] = userId;
 
         return data as AccessToken
     } catch (err) {

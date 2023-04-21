@@ -6,7 +6,9 @@ import { connectToDatabase } from './database'
 const app = express()
 
 dotenv.config()
-app.use(cors())
+app.use(cors({
+    exposedHeaders: ['x-user-id'],
+}));
 app.use(express.json())
 app.use(router)
 
