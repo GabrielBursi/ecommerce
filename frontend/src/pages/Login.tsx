@@ -52,6 +52,7 @@ export function Login() {
                     }
 
                     localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+                    localStorage.setItem('email', JSON.stringify(data.user.email))
                     toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
                     
                     setFormLogin(valid)
@@ -74,6 +75,7 @@ export function Login() {
                 }
 
                 localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
+                localStorage.setItem('email', JSON.stringify(data.user.email))
                 toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
 
                 setFormLogin(data.user)

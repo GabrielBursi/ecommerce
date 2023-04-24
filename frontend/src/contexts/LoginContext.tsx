@@ -22,6 +22,7 @@ function LoginContextProvider({children}:ChildrenProp) {
     function logOut(){
         setFormLogin(undefined)
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('email');
         setIsLogged(false);
     }
 

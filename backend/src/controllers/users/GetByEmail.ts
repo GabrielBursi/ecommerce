@@ -58,5 +58,7 @@ export const getUser = async (req: Request<Pick<NewUser, "email">, {}, AccessTok
             },
         })
 
-    return res.status(StatusCodes.OK).json({ user })
+    res.header("x-user-id", user.uuid);
+
+    return res.status(StatusCodes.OK).json({ accessToken: token, user })
 }

@@ -2,12 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { LoginContext } from "../../contexts";
 import { ModalAction } from "../Modal";
+import { ServicesUsers } from "../../services/api";
 
 export function UserInfo (){
 
-    const { isLogged, formLogin, logOut } = useContext(LoginContext)
+    const { isLogged, formLogin, logOut, setFormLogin, setIsLogged } = useContext(LoginContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -18,15 +20,28 @@ export function UserInfo (){
 
     useEffect(() => {
         userIsLogged()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function userIsLogged(){
         const accessToken = localStorage.getItem('accessToken')
+        const email = localStorage.getItem('email')
 
-        if (!accessToken) {
-            return false
+        if(!email || !accessToken){
+            return
         }
 
+        const user = await ServicesUsers.getByEmail(JSON.parse(email), JSON.parse(accessToken))
+
+        if(user instanceof Error){
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('email')
+            setIsLogged(false)
+            return toast.warning(`${user.message}, Você precisa fazer login novamente.`, { position: 'top-center' })
+        }
+
+        setFormLogin(user.user)
+        setIsLogged(true)
 
     }
 

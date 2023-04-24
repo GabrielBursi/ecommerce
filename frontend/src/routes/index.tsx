@@ -3,22 +3,13 @@ import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { LoginContext, ProductsContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
-import { TESTEgetAllProducts, TESTEuserIsLogged } from "../services/test";
+import { TESTEgetAllProducts } from "../services/test";
 
 export function RoutesApp() {
 
-    const { setFormLogin, setIsLogged } = useContext(LoginContext)
     const { setProducts } = useContext(ProductsContext)
 
     useEffect(() => {
-        TESTEuserIsLogged()
-            .then(data => {
-                if(data && !(data instanceof Error)){
-                    setFormLogin(data)
-                    setIsLogged(true)
-                }
-        })
-        
         TESTEgetAllProducts(false, false)
             .then(products => {
                 if(Array.isArray(products)){
