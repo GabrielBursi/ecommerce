@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { useContext, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router";
-import { LoginContext, ProductsContext } from "../contexts";
+import { Route, Routes } from "react-router";
+import { ProductsContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
+import { CartEmptyRoute, PrivateRoute } from "./private";
 import { TESTEgetAllProducts } from "../services/test";
 
 export function RoutesApp() {
@@ -41,28 +42,4 @@ export function RoutesApp() {
         </Routes>
     );
 
-}
-
-interface PrivateRouteChildren {
-    children: JSX.Element
-}
-
-function PrivateRoute({ children }: PrivateRouteChildren){
-
-    const { isLogged } = useContext(LoginContext)
-    
-    if (!isLogged) 
-    return <Navigate to='/login'/>
-
-    return children
-}
-
-function CartEmptyRoute({ children }: PrivateRouteChildren){
-
-    const { productsInCart } = useContext(ProductsContext)
-
-    if(productsInCart.length === 0)
-    return <Navigate to='/cart_empty'/>
-
-    return children
 }
