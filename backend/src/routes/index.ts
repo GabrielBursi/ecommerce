@@ -9,6 +9,7 @@ router.get('/', (_, res) => {res.send('Hello World!')})
 //!USERS
 router.post('/create', UsersController.createUserValidation, UsersController.CreateUser)
 router.post('/login', UsersController.loginUserValidation, UsersController.LoginUser)
+router.get('/user/:email', UsersController.getUserValidation, UsersController.getUser)
 
 //!ADDRESS
 router.post('/address/new', ensureAuthenticated, searchId, AddressController.createAddressValidation, AddressController.CreateNewAddress) //* PRIVATE
