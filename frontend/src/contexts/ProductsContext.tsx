@@ -1,6 +1,8 @@
 import { createContext, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { Id, toast } from "react-toastify";
 import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
+import { ServicesProducts } from "../services/api";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -13,7 +15,8 @@ interface ProductsContextData {
 
     productsDepartments: DepartmentCardProps[],
 
-    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, product: IProducts, uuid: string) => void,
+    getAllProducts(): Promise<Id | undefined>
+    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, uuid: string) => void,
     addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, uuid: string) => void,
     removeProductFavorited(uuid: string): void,
 
@@ -94,20 +97,16 @@ function ProductsProvider({ children }: ChildrenProp) {
         },
     ]
 
-    function addProductInCart(
-            isLogged: boolean, 
-            navigate: NavigateFunction, 
-            isAlreadyInCart: boolean, 
-            product: IProducts,
-        ) {
-        if (!isLogged)
-            return navigate('/login')
+    async function getAllProducts() {
+        const products = await ServicesProducts.getAll()
 
-        if (isAlreadyInCart)
-            return navigate('/cart')
-        setProductsInCart([...productsInCart, product])
-        navigate(`/precart/${product.uuid}`)
+        if (products instanceof Error) {
+            return toast.error(products.message, {position: 'top-center'})
+        }
+        setProducts(products)
     }
+
+    
 
     function addProductInFavorited(
             isLogged: boolean, 
@@ -153,6 +152,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             productsInCart, 
             setProductsInCart, 
             productsDepartments, 
+            getAllProducts,
             addProductInCart,
             addProductInFavorited,
             removeProductFavorited,

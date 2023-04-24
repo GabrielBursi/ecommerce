@@ -4,19 +4,13 @@ import { Route, Routes } from "react-router";
 import { ProductsContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
 import { CartEmptyRoute, PrivateRoute } from "./private";
-import { TESTEgetAllProducts } from "../services/test";
 
 export function RoutesApp() {
 
-    const { setProducts } = useContext(ProductsContext)
+    const { getAllProducts } = useContext(ProductsContext)
 
     useEffect(() => {
-        TESTEgetAllProducts(false, false)
-            .then(products => {
-                if(Array.isArray(products)){
-                    setProducts(products)
-                }
-            })
+        getAllProducts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
