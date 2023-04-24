@@ -43,5 +43,5 @@ export const SelectAddress = async (req: Request<{}, {}, Pick<NewAddress, 'cep'>
         });
 
 
-    return res.status(StatusCodes.CREATED).json({addressSelected})
+    return res.status(StatusCodes.OK).json({addressSelected})
 }

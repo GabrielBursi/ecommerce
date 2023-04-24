@@ -22,6 +22,13 @@ export interface NewAddress {
     isSelected?: boolean;
 }
 
+export interface IEditAddress {
+    complement?: string;
+    ref?: string;
+    number: string;
+    identification: string;
+}
+
 export interface IProducts {
     uuid: string,
     name: string,

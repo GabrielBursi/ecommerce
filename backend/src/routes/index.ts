@@ -13,6 +13,7 @@ router.post('/login', UsersController.loginUserValidation, UsersController.Login
 //!ADDRESS
 router.post('/address/new', ensureAuthenticated, searchId, AddressController.createAddressValidation, AddressController.CreateNewAddress) //* PRIVATE
 router.patch('/address/select', ensureAuthenticated, searchId, AddressController.selectAddressValidation, AddressController.SelectAddress) //* PRIVATE
+router.patch('/address/edit/:cep', ensureAuthenticated, searchId, AddressController.editAddressValidation, AddressController.EditAddress) //* PRIVATE
 
 //!PRODUCTS
 router.get('/products', ProductsController.GetAllProducts)
