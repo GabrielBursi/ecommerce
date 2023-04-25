@@ -17,7 +17,7 @@ const paramsSchemaValidation: yup.ObjectSchema<IParamProps> = yup.object({
     id: yup.string().required(),
 })
 
-export const excludeProductCartValidation = validation({
+export const alterQuantProductCartValidation = validation({
     params: paramsSchemaValidation,
     body: bodySchemaValidation
 })

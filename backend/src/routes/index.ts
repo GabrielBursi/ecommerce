@@ -21,7 +21,7 @@ router.get('/products', ProductsController.GetAllProducts)
 router.get('/products/:id', ProductsController.getByIdValidation, ProductsController.GetProductById)
 router.post('/favorites/add/:id', ensureAuthenticated, searchId, ProductsController.addProductInFavoriteValidation, ProductsController.AddFavorite) //* PRIVATE
 router.post('/cart/add/:id', ensureAuthenticated, searchId, ProductsController.addProductInCartValidation, ProductsController.AddCart) //* PRIVATE
-router.patch('/cart/quant/:id', ensureAuthenticated, searchId, ProductsController.AlterQuantProduct) //* PRIVATE
+router.patch('/cart/quant/:id', ensureAuthenticated, searchId, ProductsController.alterQuantProductCartValidation, ProductsController.AlterQuantProduct) //* PRIVATE
 router.post('/cart/done', ensureAuthenticated, searchId, ProductsController.createMyOrderValidation, ProductsController.Purchase) //* PRIVATE
 router.delete('/cart/clear', ensureAuthenticated, searchId, ProductsController.ClearCart) //* PRIVATE
 router.delete('/cart/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductCartValidation, ProductsController.ExcludeProductCart) //* PRIVATE
