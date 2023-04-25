@@ -1,9 +1,11 @@
 import { IErrorAPI, IProducts } from "../../../types"
 import { MyApi } from "../../config"
 
-export const alterQuant = async (productId: string): Promise<IProducts[] | Error> => {
+type action = '+' | '-'
+
+export const alterQuant = async (productId: string, action: action ): Promise<IProducts[] | Error> => {
     try {
-        const { data } = await MyApi.patch(`/cart/quant/${productId}`)
+        const { data } = await MyApi.patch(`/cart/quant/${productId}`, {action})
         return data.productAltered as IProducts[]
     } catch (err) {
         const erro = err as IErrorAPI
