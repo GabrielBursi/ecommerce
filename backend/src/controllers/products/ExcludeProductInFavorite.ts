@@ -33,5 +33,5 @@ export const ExcludeProductFavorite = async (req: Request<IParamProps>, res: Res
             }
         });
 
-    return res.status(StatusCodes.NO_CONTENT).json({ productDeleted })
+    return res.status(StatusCodes.OK).json({ productDeleted })
 }

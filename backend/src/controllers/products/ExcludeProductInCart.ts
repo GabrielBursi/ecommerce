@@ -33,5 +33,5 @@ export const ExcludeProductCart = async (req: Request<IParamProps>, res: Respons
             }
         });
 
-    return res.status(StatusCodes.NO_CONTENT).json({ productDeleted })
+    return res.status(StatusCodes.OK).json({ productDeleted })
 }

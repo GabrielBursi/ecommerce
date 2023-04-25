@@ -25,3 +25,10 @@ export interface IViaCep {
     localidade: string,
     uf: string,
 }
+
+export interface IEditAddress {
+    complement?: string;
+    ref?: string;
+    number: string;
+    identification: string;
+}
