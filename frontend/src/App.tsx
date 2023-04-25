@@ -13,14 +13,14 @@ function App() {
 
   return (
     <ThemeProvider theme={LightTheme}>
-      <ContextProvider>
-          <BrowserRouter>
-            <SideBar>
-              <RoutesApp/>
-              <ToastContainer/>
-            </SideBar>
-          </BrowserRouter>
-      </ContextProvider>
+      <BrowserRouter>
+        <ContextProvider>
+          <SideBar>
+            <RoutesApp/>
+            <ToastContainer/>
+          </SideBar>
+        </ContextProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

@@ -1,28 +1,32 @@
-import { createContext, useState } from "react";
-import { NavigateFunction } from "react-router-dom";
+import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
 import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
 import { ServicesProducts } from "../services/api";
+import { LoginContext } from "./LoginContext";
 
 interface ProductsContextData {
     products: IProducts[],
     productsFavorited: IProducts[],
     productsInCart: IProducts[],
+    myOrders: IMyOrders[],
 
     setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
     setProductsFavorited: React.Dispatch<React.SetStateAction<IProducts[]>>,
     setProductsInCart: React.Dispatch<React.SetStateAction<IProducts[]>>,
+    setMyOrders: (value: IMyOrders[]) => void,
 
     productsDepartments: DepartmentCardProps[],
 
-    getAllProducts(): Promise<Id | undefined>
-    addProductInCart: (isLogged: boolean, navigate: NavigateFunction, isAlreadyInCart: boolean, uuid: string) => void,
-    addProductInFavorited: (isLogged: boolean, navigate: NavigateFunction, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, isFavorite: boolean, product: IProducts, uuid: string) => void,
-    removeProductFavorited(uuid: string): void,
-
-    filterProductsAndSetFavoriteOrInCart(arr: IProducts[], uuid: string, setState: React.Dispatch<React.SetStateAction<boolean>>): void,
-    myRequests: IMyOrders[], 
-    setMyRequests: (value: IMyOrders[]) => void
+    getAllProducts: () => Promise<Id | undefined>
+    getProductById: (uuid: string) => Promise<IProducts | Id>
+    addProductInCart: (isAlreadyInCart: boolean, uuid: string) => void,
+    alterQuantProduct: (uuid: string, action: '+' | '-') => Promise<void | Id>,
+    purchase: (order: IMyOrders) => Promise<void | Id>,
+    removeProductInCart: (uuid: string) => Promise<void | Id>,
+    clearCart: () =>  Promise<Id | undefined>,
+    addProductInFavorited: (setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, uuid: string) => void,
+    removeProductFavorited: (uuid: string) => void,
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -32,7 +36,11 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [products, setProducts] = useState<IProducts[]>([]); 
     const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
     const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
-    const [myRequests, setMyRequests] = useState<IMyOrders[]>([]);
+    const [myOrders, setMyOrders] = useState<IMyOrders[]>([]);
+
+    const { isLogged } = useContext(LoginContext)
+
+    const navigate = useNavigate()
 
     const productsDepartments: DepartmentCardProps[] = [
         {
@@ -106,59 +114,140 @@ function ProductsProvider({ children }: ChildrenProp) {
         setProducts(products)
     }
 
-    
+    async function getProductById(uuid: string,){
+        const product = await ServicesProducts.getById(uuid)
 
-    function addProductInFavorited(
-            isLogged: boolean, 
-            navigate: NavigateFunction, 
+        if (product instanceof Error) {
+            return toast.error(product.message, { position: 'top-center' })
+        }
+
+        return product
+    }
+
+    async function addProductInCart(
+            isAlreadyInCart: boolean, 
+            uuid: string,
+        ) {
+        if (!isLogged)
+            return navigate('/login')
+
+        if (isAlreadyInCart)
+            return navigate('/cart')
+
+        const products = await ServicesProducts.addInCart(uuid)
+
+        if(products instanceof Error){
+            return toast.error(products.message, { position: 'top-center' })
+        }
+        setProductsInCart(products)
+        navigate(`/precart/${uuid}`)
+    }
+
+    async function alterQuantProduct(uuid: string, action : '+' | '-'){
+        if(!isLogged){
+            return navigate('/login')
+        }
+
+        const productAltered = await ServicesProducts.alterQuant(uuid, action)
+
+        if (productAltered instanceof Error) {
+            return toast.error(productAltered.message, { position: 'top-center' })
+        }
+
+        setProductsInCart(productAltered)
+    }
+
+    async function purchase(order: IMyOrders) {
+        if (!isLogged) {
+            return navigate('/login')
+        }
+
+        const myOrders = await ServicesProducts.purchase(order)
+
+        if (myOrders instanceof Error) {
+            return toast.error(myOrders.message, { position: 'top-center' })
+        }
+
+        setMyOrders(myOrders)
+    }
+
+    async function removeProductInCart(uuid: string) {
+        if (!isLogged)
+            return navigate('/login')
+
+        const productsInCart = await ServicesProducts.excludeProductInCart(uuid)
+
+        if (productsInCart instanceof Error) {
+            return toast.error(productsInCart.message, { position: 'top-center' })
+        }
+
+        setProductsInCart(productsInCart)
+    }
+
+    async function clearCart() {
+        const clearCart = await ServicesProducts.clear()
+
+        if (clearCart instanceof Error) {
+            return toast.error(clearCart.message, { position: 'top-center' })
+        }
+        
+        setProductsInCart(clearCart)
+    }
+
+    async function addProductInFavorited(
             setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, 
-            isFavorite: boolean, 
-            product: IProducts, 
             uuid: string
         ) {
 
         if (!isLogged)
             return navigate('/login')
 
-        setIsFavorite(oldIsFavorite => !oldIsFavorite)
-        if (!isFavorite) {
-            setProductsFavorited([...productsFavorited, product ])
-        } else {
-            const productsFavoritedWithout = productsFavorited.filter(product => product.uuid !== uuid)
-            setProductsFavorited(productsFavoritedWithout)
+        const favorites = await ServicesProducts.addInFavorites(uuid)
+
+        if (favorites instanceof Error) {
+            return toast.error(favorites.message, { position: 'top-center' })
         }
+
+        setIsFavorite(true)
+        setProductsFavorited(favorites)
     }
 
-    function removeProductFavorited(uuid: string) {
-        const productsFavoritedWithout = productsFavorited.filter(product => product.uuid !== uuid)
-        setProductsFavorited(productsFavoritedWithout)
-    }
+    async function removeProductFavorited(uuid: string) {
+        if (!isLogged)
+            return navigate('/login')
 
-    function filterProductsAndSetFavoriteOrInCart(arr: IProducts[], uuid: string, setState: React.Dispatch<React.SetStateAction<boolean>>){
+        const favorites = await ServicesProducts.excludeProductInFavorite(uuid)
 
-        const productNotFavoritedOrInCart = arr.filter(product => product.uuid !== uuid)
-        productNotFavoritedOrInCart.forEach(() => setState(false))
+        if (favorites instanceof Error) {
+            return toast.error(favorites.message, { position: 'top-center' })
+        }
 
-        const productFavoritedOrInCart = arr.filter(product => product.uuid === uuid)
-        productFavoritedOrInCart.forEach(() => setState(true))
+        setProductsFavorited(favorites)
     }
 
     return (
         <ProductsContext.Provider value={{ 
-            products, 
-            setProducts, 
-            productsFavorited, 
-            setProductsFavorited, 
-            productsInCart, 
-            setProductsInCart, 
-            productsDepartments, 
+            products,
+            setProducts,
+            productsInCart,
+            setProductsInCart,
+            productsFavorited,
+            setProductsFavorited,
+            myOrders,
+            setMyOrders,
+
+            productsDepartments,
+
             getAllProducts,
+            getProductById,
             addProductInCart,
             addProductInFavorited,
+            removeProductInCart,
             removeProductFavorited,
-            filterProductsAndSetFavoriteOrInCart,
-            myRequests, 
-            setMyRequests
+
+            clearCart,
+            alterQuantProduct,
+            purchase
         }}>
             {children}
         </ProductsContext.Provider>

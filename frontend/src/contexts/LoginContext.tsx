@@ -2,37 +2,27 @@ import { createContext, useState } from "react";
 import { ChildrenProp, IUser } from "../types";
 
 interface LoginContextData{
-    formLogin?: Omit<IUser, 'uuid'>,
-    setFormLogin: (value: Omit<IUser, 'uuid'>) => void,
+    loginInfo?: Omit<IUser, 'uuid'>,
+    setFormLoginInfo: (value: Omit<IUser, 'uuid'> | undefined) => void,
 
     isLogged: boolean,
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>,
-
-    logOut: () => void
 }
 
 const LoginContext = createContext({} as LoginContextData)
 
 function LoginContextProvider({children}:ChildrenProp) {
 
-    const [formLogin, setFormLogin] = useState<Omit<IUser, 'uuid'>>();
+    const [loginInfo, setFormLoginInfo] = useState<Omit<IUser, 'uuid'>>();
 
     const [isLogged, setIsLogged] = useState<boolean>(false);
 
-    function logOut(){
-        setFormLogin(undefined)
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('email');
-        setIsLogged(false);
-    }
-
     return (
         <LoginContext.Provider value={{ 
-            formLogin, 
-            setFormLogin,
+            loginInfo, 
+            setFormLoginInfo,
             isLogged,
             setIsLogged,
-            logOut
         }}>
             {children}
         </LoginContext.Provider>
