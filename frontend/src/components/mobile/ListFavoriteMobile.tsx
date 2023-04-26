@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -6,22 +6,16 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
-import { LoginContext, ProductsContext } from "../../contexts";
+import { ProductsContext } from "../../contexts";
 
 
 export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts) {
 
-    const { isLogged } = useContext(LoginContext)
-    const { addProductInCart, productsFavorited, productsInCart,filterProductsAndSetFavoriteOrInCart, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsFavorited]);
 
     return (
         <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>
@@ -36,7 +30,8 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
                             <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
                             :
                             <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => {
-                                uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
+                                uuid && addProductInCart(isAlreadyInCart, uuid)
+                                setIsAlreadyInCart(true)
                             }} />
                         }
                     </IconButton>

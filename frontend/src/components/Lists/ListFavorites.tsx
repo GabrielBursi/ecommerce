@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
-import { LoginContext, ProductsContext } from "../../contexts";
+import { ProductsContext } from "../../contexts";
 import { ListFavoriteMobile } from "../mobile";
 
 export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
@@ -16,23 +15,13 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const navigate = useNavigate()
-
     const [color, setColor] = useState(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
-    const {  productsFavorited, productsInCart, addProductInCart, filterProductsAndSetFavoriteOrInCart, removeProductFavorited } = useContext(ProductsContext)
-    const { isLogged } = useContext(LoginContext)
+    const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
 
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
-
-    useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsFavorited]);
-
-    
 
     if(smDown) 
     return <ListFavoriteMobile
@@ -94,7 +83,8 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
                         fullWidth 
                         size="large" 
                         onClick={() => {
-                            uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
+                            uuid && addProductInCart(isAlreadyInCart, uuid)
+                            setIsAlreadyInCart(true)
                         }}
                     >
                         { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

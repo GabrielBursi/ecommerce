@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -6,7 +6,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MyImage } from "./MyImage";
 import { IProducts } from "../../types";
-import { LoginContext, ProductsContext } from "../../contexts";
+import { ProductsContext } from "../../contexts";
 import { ProductCardMobile } from "../mobile";
 
 interface ProductCardProps extends IProducts{
@@ -22,16 +22,9 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
 
 
-    const { productsFavorited, productsInCart, addProductInCart, addProductInFavorited, filterProductsAndSetFavoriteOrInCart } = useContext(ProductsContext)
-    const { isLogged } = useContext(LoginContext)
+    const { addProductInCart, addProductInFavorited, removeProductFavorited } = useContext(ProductsContext)
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsFavorited, uuid, setIsFavorite)
-        filterProductsAndSetFavoriteOrInCart(productsInCart, uuid, setIsAlreadyInCart)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsFavorited, productsInCart]);
 
     function seeProduct(){
         navigate(`/product/${uuid}`)
@@ -63,7 +56,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                         action={
                             hover ? 
                             <IconButton size="medium" onClick={ () => {
-                                    addProductInFavorited(isLogged, navigate, setIsFavorite, isFavorite, { img, price, name, rating, uuid }, uuid)
+                                    isFavorite ? removeProductFavorited(uuid) : addProductInFavorited(setIsFavorite, uuid)
                                 }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="medium" />
                             </IconButton>
@@ -108,7 +101,8 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                     fullWidth
                     size="large"
                     onClick={() => {
-                        uuid && addProductInCart(isLogged, navigate, isAlreadyInCart, { img, price, name, rating, uuid }, uuid)
+                        uuid && addProductInCart(isAlreadyInCart, uuid)
+                        setIsAlreadyInCart(true)
                     }}
                     >
                     {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

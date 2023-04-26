@@ -9,9 +9,9 @@ interface ButtonSelectProps {
 
 export function ButtonSelect({ addressSelected }: ButtonSelectProps) {
 
-    const { handleAddressSelect } = useContext(AddressContext)
+    const { selectAddress } = useContext(AddressContext)
 
     return (
-        <Button onClick={() => handleAddressSelect(addressSelected)}>SELECIONAR ESTE</Button>
+        <Button onClick={() => selectAddress(addressSelected.cep)}>SELECIONAR ESTE</Button>
     );
 }

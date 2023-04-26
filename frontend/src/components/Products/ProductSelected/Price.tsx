@@ -1,10 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { IProducts } from "../../../types";
-import { LoginContext, ProductsContext } from "../../../contexts";
+import { ProductsContext } from "../../../contexts";
 
 interface PriceProps {
     product: IProducts, 
@@ -15,18 +14,9 @@ export function Price({ product }: PriceProps) {
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-    const navigate = useNavigate()
-
     const [isAlreadyInCart, setIsAlreadyInCart] = useState(false);
 
-    const { filterProductsAndSetFavoriteOrInCart, productsInCart, addProductInCart } = useContext(ProductsContext)
-    const { isLogged } = useContext(LoginContext)
-
-    useEffect(() => {
-        filterProductsAndSetFavoriteOrInCart(productsInCart, product.uuid, setIsAlreadyInCart)
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [product.uuid, productsInCart]);
+    const { addProductInCart } = useContext(ProductsContext)
 
     return (
         <Box flex={1}>
@@ -44,7 +34,8 @@ export function Price({ product }: PriceProps) {
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: mdDown ? '1rem' : '1.4rem' }}
                         onClick={() => {
-                            addProductInCart(isLogged, navigate, isAlreadyInCart, product, product.uuid)
+                            addProductInCart(isAlreadyInCart, product.uuid)
+                            setIsAlreadyInCart(true)
                         }}
                     >
                         {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
