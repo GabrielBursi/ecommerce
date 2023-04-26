@@ -4,5 +4,6 @@ export * from './DrawerContext'
 export * from './ProductsContext'
 export * from './AddressContext'
 export * from './ResumeContext'
+export * from './ShoppingContext'
 
 export * from './ContextProvider'
