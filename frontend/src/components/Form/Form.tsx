@@ -10,8 +10,8 @@ import { Box, Button, CircularProgress, Grid, IconButton, InputAdornment, Link, 
 import { Visibility, VisibilityOff, LoginOutlined } from "@mui/icons-material";
 
 import { IUser } from "../../types";
-import MaskedInput from "react-text-mask";
 import { MaskInputCpf } from "../Cart/Step2/utils";
+import { CustomInput } from "./CustomInput";
 
 interface FormProps {
     nameForm: string,
@@ -40,7 +40,8 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
         handleSubmit,
         formState: { errors },
         clearErrors,
-        reset
+        reset,
+        setValue
     } = useForm<IUser>({
         mode: 'onSubmit',
         resolver: yupResolver(create ? schemaCreate : schemaLogin),
@@ -49,6 +50,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
     function handleChangePage(){
         clearErrors()
         reset()
+        setValue('email', '')
         navigate(create ? '/login' : '/login/create')
     }
 
@@ -98,6 +100,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                             <TextField
                                 {...field}
                                 disabled={isLoading}
+                                autoComplete="off"
                                 required
                                 label="Nome"
                                 fullWidth
@@ -114,13 +117,14 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                             <TextField
                                 {...field}
                                 disabled={isLoading}
+                                autoComplete="off"
                                 required
                                 label="CPF"
                                 fullWidth
                                 error={!!errors.cpf}
                                 helperText={errors.cpf?.message}
                                 InputProps={{
-                                    inputComponent: MaskedInput as any,
+                                    inputComponent: CustomInput as any,
                                     inputProps: {
                                         mask: MaskInputCpf,
                                         type: 'text',
@@ -138,6 +142,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                         <TextField
                             {...field}
                             disabled={isLoading}
+                            autoComplete="off"
                             required
                             label="Email"
                             fullWidth
@@ -145,6 +150,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                             helperText={errors.email?.message}
                             placeholder='Ex: email@exemplo.com'
                         />
+                        
                     }
                 />
                 {create ?
@@ -157,6 +163,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                                     <TextField
                                         {...field}
                                         disabled={isLoading}
+                                        autoComplete="off"
                                         required
                                         type={showPassword ? 'text' : 'password'}
                                         label="Senha"
@@ -187,6 +194,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                                     <TextField
                                         {...field}
                                         disabled={isLoading}
+                                        autoComplete="off"
                                         required
                                         type={showConfirmPassword ? 'text' : 'password'}
                                         label="Confirme sua senha"
@@ -218,6 +226,7 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                         <TextField
                             {...field}
                             disabled={isLoading}
+                            autoComplete="off"
                             required
                             type={showPassword ? 'text' : 'password'}
                             label="Senha"
@@ -264,10 +273,11 @@ export function Form({ nameForm, textButton, create, onSubmit, schemaCreate, sch
                     </Typography>
                     <Typography variant={ smDown ? "body2" : "subtitle1"} noWrap>
                         <Link 
-                        underline="hover" 
-                        fontWeight='bold' 
-                        sx={{ cursor: 'pointer' }} 
-                        onClick={handleChangePage}>
+                            underline="hover" 
+                            fontWeight='bold' 
+                            sx={{ cursor: 'pointer' }} 
+                            onClick={handleChangePage}
+                        >
                             {create ? 'FAZER LOGIN' : 'CRIAR CONTA'}
                         </Link>
                     </Typography>
