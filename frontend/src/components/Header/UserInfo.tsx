@@ -9,7 +9,7 @@ import { ServicesUsers } from "../../services/api";
 
 export function UserInfo (){
 
-    const { isLogged, formLogin, logOut, setFormLogin, setIsLogged } = useContext(LoginContext)
+    const { isLogged, loginInfo, setFormLoginInfo, setIsLogged } = useContext(LoginContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -40,9 +40,16 @@ export function UserInfo (){
             return toast.warning(`${user.message}, Você precisa fazer login novamente.`, { position: 'top-center' })
         }
 
-        setFormLogin(user.user)
+        setFormLoginInfo(user.user)
         setIsLogged(true)
 
+    }
+
+    function logOut() {
+        setFormLoginInfo(undefined)
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('email');
+        setIsLogged(false);
     }
 
     if (!isLogged) 
@@ -85,7 +92,7 @@ export function UserInfo (){
 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' gap={1}>
-            <Avatar sx={{ bgcolor: deepPurple[700] }}>{formLogin?.name[0].toLocaleUpperCase()}</Avatar>
+            <Avatar sx={{ bgcolor: deepPurple[700] }}>{loginInfo?.name[0].toLocaleUpperCase()}</Avatar>
             {!mdDown &&
 
                 <Box flex={1} height="100%" display="flex" flexDirection="column" alignItems='start' justifyContent='center'>
@@ -94,7 +101,7 @@ export function UserInfo (){
                         fontWeight='bold'
                         noWrap
                     >
-                        Olá {formLogin?.name},
+                        Olá {loginInfo?.name},
                     </Typography>
                     <Box display='flex' width='auto' height='30%' gap={1} alignItems='center'>
                         <Typography

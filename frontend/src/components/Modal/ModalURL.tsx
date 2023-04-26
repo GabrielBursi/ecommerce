@@ -39,7 +39,7 @@ export function ModalURL({isOpen, setIsOpen, url}: ModalProps) {
                 </Box>
                 <Box display='flex' justifyContent='space-between' alignItems='center' gap={2}>
                     <Box flex={1} alignItems='center'>
-                        <TextField value={url} fullWidth InputProps={{readOnly: true}}/>
+                        <TextField value={url} fullWidth InputProps={{ readOnly: true }} defaultValue='' />
                     </Box>
                     <Box display='flex' justifyContent='center' alignItems='center'>
                         <CopyToClipboard text={url}>

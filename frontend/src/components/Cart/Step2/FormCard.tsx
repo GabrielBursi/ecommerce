@@ -8,9 +8,9 @@ import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup";
 import '../../../TraducoesYup'
 
-import MaskedInput from "react-text-mask";
 import { MaskInputCardNumber, MaskInputCpf, MaskInputCvv, MaskInputDate, MaskInputValidate } from "./utils";
 import { ResumeContext } from "../../../contexts";
+import { CustomInput } from "../../Form";
 
 interface FormCardData {
     name: string;
@@ -82,6 +82,7 @@ export function FormCard({ formRef }: FormCardProps) {
                                         fullWidth
                                         label='Nome impresso no cartão'
                                         autoComplete="off"
+                                        defaultValue=''
                                     />
                                 }
                             />
@@ -99,12 +100,13 @@ export function FormCard({ formRef }: FormCardProps) {
                                         label='Número do cartão'
                                         autoComplete='off'
                                         InputProps={{
-                                            inputComponent: MaskedInput as any,
+                                            inputComponent: CustomInput as any,
                                             inputProps: {
                                                 mask: MaskInputCardNumber,
                                                 type: 'text',
                                             },
                                         }}
+                                        defaultValue=''
                                     />
                                 }
                             />
@@ -123,12 +125,13 @@ export function FormCard({ formRef }: FormCardProps) {
                                         autoComplete='off'
                                         placeholder="--/--"
                                         InputProps={{
-                                            inputComponent: MaskedInput as any,
+                                            inputComponent: CustomInput as any,
                                             inputProps: {
                                                 mask: MaskInputValidate,
                                                 type: 'text',
                                             },
                                         }}
+                                        defaultValue=''
                                     />
                                 }
                             />
@@ -147,12 +150,13 @@ export function FormCard({ formRef }: FormCardProps) {
                                         autoComplete='off'
                                         placeholder="---"
                                         InputProps={{
-                                            inputComponent: MaskedInput as any,
+                                            inputComponent: CustomInput as any,
                                             inputProps: {
                                                 mask: MaskInputCvv,
                                                 type: 'text',
                                             },
                                         }}
+                                        defaultValue=''
                                     />
                                 }
                             />
@@ -171,12 +175,13 @@ export function FormCard({ formRef }: FormCardProps) {
                                         autoComplete='off'
                                         placeholder="--/--/----"
                                         InputProps={{
-                                            inputComponent: MaskedInput as any,
+                                            inputComponent: CustomInput as any,
                                             inputProps: {
                                                 mask: MaskInputDate,
                                                 type: 'text',
                                             },
                                         }}
+                                        defaultValue=''
                                     />
                                 }
                             />
@@ -194,12 +199,13 @@ export function FormCard({ formRef }: FormCardProps) {
                                         label='CPF'
                                         autoComplete='off'
                                         InputProps={{
-                                            inputComponent: MaskedInput as any,
+                                            inputComponent: CustomInput as any,
                                             inputProps: {
                                                 mask: MaskInputCpf,
                                                 type: 'text',
                                             },
                                         }}
+                                        defaultValue=''
                                     />
                                 }
                             />

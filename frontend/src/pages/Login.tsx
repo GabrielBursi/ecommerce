@@ -17,7 +17,7 @@ export function Login() {
     const { create } = useParams<'create'>();
     const navigate = useNavigate()
 
-    const { setFormLogin, setIsLogged } = useContext(LoginContext)
+    const { setFormLoginInfo, setIsLogged } = useContext(LoginContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,7 +55,7 @@ export function Login() {
                     localStorage.setItem('email', JSON.stringify(data.user.email))
                     toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
                     
-                    setFormLogin(valid)
+                    setFormLoginInfo(valid)
                     setIsLogged(true)
                     navigate('/')
                 })
@@ -78,7 +78,7 @@ export function Login() {
                 localStorage.setItem('email', JSON.stringify(data.user.email))
                 toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
 
-                setFormLogin(data.user)
+                setFormLoginInfo(data.user)
                 setIsLogged(true)
                 navigate('/')
             })

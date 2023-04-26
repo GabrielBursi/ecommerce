@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import '../../TraducoesYup'
 
 import Modal from 'react-modal';
-import MaskedInput from 'react-text-mask';
 
 import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
 
@@ -18,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { MaskInputCep } from './utils';
 import { AddressContext } from '../../contexts';
 import { IAddress, IViaCep } from '../../types';
+import { CustomInput } from '../Form';
 interface ModalProps {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
@@ -72,7 +72,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     const cep = watch('cep', '')
 
-    const { formData, setFormData, setAddressList, addressList } = useContext(AddressContext)
+    const { addressData, setAddressData, setAddressList, addressList } = useContext(AddressContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -111,16 +111,16 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     useEffect(() => {
         reset()
-        if(!isNewAddress && formData){
-            setValue('cep', formData.cep)
-            setValue('city', formData.city)
-            setValue('complement', formData.complement)
-            setValue('identification', formData.identification)
-            setValue('neighborhood', formData.neighborhood)
-            setValue('ref', formData.ref)
-            setValue('street', formData.street)
-            setValue('state', formData.state)
-            setValue('number', formData.number)
+        if(!isNewAddress && addressData){
+            setValue('cep', addressData.cep)
+            setValue('city', addressData.city)
+            setValue('complement', addressData.complement)
+            setValue('identification', addressData.identification)
+            setValue('neighborhood', addressData.neighborhood)
+            setValue('ref', addressData.ref)
+            setValue('street', addressData.street)
+            setValue('state', addressData.state)
+            setValue('number', addressData.number)
         }
         if(addressFind){
             setValue('cep', addressFind.cep)
@@ -139,8 +139,8 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
         addressSchema.validate(data, { abortEarly: false })
         .then(validData => { 
                 if(addressFind){
-                    if(addressFind.cep === formData?.cep){
-                        setFormData({...validData, isSelected: true})
+                    if(addressFind.cep === addressData?.cep){
+                        setAddressData({...validData, isSelected: true})
                     }
                     const addressChanged = addressList.findIndex(address => address.cep === addressFind.cep)
                     addressList.splice(addressChanged, 1)
@@ -148,7 +148,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                     setIsOpen(false) 
                     
                 }else{
-                    setFormData({...validData, isSelected: true});
+                    setAddressData({...validData, isSelected: true});
                     setAddressList([...addressList, validData]);
                     setIsOpen(false) 
                 }
@@ -188,13 +188,14 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             helperText={errors?.cep?.message}
                                             disabled={isLoading || !isNewAddress}
                                             InputProps={{
-                                                inputComponent: MaskedInput as any,
+                                                inputComponent: CustomInput as any,
                                                 inputProps: {
                                                     mask: MaskInputCep,
                                                     type: 'tel',
                                                 },
                                                 endAdornment: (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>)
                                             }}
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -213,6 +214,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             fullWidth 
                                             label='Indentificação'
                                             placeholder='Minha casa'
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -233,6 +235,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             placeholder='Ex: Rua dos Dados Falsos'
                                             disabled={isLoading || !isNewAddress}
                                             InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -252,6 +255,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             fullWidth 
                                             label='Número'
                                             placeholder='000'
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -270,6 +274,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             fullWidth 
                                             label='Complemento'
                                             placeholder='Ex: Bloco 99 Apto 999'
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -288,6 +293,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             fullWidth 
                                             label='Referência'
                                             placeholder='Ex: Casa do portão roxo'
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -307,6 +313,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             label='Bairro'
                                             disabled={isLoading || !isNewAddress}
                                             InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -327,6 +334,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             required 
                                             disabled 
                                             InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                            defaultValue=''
                                         />
                                     }
                                 />
@@ -347,6 +355,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             required 
                                             disabled 
                                             InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                            defaultValue=''
                                         />
                                     }
                                 />

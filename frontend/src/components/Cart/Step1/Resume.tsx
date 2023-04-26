@@ -8,8 +8,8 @@ import { IMyOrders } from "../../../types";
 
 export function Resume() {
 
-    const { productsInCart, setProductsInCart, setMyRequests, myRequests } = useContext(ProductsContext)
-    const { addressList, formData } = useContext(AddressContext)
+    const { productsInCart, setProductsInCart, setMyOrders, myOrders } = useContext(ProductsContext)
+    const { addressList, addressData } = useContext(AddressContext)
     const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
 
     const [reCaptcha, setReCaptcha] = useState(true);
@@ -29,10 +29,10 @@ export function Resume() {
             payment: payment.toUpperCase(),
             status: true,
             products: productsInCart,
-            address: formData
+            address: addressData
         }
 
-        setMyRequests([...myRequests, newOrder])
+        setMyOrders([...myOrders, newOrder])
         setProductsInCart([])
         setOrderNumber(orderNumber);
         navigate('/cart/identification/payment/confirm/done')

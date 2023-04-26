@@ -6,21 +6,21 @@ import { AddressContext, LoginContext } from "../../../contexts";
 
 export function InfoRequest(){
 
-    const { formData } = useContext(AddressContext)
-    const { formLogin } = useContext(LoginContext)
+    const { addressData } = useContext(AddressContext)
+    const { loginInfo } = useContext(LoginContext)
 
     const dataUser: info[] = [
-        { nome: 'CPF', dados: formLogin?.cpf },
-        { nome: 'E-mail', dados: formLogin?.email },
-        { nome: 'CEP', dados: formData?.cep },
+        { nome: 'CPF', dados: loginInfo?.cpf },
+        { nome: 'E-mail', dados: loginInfo?.email },
+        { nome: 'CEP', dados: addressData?.cep },
     ]
 
     const dataAddress: info[] = [
-        { nome: 'Número', dados: formData?.number },
-        { nome: 'Bairro', dados: formData?.neighborhood },
-        { nome: 'CEP', dados: formData?.cep },
-        { nome: 'Cidade', dados: formData?.city },
-        { nome: 'Complemento', dados: formData?.complement },
+        { nome: 'Número', dados: addressData?.number },
+        { nome: 'Bairro', dados: addressData?.neighborhood },
+        { nome: 'CEP', dados: addressData?.cep },
+        { nome: 'Cidade', dados: addressData?.city },
+        { nome: 'Complemento', dados: addressData?.complement },
     ]
 
     return (
@@ -51,8 +51,8 @@ export function InfoRequest(){
             </Box>
             <Divider/>
             <Box display='flex' gap={1} height='100%'>
-                <InfoUser principalInfo={formLogin?.name} infos={dataUser}/>
-                <InfoUser principalInfo={formData?.street} infos={dataAddress} />
+                <InfoUser principalInfo={loginInfo?.name} infos={dataUser}/>
+                <InfoUser principalInfo={addressData?.street} infos={dataAddress} />
             </Box>
         </Box>
     );

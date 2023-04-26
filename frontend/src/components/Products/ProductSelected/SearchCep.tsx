@@ -1,8 +1,8 @@
 import { Box, Button, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
-import MaskedInput from "react-text-mask";
 import { ModalCEP } from "../../Modal/ModalCEP";
 import { MaskInputCep } from "../../Modal/utils";
+import { CustomInput } from "../../Form";
 
 export function SearchCep() {
 
@@ -26,12 +26,13 @@ export function SearchCep() {
                         value={cep}
                         onChange={(e) => setCep(e.target.value)}
                         InputProps={{
-                            inputComponent: MaskedInput as any,
+                            inputComponent: CustomInput as any,
                             inputProps: {   
                                 mask: MaskInputCep,
                                 type: 'tel',
                             },
                         }}
+                        defaultValue=''
                     />
                 </Box>
                 <Box display='flex' justifyContent='center' width='20%'>

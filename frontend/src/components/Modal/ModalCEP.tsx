@@ -6,8 +6,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Modal from 'react-modal';
 import { ResumeContext } from '../../contexts';
 import { Cep } from '../CEP';
-import MaskedInput from 'react-text-mask';
 import { MaskInputCep } from './utils';
+import { CustomInput } from '../Form';
 
 interface ModalProps {
     isOpen: boolean,
@@ -73,12 +73,13 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
                             value={cep}
                             onChange={(e) => setCep(e.target.value)}
                             InputProps={{
-                                inputComponent: MaskedInput as any,
+                                inputComponent: CustomInput as any,
                                 inputProps: {
                                     mask: MaskInputCep,
                                     type: 'tel',
                                 },
                             }}
+                            defaultValue=''
                         />
                     </Box>
                     <Box display='flex' justifyContent='center' height='56px'>
