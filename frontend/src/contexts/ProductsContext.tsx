@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
 import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
 import { ServicesProducts } from "../services/api";
-import { LoginContext } from "./LoginContext";
 import { convertCurrency, formaProductPrice } from "../services/utils";
+import { LoginContext } from "./LoginContext";
+import { ShoppingContext } from "./ShoppingContext";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -20,14 +21,14 @@ interface ProductsContextData {
     productsDepartments: DepartmentCardProps[],
 
     getAllProducts: () => Promise<Id | undefined>
-    getProductById: (uuid: string) => Promise<IProducts | Id>
-    addProductInCart: (isAlreadyInCart: boolean, uuid: string) => void,
-    alterQuantProduct: (uuid: string, action: '+' | '-') => Promise<void | Id>,
+    getProductById: (uuid: string, setProduct: (value: IProducts) => void) => Promise<void | Id>
+    addProductInCart: (uuid: string, isAlreadyInCart: boolean) => Promise<void | Id>,
+    alterQuantProduct: (uuid: string, action: '+' | '-', setProduct: (value: IProducts) => void) => Promise<void | Id>,
     purchase: (order: IMyOrders) => Promise<void | Id>,
     removeProductInCart: (uuid: string) => Promise<void | Id>,
-    clearCart: () =>  Promise<Id | undefined>,
-    addProductInFavorited: (setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, uuid: string) => void,
-    removeProductFavorited: (uuid: string) => void,
+    clearCart: () => Promise<void | Id>,
+    addProductInFavorited: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
+    removeProductFavorited: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -40,6 +41,7 @@ function ProductsProvider({ children }: ChildrenProp) {
     const [myOrders, setMyOrders] = useState<IMyOrders[]>([]);
 
     const { isLogged } = useContext(LoginContext)
+    const { setUserShop, userShop } = useContext(ShoppingContext)
 
     const navigate = useNavigate()
 
@@ -124,47 +126,48 @@ function ProductsProvider({ children }: ChildrenProp) {
 
     }
 
-    async function getProductById(uuid: string,){
+    async function getProductById(uuid: string, setProduct: (value: IProducts) => void) {
         const product = await ServicesProducts.getById(uuid)
 
         if (product instanceof Error) {
             return toast.error(product.message, { position: 'top-center' })
         }
 
-        return product
+        return setProduct(product)
     }
 
-    async function addProductInCart(
-            isAlreadyInCart: boolean, 
-            uuid: string,
-        ) {
+    async function addProductInCart(uuid: string, isAlreadyInCart: boolean) {
         if (!isLogged)
             return navigate('/login')
 
         if (isAlreadyInCart)
             return navigate('/cart')
 
-        const products = await ServicesProducts.addInCart(uuid)
+        const cart = await ServicesProducts.addInCart(uuid)
 
-        if(products instanceof Error){
-            return toast.error(products.message, { position: 'top-center' })
+        if(cart instanceof Error){
+            return toast.error(cart.message, { position: 'top-center' })
         }
-        setProductsInCart(products)
-        navigate(`/precart/${uuid}`)
+        
+        if (userShop) {
+            navigate(`/precart/${uuid}`)
+            return setUserShop({ ...userShop, cart })
+        }
     }
 
-    async function alterQuantProduct(uuid: string, action : '+' | '-'){
+    async function alterQuantProduct(uuid: string, action : '+' | '-', setProduct: (value: IProducts) => void){
         if(!isLogged){
             return navigate('/login')
         }
 
-        const productAltered = await ServicesProducts.alterQuant(uuid, action)
+        const cart = await ServicesProducts.alterQuant(uuid, action)
 
-        if (productAltered instanceof Error) {
-            return toast.error(productAltered.message, { position: 'top-center' })
+        if (cart instanceof Error) {
+            return toast.error(cart.message, { position: 'top-center' })
         }
 
-        setProductsInCart(productAltered)
+        const productAltered = cart.filter(product => product.uuid === uuid)
+        return setProduct(productAltered[0])
     }
 
     async function purchase(order: IMyOrders) {
@@ -178,20 +181,24 @@ function ProductsProvider({ children }: ChildrenProp) {
             return toast.error(myOrders.message, { position: 'top-center' })
         }
 
-        setMyOrders(myOrders)
+        if (userShop) {
+            return setUserShop({ ...userShop, myOrders, cart: [] })
+        }
     }
 
     async function removeProductInCart(uuid: string) {
         if (!isLogged)
             return navigate('/login')
 
-        const productsInCart = await ServicesProducts.excludeProductInCart(uuid)
+        const cart = await ServicesProducts.excludeProductInCart(uuid)
 
-        if (productsInCart instanceof Error) {
-            return toast.error(productsInCart.message, { position: 'top-center' })
+        if (cart instanceof Error) {
+            return toast.error(cart.message, { position: 'top-center' })
         }
 
-        setProductsInCart(productsInCart)
+        if (userShop) {
+            return setUserShop({ ...userShop, cart })
+        }
     }
 
     async function clearCart() {
@@ -200,14 +207,12 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (clearCart instanceof Error) {
             return toast.error(clearCart.message, { position: 'top-center' })
         }
-        
-        setProductsInCart(clearCart)
+        if (userShop) {
+            return setUserShop({ ...userShop, cart: [] })
+        }
     }
 
-    async function addProductInFavorited(
-            setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>, 
-            uuid: string
-        ) {
+    async function addProductInFavorited(uuid: string, setIsFavorite: (value: boolean) => void) {
 
         if (!isLogged)
             return navigate('/login')
@@ -219,10 +224,12 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
 
         setIsFavorite(true)
-        setProductsFavorited(favorites)
+        if(userShop){
+            return setUserShop({ ...userShop, favorites })
+        }
     }
 
-    async function removeProductFavorited(uuid: string) {
+    async function removeProductFavorited(uuid: string, setIsFavorite: (value: boolean) => void)  {
         if (!isLogged)
             return navigate('/login')
 
@@ -232,7 +239,10 @@ function ProductsProvider({ children }: ChildrenProp) {
             return toast.error(favorites.message, { position: 'top-center' })
         }
 
-        setProductsFavorited(favorites)
+        setIsFavorite(false)
+        if (userShop) {
+            return setUserShop({ ...userShop, favorites })
+        }
     }
 
     return (

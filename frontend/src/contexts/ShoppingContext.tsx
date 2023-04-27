@@ -1,11 +1,11 @@
 import { createContext, useState } from "react";
-import { ChildrenProp, IUserShopData } from "../types";
+import { ChildrenProp, IUserDataAPI, IUserShopData } from "../types";
 import { ServicesUsers } from "../services/api";
 
 interface ShoppingContextData{
     userShop: IUserShopData | null, 
-    setUserShop: (userShop: IUserShopData | null) => void,
-    getUserShopData: () => Promise<true | Error>
+    setUserShop: (user: IUserShopData | null) => void,
+    getUserShopData: () => Promise<IUserDataAPI | Error>
 }
 
 const ShoppingContext = createContext({} as ShoppingContextData)
@@ -25,11 +25,11 @@ function ShoppingContextProvider({children}:ChildrenProp) {
         const user = await ServicesUsers.getByEmail(JSON.parse(email), JSON.parse(accessToken))
 
         if(user instanceof Error){
-            return new Error(user.message)
+            return Error(user.message)
         }
         
         setUserShop(user.user);
-        return true
+        return user
     }
 
     return (

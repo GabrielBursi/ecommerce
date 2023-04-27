@@ -5,8 +5,8 @@ export function ContextProvider({children}: ChildrenProp) {
     return (
         <DrawerContextProvider>
             <LoginContextProvider>
-                <ProductsProvider>
-                    <ShoppingContextProvider>
+                <ShoppingContextProvider>
+                    <ProductsProvider>
                         <AddressContextProvider>
                             <ResumeContextProvider>
                                 <HeaderContextProvider>
@@ -14,8 +14,8 @@ export function ContextProvider({children}: ChildrenProp) {
                                 </HeaderContextProvider>
                             </ResumeContextProvider>
                         </AddressContextProvider>
-                    </ShoppingContextProvider>
-                </ProductsProvider>
+                    </ProductsProvider>
+                </ShoppingContextProvider>
             </LoginContextProvider>
         </DrawerContextProvider>
     );

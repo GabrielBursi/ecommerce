@@ -2,8 +2,9 @@ import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
 import { IAddress, ChildrenProp, IEditAddress } from "../types";
-import { LoginContext } from "./LoginContext";
 import { ServicesAddress } from "../services/api";
+import { LoginContext } from "./LoginContext";
+import { ShoppingContext } from "./ShoppingContext";
 
 interface AddressContextData {
     addressData: IAddress| undefined,
@@ -24,6 +25,7 @@ function AddressContextProvider({ children }: ChildrenProp) {
 
     const navigate = useNavigate()
     const { isLogged } = useContext(LoginContext)
+    const { setUserShop, userShop } = useContext(ShoppingContext)
 
     async function createAddress(newAddress: IAddress){
         if(!isLogged){
@@ -36,8 +38,9 @@ function AddressContextProvider({ children }: ChildrenProp) {
             return toast.error(address.message, { position: 'top-center' })
         }
 
-        setAddressData(address[address.length - 1])
-        setAddressList(address)
+        if (userShop) {
+            return setUserShop({ ...userShop, address })
+        }
     }
 
     async function selectAddress(cep: string) {
@@ -51,10 +54,9 @@ function AddressContextProvider({ children }: ChildrenProp) {
             return toast.error(address.message, { position: 'top-center' })
         }
 
-        const addressSelected = address.find(ads => ads.isSelected === true)
-
-        setAddressData(addressSelected)
-        setAddressList(address)
+        if (userShop) {
+            return setUserShop({ ...userShop, address })
+        }
     }
 
     async function editAddress(cep: string, newAddressInfo: IEditAddress) {
@@ -68,10 +70,9 @@ function AddressContextProvider({ children }: ChildrenProp) {
             return toast.error(address.message, { position: 'top-center' })
         }
 
-        const addressSelected = address.find(ads => ads.isSelected === true)
-
-        setAddressData(addressSelected)
-        setAddressList(address)
+        if (userShop) {
+            return setUserShop({ ...userShop, address })
+        }
     }
 
     return (
