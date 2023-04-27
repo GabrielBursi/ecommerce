@@ -4,6 +4,7 @@ import { Id, toast } from "react-toastify";
 import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
 import { ServicesProducts } from "../services/api";
 import { LoginContext } from "./LoginContext";
+import { convertCurrency, formaProductPrice } from "../services/utils";
 
 interface ProductsContextData {
     products: IProducts[],
@@ -105,13 +106,22 @@ function ProductsProvider({ children }: ChildrenProp) {
         },
     ]
 
-    async function getAllProducts() {
+    async function getAllProducts(convert = false) {
         const products = await ServicesProducts.getAll()
 
         if (products instanceof Error) {
             return toast.error(products.message, {position: 'top-center'})
         }
-        setProducts(products)
+        
+        const productsFormated = formaProductPrice(products)
+
+        if(convert){
+            const productsFormatedAndConverted = await convertCurrency(productsFormated)
+            setProducts(productsFormatedAndConverted)
+        }else{
+            setProducts(productsFormated)
+        }
+
     }
 
     async function getProductById(uuid: string,){

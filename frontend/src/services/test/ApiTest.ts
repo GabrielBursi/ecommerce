@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { DataApiTeste, IProducts, IUser } from '../../types';
-import { convertCurrency } from '../config/ApiExchangeRate';
+import { convertCurrency } from '../utils/ApiExchangeRate';
 import { arrayTESTE, formaProductPrice } from '../utils';
 
 type lenght = 20 | 40 | 60 | 80 | 100
