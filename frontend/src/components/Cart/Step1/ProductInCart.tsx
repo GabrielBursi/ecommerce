@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -6,58 +6,28 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IProducts } from "../../../types";
 import { MyImage } from "../../Products";
-import { ProductsContext } from "../../../contexts";
+import { ProductsContext, ShoppingContext } from "../../../contexts";
 import { ModalAction } from "../../Modal";
 
 export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
-    const { productsInCart, setProductsInCart } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
+    const { removeProductInCart, alterQuantProduct } = useContext(ProductsContext)
+
     const [isOpen, setIsOpen] = useState(false);
 
-    const product = productsInCart.filter(product => product.uuid === uuid)
-    const [quant, setQuant] = useState(product[0].quant || 1);
+    const productInUse = userShop?.cart.filter(product => product.uuid === uuid) || []
+    const [product, setProduct] = useState<IProducts>(productInUse[0]);
 
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
-
-    useEffect(() => {
-        updateProductQuantity(uuid, quant)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [quant]);
-
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
-
-    function addQuant(){
-        setQuant(oldQuant => oldQuant + 1)
-    }
-    
-    function removeQuant(){
-        setQuant(oldQuant => oldQuant - 1)
-    }
-
-    function updateProductQuantity(uuid: string, quant: number) {
-        const updatedProducts = productsInCart.map(product => {
-            if (product.uuid === uuid) {
-                return {
-                    ...product,
-                    quant
-                };
-            }
-            return product;
-        });
-        setProductsInCart(updatedProducts);
-    }
-
-    function removeProductCart(){
-        const productRemoved = productsInCart.filter(product => product.uuid !== uuid)
-        setProductsInCart(productRemoved)
-    }
 
     return (
         <Box width='100%' height='160px' display='flex' alignItems='center' justifyContent='center' gap={2}>
             <ModalAction 
-                action={removeProductCart} 
+                action={() => removeProductInCart(uuid)} 
                 question='Você tem certeza que deseja remover esse produto do carrinho?' 
                 isOpen={isOpen} 
                 setIsOpen={setIsOpen}
@@ -88,15 +58,28 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                 </Typography>
                 <Box width='60%' height='40%' display='flex' alignItems='center' justifyContent='center' gap={2}>
                     { !isConfirmationPage &&
-                        <IconButton size="small" color="primary" onClick={removeQuant} disabled = {quant === 1}>
+                        <IconButton 
+                            size="small" 
+                            color="primary" 
+                            onClick={() => {
+                                alterQuantProduct(uuid, '-', setProduct)
+                            }} 
+                            disabled = {product.quant === 1}
+                        >
                             <ArrowBackIosIcon/>
                         </IconButton>
                     }
                     <Typography color='black' variant='h6' fontWeight='bold'>
-                        {quant}
+                        {product.quant}
                     </Typography>
                     { !isConfirmationPage &&
-                        <IconButton size="small" color="primary" onClick={addQuant}>
+                        <IconButton 
+                            size="small" 
+                            color="primary" 
+                            onClick={() => {
+                                alterQuantProduct(uuid, '+', setProduct)
+                            }}
+                        >
                             <ArrowForwardIosIcon />
                         </IconButton>
                     }
@@ -109,7 +92,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
             </Box>
             <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center'>
                 <Typography color='primary' variant='h5' fontWeight='bold'>
-                    {(Number(price) * quant).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    {(Number(price) * (product.quant || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>
             </Box>
         </Box>

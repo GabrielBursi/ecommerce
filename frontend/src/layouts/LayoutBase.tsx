@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useMatch, useNavigate, useParams } from "react-router-dom";
 import { Badge, BadgeProps, Box, Icon, Paper, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { DrawerContext, LoginContext, ProductsContext, HeaderContext } from "../contexts";
+import { DrawerContext, LoginContext, HeaderContext, ShoppingContext } from "../contexts";
 import { Actions, TabBar, ResearchInput, UserInfo, Banner } from "../components";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
@@ -37,7 +37,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
     const { isLogged } = useContext(LoginContext)
     const { toggleDrawer } = useContext(DrawerContext)
     const { productsTabBar } = useContext(HeaderContext)
-    const { productsInCart } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
 
     return (
         <Box height="100%" display="flex" flexDirection="column">
@@ -82,7 +82,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
                     <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={2}>
                         {isLogged ? 
                             <>
-                                <StyledBadge badgeContent={productsInCart.length} color="info">
+                                <StyledBadge badgeContent={userShop?.cart.length} color="info">
                                     <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} onClick={() => navigate('/cart')}/> 
                                 </StyledBadge>
                                 <Icon onClick={toggleDrawer}>menu</Icon>

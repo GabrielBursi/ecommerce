@@ -3,7 +3,7 @@ import { MyApi } from "../../config";
 
 export const edit = async (cep: string, newAddressInfo: IEditAddress): Promise<IAddress[] | Error> => {
     try {
-        const { data } = await MyApi.patch(`/address/edit/${cep}`, { newAddressInfo })
+        const { data } = await MyApi.patch(`/address/edit/${cep}`, { ...newAddressInfo })
         return data.addressEdited as IAddress[]
     } catch (err) {
         const erro = err as IErrorAPI

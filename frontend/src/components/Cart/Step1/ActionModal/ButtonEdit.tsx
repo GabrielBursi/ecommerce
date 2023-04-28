@@ -1,25 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@mui/material";
-import { AddressContext } from "../../../../contexts";
+import { ShoppingContext } from "../../../../contexts";
 import { ModalAddress } from "../../../Modal";
 import { IAddress} from "../../../../types";
 
 interface ButtonEditProps {
-    cep:string | undefined;
+    address: IAddress | undefined
 }
 
-export function ButtonEdit({ cep }: ButtonEditProps) {
+export function ButtonEdit({ address }: ButtonEditProps) {
 
-    const { addressList } = useContext(AddressContext)
+    const { userShop } = useContext(ShoppingContext)
 
     const [isOpen, setIsOpen] = useState(false);
-    const [addressFind, setAddressFind] = useState<IAddress>();
-
-    useEffect(() => {
-        const addressFindByFilter = addressList.find(address =>  address.cep === cep)
-        setAddressFind(addressFindByFilter)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cep]);
 
     return (
         <>
@@ -29,10 +22,10 @@ export function ButtonEdit({ cep }: ButtonEditProps) {
                 title='EDITAR ENDEREÇO'
                 btnText='ATUALIZAR ENDEREÇO'
                 isNewAddress={false}
-                addressFind={addressFind}
+                addressFind={address}
             />
             <Button 
-                disabled={addressList.length === 0} 
+                disabled={userShop?.address.length === 0} 
                 onClick={() => setIsOpen(true)}
             >
                 EDITAR

@@ -24,7 +24,7 @@ MyApi.interceptors.request.use(
     config => {
         const token = localStorage.getItem('accessToken')
         if(!token){
-            throw new Error('Não foi encontrado token do localStorage - vindo da configuração da API')
+            return config
         }
         config.headers['Authorization'] = `Bearer ${JSON.parse(token)}`;
         return config;

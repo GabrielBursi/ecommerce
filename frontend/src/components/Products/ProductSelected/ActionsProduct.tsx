@@ -3,7 +3,7 @@ import { Box, Divider, IconButton, Rating, Typography, useMediaQuery, useTheme }
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { IProducts } from "../../../types";
-import { ProductsContext } from "../../../contexts";
+import { ProductsContext, ShoppingContext } from "../../../contexts";
 import { ModalURL } from "../../Modal/ModalURL";
 
 interface ActionsProductProps {
@@ -15,7 +15,8 @@ export function ActionsProduct({ product }: ActionsProductProps) {
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-    const { addProductInFavorited, removeProductFavorited} = useContext(ProductsContext)
+    const { addProductInFavorited, removeProductFavorited } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [url, setUrl] = useState('');
@@ -25,6 +26,14 @@ export function ActionsProduct({ product }: ActionsProductProps) {
         setUrl(window.location.href)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product.uuid]);
+
+    useEffect(() => {
+        const productIsFavorite = userShop?.favorites.find(p => p.uuid === product.uuid)
+        if(productIsFavorite){
+            setIsFavorite(true)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between' gap={1}>
@@ -43,7 +52,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
                     <ShareIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} />
                 </IconButton>
                 <IconButton size={mdDown ? "small" : "medium"} onClick={() => {
-                    isFavorite ? removeProductFavorited(product.uuid) : addProductInFavorited(setIsFavorite, product.uuid)
+                    isFavorite ? removeProductFavorited(product.uuid, setIsFavorite) : addProductInFavorited(product.uuid, setIsFavorite)
                 }}>
                     <FavoriteIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>

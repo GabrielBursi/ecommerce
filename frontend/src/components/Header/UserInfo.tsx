@@ -3,13 +3,13 @@ import { Avatar, Box, Divider, Typography, useMediaQuery, useTheme } from "@mui/
 import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LoginContext } from "../../contexts";
+import { LoginContext, ShoppingContext } from "../../contexts";
 import { ModalAction } from "../Modal";
-import { ServicesUsers } from "../../services/api";
 
 export function UserInfo (){
 
     const { isLogged, loginInfo, setFormLoginInfo, setIsLogged } = useContext(LoginContext)
+    const { getUserShopData } = useContext(ShoppingContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -31,7 +31,7 @@ export function UserInfo (){
             return
         }
 
-        const user = await ServicesUsers.getByEmail(JSON.parse(email), JSON.parse(accessToken))
+        const user = await getUserShopData()
 
         if(user instanceof Error){
             localStorage.removeItem('accessToken')

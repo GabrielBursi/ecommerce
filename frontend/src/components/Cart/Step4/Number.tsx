@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Box, Typography } from "@mui/material";
 import { ResumeContext } from "../../../contexts";
 
-export function Number() {
+export function NumberComponent() {
 
     const { orderNumber } = useContext(ResumeContext)
 

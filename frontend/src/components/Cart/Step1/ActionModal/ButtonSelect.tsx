@@ -4,14 +4,14 @@ import { AddressContext } from "../../../../contexts";
 import { IAddress} from "../../../../types";
 
 interface ButtonSelectProps {
-    addressSelected: IAddress
+    address: IAddress | undefined;
 }
 
-export function ButtonSelect({ addressSelected }: ButtonSelectProps) {
+export function ButtonSelect({ address }: ButtonSelectProps) {
 
     const { selectAddress } = useContext(AddressContext)
 
     return (
-        <Button onClick={() => selectAddress(addressSelected.cep)}>SELECIONAR ESTE</Button>
+        <Button onClick={async () => await selectAddress(address?.cep || '')}>SELECIONAR ESTE</Button>
     );
 }

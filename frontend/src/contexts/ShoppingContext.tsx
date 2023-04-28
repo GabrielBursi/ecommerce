@@ -19,12 +19,14 @@ function ShoppingContextProvider({children}:ChildrenProp) {
         const accessToken = localStorage.getItem('accessToken')
 
         if(!email || !accessToken){
+            setUserShop(null)
             return new Error('Email ou accessToken não encontrado no LocalStorage')
         }
 
         const user = await ServicesUsers.getByEmail(JSON.parse(email), JSON.parse(accessToken))
 
         if(user instanceof Error){
+            setUserShop(null)
             return Error(user.message)
         }
         

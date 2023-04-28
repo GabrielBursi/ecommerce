@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Grid, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { LoginContext, ProductsContext } from "../contexts";
+import { LoginContext, ShoppingContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { Carousel, PreCartInfo } from "../components";
 import { IProducts } from "../types";
@@ -15,7 +15,7 @@ export function PreCartPage() {
     const { uuid } = useParams<'uuid'>();
 
     const { isLogged } = useContext(LoginContext)
-    const { productsInCart } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
 
     const [productAddInCart, setProductAddInCart] = useState<IProducts>();
 
@@ -26,8 +26,8 @@ export function PreCartPage() {
             return console.log('teste');
             
         }
-        const arrProductAdded = productsInCart.filter(product => product.uuid === uuid);
-        const [productAdded] = arrProductAdded
+        const arrProductAdded = userShop?.cart.filter(product => product.uuid === uuid);
+        const [productAdded] = arrProductAdded || []
         setProductAddInCart(productAdded)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uuid]);

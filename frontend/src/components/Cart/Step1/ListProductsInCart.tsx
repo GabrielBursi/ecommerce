@@ -5,25 +5,20 @@ import { Box, Button, Divider, Paper, Typography } from "@mui/material";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { ProductsContext } from "../../../contexts";
-
 import { ModalAction } from "../../Modal";
 import { ListOptionsCep } from "./ListOptionsCep";
 import { ProductInCart } from "./ProductInCart";
+import { ProductsContext, ShoppingContext } from "../../../contexts";
 
 export function ListProductsInCart() {
-    const { productsInCart, setProductsInCart } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
+    const { clearCart } = useContext(ProductsContext)
 
     const [isOpen, setIsOpen] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
-
-    function clearCart() {
-        setProductsInCart([])
-        setIsOpen(false)
-    }
 
     return (
         <Box height='auto' component={Paper} elevation={2} padding={2} display='flex' flexDirection='column' gap={2}>
@@ -51,7 +46,7 @@ export function ListProductsInCart() {
             </Box>
             <Divider/>
             <Box height='auto' display='flex' flexDirection='column' gap={4}>
-                {productsInCart.map(product => (
+                {userShop?.cart.map(product => (
                     <ProductInCart 
                         key={product.uuid}
                         uuid={product.uuid}

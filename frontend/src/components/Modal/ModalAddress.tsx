@@ -72,7 +72,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     const cep = watch('cep', '')
 
-    const { addressData, setAddressData, setAddressList, addressList } = useContext(AddressContext)
+    const { createAddress, editAddress } = useContext(AddressContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -111,17 +111,6 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     useEffect(() => {
         reset()
-        if(!isNewAddress && addressData){
-            setValue('cep', addressData.cep)
-            setValue('city', addressData.city)
-            setValue('complement', addressData.complement)
-            setValue('identification', addressData.identification)
-            setValue('neighborhood', addressData.neighborhood)
-            setValue('ref', addressData.ref)
-            setValue('street', addressData.street)
-            setValue('state', addressData.state)
-            setValue('number', addressData.number)
-        }
         if(addressFind){
             setValue('cep', addressFind.cep)
             setValue('city', addressFind.city)
@@ -137,19 +126,12 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     function onSubmit(data: IAddress) {
         addressSchema.validate(data, { abortEarly: false })
-        .then(validData => { 
+        .then(async (validData) => { 
                 if(addressFind){
-                    if(addressFind.cep === addressData?.cep){
-                        setAddressData({...validData, isSelected: true})
-                    }
-                    const addressChanged = addressList.findIndex(address => address.cep === addressFind.cep)
-                    addressList.splice(addressChanged, 1)
-                    setAddressList([...addressList, validData]);
-                    setIsOpen(false) 
-                    
+                    await editAddress(addressFind.cep, validData)
+                    setIsOpen(false)
                 }else{
-                    setAddressData({...validData, isSelected: true});
-                    setAddressList([...addressList, validData]);
+                    await createAddress(validData)
                     setIsOpen(false) 
                 }
             })

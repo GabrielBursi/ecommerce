@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge, BadgeProps, Box, styled } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { ProductsContext } from "../../contexts";
+import { ShoppingContext } from "../../contexts";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -17,16 +17,15 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 export function Actions() {
 
     const navigate = useNavigate()
-
-    const { productsFavorited } = useContext(ProductsContext)
-    const { productsInCart } = useContext(ProductsContext)
+    
+    const { userShop } = useContext(ShoppingContext)
 
     return (
         <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={4} >
-            <StyledBadge badgeContent={productsFavorited.length} color="info">
+            <StyledBadge badgeContent={userShop?.favorites.length} color="info">
                 <FavoriteIcon color="primary" fontSize="large" sx={{ cursor: "pointer" }} onClick={() => {navigate('/favorite')}}/>
             </StyledBadge>
-            <StyledBadge badgeContent={productsInCart.length} color="info">
+            <StyledBadge badgeContent={userShop?.cart.length} color="info">
                 <ShoppingCartIcon color="primary" fontSize="large" sx={{ cursor: "pointer" }} onClick={() => {navigate('/cart')}}/>
             </StyledBadge>
         </Box>

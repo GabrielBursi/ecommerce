@@ -2,15 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
-import { AddressContext, ProductsContext, ResumeContext } from "../../../contexts";
 import ReCAPTCHA from "react-google-recaptcha";
+import { ProductsContext, ResumeContext, ShoppingContext } from "../../../contexts";
 import { IMyOrders } from "../../../types";
 
 export function Resume() {
 
-    const { productsInCart, setProductsInCart, setMyOrders, myOrders } = useContext(ProductsContext)
-    const { addressList, addressData } = useContext(AddressContext)
+    const { userShop } = useContext(ShoppingContext)
     const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
+    const { purchase } = useContext(ProductsContext)
 
     const [reCaptcha, setReCaptcha] = useState(true);
 
@@ -19,7 +19,7 @@ export function Resume() {
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
-    function finishPurchase(){
+    async function finishPurchase(){
 
         const orderNumber = Math.floor(Math.random() * 999999)
 
@@ -28,28 +28,27 @@ export function Resume() {
             number: `#${orderNumber}`,
             payment: payment.toUpperCase(),
             status: true,
-            products: productsInCart,
-            address: addressData
+            products: userShop?.cart || [],
+            address: userShop?.address.find(address => address.isSelected === true)
         }
-
-        setMyOrders([...myOrders, newOrder])
-        setProductsInCart([])
+        
         setOrderNumber(orderNumber);
+        await purchase(newOrder)
         navigate('/cart/identification/payment/confirm/done')
     }
 
     useEffect(() => {
-        const soma = productsInCart.reduce((acumulador, product) => { 
+        const soma = userShop?.cart.reduce((acumulador, product) => { 
             if(typeof product.price === "number"){
                 const PricePerQuant = product.price * (product.quant || 1)
                 return acumulador + PricePerQuant
             }
             return 0
         }, 0);
-        setSomeProducts(soma)
-        setTotal(soma + frete)
+        setSomeProducts(soma || 1)
+        setTotal(soma || 1 + frete)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsInCart, frete]);
+    }, [userShop?.cart, frete]);
 
     return (
         <Box component={Paper} elevation={2} width='25%' height='80%' padding={2} display='flex' flexDirection='column' gap={2}>
@@ -109,7 +108,7 @@ export function Resume() {
                         fullWidth 
                         size="large" 
                         sx={{ fontSize: '1.2rem' }} 
-                        disabled={isConfirmationPage ?  reCaptcha : addressList.length === 0} 
+                        disabled={isConfirmationPage ?  reCaptcha : userShop?.address.length === 0} 
                         onClick={() => isConfirmationPage ? finishPurchase() : navigate('/cart/identification')}
                     >
                         {isConfirmationPage ? 'FINALIZAR' : 'IR PARA O PAGAMENTO'}

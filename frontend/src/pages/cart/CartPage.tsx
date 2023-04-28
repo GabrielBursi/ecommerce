@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Steps, Resume, Address, ListProductsInCart } from "../../components";
+import { Steps, Resume, ListProductsInCart, Address } from "../../components";
 import { LayoutBase } from "../../layouts";
 
 export function CartPage() {

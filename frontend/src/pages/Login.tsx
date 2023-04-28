@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import '../TraducoesYup'
 
 import { Form } from "../components";
-import { LoginContext } from "../contexts";
+import { LoginContext, ShoppingContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { IUser } from "../types";
 import { ServicesUsers } from "../services/api";
@@ -18,6 +18,7 @@ export function Login() {
     const navigate = useNavigate()
 
     const { setFormLoginInfo, setIsLogged } = useContext(LoginContext)
+    const { getUserShopData } = useContext(ShoppingContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,6 +56,8 @@ export function Login() {
                     localStorage.setItem('email', JSON.stringify(data.user.email))
                     toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
                     
+                    await getUserShopData()
+
                     setFormLoginInfo(valid)
                     setIsLogged(true)
                     navigate('/')
@@ -77,6 +80,8 @@ export function Login() {
                 localStorage.setItem('accessToken', JSON.stringify(data.accessToken))
                 localStorage.setItem('email', JSON.stringify(data.user.email))
                 toast.success(`Seja Bem-Vindo(a), ${data.user.name}`, { position: 'top-center' });
+
+                await getUserShopData()
 
                 setFormLoginInfo(data.user)
                 setIsLogged(true)

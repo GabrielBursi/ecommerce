@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { IProducts } from "../../../types";
-import { ProductsContext } from "../../../contexts";
+import { ProductsContext, ShoppingContext } from "../../../contexts";
 import { SearchCepMobile } from "./SearchCepMobile";
 
 interface PriceProps {
@@ -15,6 +15,15 @@ export function PriceMobile({ product }: PriceProps) {
     const [isAlreadyInCart, setIsAlreadyInCart] = useState(false);
 
     const { addProductInCart } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
+
+    useEffect(() => {
+        const productIsInCart = userShop?.cart.find(p => p.uuid === product.uuid)
+        if (productIsInCart) {
+            setIsAlreadyInCart(true)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Box height='40%' display='flex' flexDirection='column'  gap={2}>
@@ -35,8 +44,7 @@ export function PriceMobile({ product }: PriceProps) {
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: '1.2rem'}}
                         onClick={() => {
-                            addProductInCart(isAlreadyInCart, product.uuid)
-                            setIsAlreadyInCart(true)
+                            addProductInCart(product.uuid, isAlreadyInCart)
                         }}
                     >
                         {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

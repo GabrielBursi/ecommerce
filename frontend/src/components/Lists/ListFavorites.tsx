@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IProducts } from "../../types";
 import { MyImage } from "../Products/MyImage";
-import { ProductsContext } from "../../contexts";
+import { ProductsContext, ShoppingContext } from "../../contexts";
 import { ListFavoriteMobile } from "../mobile";
 
 export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
@@ -17,11 +17,25 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
 
     const [color, setColor] = useState(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
+    const [_, setIsFavorite] = useState<boolean>(false);
 
     const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
 
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
+
+    useEffect(() => {
+        const productIsInCart = userShop?.cart.find(p => p.uuid === uuid)
+        if (productIsInCart) {
+            setIsAlreadyInCart(true)
+        }
+        const productIsInFavorites = userShop?.favorites.find(p => p.uuid === uuid)
+        if (productIsInFavorites) {
+            setIsFavorite(true)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if(smDown) 
     return <ListFavoriteMobile
@@ -68,7 +82,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductFavorited(uuid)}/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductFavorited(uuid, setIsFavorite)}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -83,8 +97,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
                         fullWidth 
                         size="large" 
                         onClick={() => {
-                            uuid && addProductInCart(isAlreadyInCart, uuid)
-                            setIsAlreadyInCart(true)
+                            uuid && addProductInCart(uuid, isAlreadyInCart)
                         }}
                     >
                         { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

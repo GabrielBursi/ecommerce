@@ -5,7 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { LayoutBase } from "../layouts";
 import { EmptyMessage, ListFavorites } from "../components";
-import { ProductsContext } from "../contexts";
+import { ShoppingContext } from "../contexts";
 
 export function FavoritePage() {
 
@@ -13,7 +13,7 @@ export function FavoritePage() {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const { productsFavorited } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
 
     const navigate = useNavigate()
 
@@ -21,7 +21,7 @@ export function FavoritePage() {
         <LayoutBase showActions showResearchInput showUserInfo showTabBar>
             <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='auto'>
                 <Box display='flex' flexDirection='column' width='75%' height='100%' paddingY={2} gap={2}>
-                { productsFavorited.length > 0 ?
+                { userShop && userShop.favorites.length > 0 ?
                     <>
                         <Box  height="10%" display='flex' alignItems='center'>
                             <Typography variant={smDown ? 'h4' : mdDown ? 'h3' : 'h2'} color='primary'>
@@ -30,7 +30,7 @@ export function FavoritePage() {
                         </Box>
                         <Box flex={1} display='flex' flexDirection='column' gap={2}>
                             { 
-                                productsFavorited.map(product => (
+                                userShop?.favorites.map(product => (
                                     <ListFavorites
                                         uuid={product.uuid}
                                         key={product.uuid}
