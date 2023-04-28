@@ -61,8 +61,8 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                         <IconButton 
                             size="small" 
                             color="primary" 
-                            onClick={() => {
-                                alterQuantProduct(uuid, '-', setProduct)
+                            onClick={async () => {
+                                await alterQuantProduct(uuid, '-', setProduct)
                             }} 
                             disabled = {product.quant === 1}
                         >
@@ -76,8 +76,8 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                         <IconButton 
                             size="small" 
                             color="primary" 
-                            onClick={() => {
-                                alterQuantProduct(uuid, '+', setProduct)
+                            onClick={async () => {
+                                await alterQuantProduct(uuid, '+', setProduct)
                             }}
                         >
                             <ArrowForwardIosIcon />

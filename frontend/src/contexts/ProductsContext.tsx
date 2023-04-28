@@ -157,6 +157,12 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
 
         const productAltered = cart.filter(product => product.uuid === uuid)
+        if(userShop){
+            setUserShop({
+                ...userShop,
+                cart
+            })
+        }
         return setProduct(productAltered[0])
     }
 
