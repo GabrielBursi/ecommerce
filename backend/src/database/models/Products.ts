@@ -14,7 +14,7 @@ const productsSchema = new Schema<IProducts>({
     uuid: { type: String, required: true },
     img: { type: String, required: true },
     name: { type: String, required: true },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     rating: { type: Number, required: true },
     quant: { type: Number, required: false, default: 0 },
 })
