@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
 import { IAddress, ChildrenProp, IEditAddress } from "../types";
@@ -7,11 +7,6 @@ import { LoginContext } from "./LoginContext";
 import { ShoppingContext } from "./ShoppingContext";
 
 interface AddressContextData {
-    addressData: IAddress| undefined,
-    setAddressData: React.Dispatch<React.SetStateAction<IAddress| undefined>>,
-    addressList: IAddress[],
-    setAddressList: React.Dispatch<React.SetStateAction<IAddress[]>>,
-
     createAddress: (newAddress: IAddress) => Promise<void | Id>,
     selectAddress: (cep: string) => Promise<void | Id>,
     editAddress: (cep: string, newAddressInfo: IEditAddress) => Promise<void | Id>
@@ -19,9 +14,6 @@ interface AddressContextData {
 const AddressContext = createContext({} as AddressContextData)
 
 function AddressContextProvider({ children }: ChildrenProp) {
-    
-    const [addressData, setAddressData] = useState<IAddress>();
-    const [addressList, setAddressList] = useState<IAddress[]>([]);
 
     const navigate = useNavigate()
     const { isLogged } = useContext(LoginContext)
@@ -78,10 +70,6 @@ function AddressContextProvider({ children }: ChildrenProp) {
     return (
         <AddressContext.Provider 
             value={{ 
-                addressData, 
-                setAddressData, 
-                addressList, 
-                setAddressList, 
                 createAddress,
                 editAddress,
                 selectAddress

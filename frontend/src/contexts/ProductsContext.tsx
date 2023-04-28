@@ -9,14 +9,7 @@ import { ShoppingContext } from "./ShoppingContext";
 
 interface ProductsContextData {
     products: IProducts[],
-    productsFavorited: IProducts[],
-    productsInCart: IProducts[],
-    myOrders: IMyOrders[],
-
     setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
-    setProductsFavorited: React.Dispatch<React.SetStateAction<IProducts[]>>,
-    setProductsInCart: React.Dispatch<React.SetStateAction<IProducts[]>>,
-    setMyOrders: (value: IMyOrders[]) => void,
 
     productsDepartments: DepartmentCardProps[],
 
@@ -36,9 +29,6 @@ const ProductsContext = createContext({} as ProductsContextData)
 function ProductsProvider({ children }: ChildrenProp) {
 
     const [products, setProducts] = useState<IProducts[]>([]); 
-    const [productsFavorited, setProductsFavorited] = useState<IProducts[]>([]); 
-    const [productsInCart, setProductsInCart] = useState<IProducts[]>([]); 
-    const [myOrders, setMyOrders] = useState<IMyOrders[]>([]);
 
     const { isLogged } = useContext(LoginContext)
     const { setUserShop, userShop } = useContext(ShoppingContext)
@@ -249,12 +239,6 @@ function ProductsProvider({ children }: ChildrenProp) {
         <ProductsContext.Provider value={{ 
             products,
             setProducts,
-            productsInCart,
-            setProductsInCart,
-            productsFavorited,
-            setProductsFavorited,
-            myOrders,
-            setMyOrders,
 
             productsDepartments,
 
