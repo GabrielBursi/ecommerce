@@ -33,7 +33,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
             setIsFavorite(true)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userShop?.favorites]);
 
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between' gap={1}>

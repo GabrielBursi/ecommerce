@@ -37,7 +37,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
             setIsFavorite(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userShop?.favorites, userShop?.cart]);
 
     function seeProduct(){
         navigate(`/product/${uuid}`)

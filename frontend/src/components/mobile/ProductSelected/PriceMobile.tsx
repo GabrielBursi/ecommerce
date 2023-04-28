@@ -23,7 +23,7 @@ export function PriceMobile({ product }: PriceProps) {
             setIsAlreadyInCart(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userShop?.cart]);
 
     return (
         <Box height='40%' display='flex' flexDirection='column'  gap={2}>

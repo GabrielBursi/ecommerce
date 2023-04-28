@@ -35,7 +35,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
             setIsFavorite(true)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userShop?.favorites, userShop?.cart]);
 
     if(smDown) 
     return <ListFavoriteMobile

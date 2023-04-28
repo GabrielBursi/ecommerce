@@ -31,7 +31,7 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
             setIsFavorite(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userShop?.favorites, userShop?.cart]);
 
     return (
         <Card sx={{ width: '100%', height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>

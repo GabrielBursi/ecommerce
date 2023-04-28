@@ -15,7 +15,7 @@ export function ButtonList() {
                 setIsOpen={setIsOpen}
             />
             <Button 
-                disabled={userShop?.address.length === 0}
+                disabled={userShop!.address.length <= 1 || false}
                 onClick={() => {setIsOpen(true)}}
             >
                 SELECIONAR OUTRO
