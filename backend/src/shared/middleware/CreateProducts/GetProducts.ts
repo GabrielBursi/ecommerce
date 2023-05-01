@@ -24,12 +24,15 @@ export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}
             const productsApi = await Api(queryItem, page);
 
             if (productsApi instanceof Error) {
-                console.log(productsApi.message);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
                         default: productsApi.message
                     }
                 });
+            }
+
+            if (productsApi[0].title.startsWith('Anúncio patrocinado')){
+                continue 
             }
 
             items.push(productsApi[0]);
