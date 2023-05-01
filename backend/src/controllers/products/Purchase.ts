@@ -10,7 +10,7 @@ import { ProductsProviders } from "../../database/providers";
 import '../../shared/services/TraducoesYup'
 import { MyResponse } from "../../types";
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products'>> = yup.object({
+const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products' | 'total'>> = yup.object({
     number: yup.string().required(),
     status: yup.boolean().default(true).required(),
     date: yup.string().required(),

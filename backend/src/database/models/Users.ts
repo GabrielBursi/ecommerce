@@ -5,7 +5,10 @@ import { MyOrdersSchema } from "./Products";
 export interface UserSchema extends NewUser {
     address: NewAddress[],
     favorites: IProducts[] | [],
-    cart: IProducts[] | [],
+    cart: {
+        total: number,
+        products: IProducts[] | []
+    },
     myOrders: MyOrdersSchema[],
 }
 
@@ -18,7 +21,10 @@ const userSchema = new Schema<UserSchema>({
     cpf: { type: String, required: true },
     address: { type: Schema.Types.Mixed, default: [] },
     favorites: { type: Schema.Types.Mixed, default: [] },
-    cart: { type: Schema.Types.Mixed, default: [] },
+    cart: { 
+        total: { type: Number, required: true, default: 0 },
+        products: { type: Array, required: true, default: [] }
+    },
     myOrders: { type: Schema.Types.Mixed, default: [] },
 });
 

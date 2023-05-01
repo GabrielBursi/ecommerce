@@ -1,3 +1,4 @@
+import { somePrice } from "../../../utils"
 import { User } from "../../models"
 
 export const alterQuant = async (userId: string, productId: string | undefined, action: '+' | '-') => {
@@ -12,24 +13,26 @@ export const alterQuant = async (userId: string, productId: string | undefined, 
             return "Usuário não encontrado."
         }
 
-        const indexAltered = user.cart.findIndex(product => product.uuid === productId)
+        const indexAltered = user.cart.products.findIndex(product => product.uuid === productId)
         if (indexAltered === -1) {
             return "Produto não encontrado no carrinho."
         }
 
         switch(action){
             case '+':
-                user.cart[indexAltered].quant++
+                user.cart.products[indexAltered].quant++
                 break;
             case '-':
-                if (user.cart[indexAltered].quant === 1) {
+                if (user.cart.products[indexAltered].quant === 1) {
                     return "Produto com uma quantidade."
                 }
-                user.cart[indexAltered].quant--
+                user.cart.products[indexAltered].quant--
                 break;
         }
         
-        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: user.cart }, { new: true }).exec();
+        const total = somePrice(user.cart.products)
+
+        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: { total, products: user.cart.products } }, { new: true }).exec();
         return updatedUser?.cart;
 
     } catch (error) {

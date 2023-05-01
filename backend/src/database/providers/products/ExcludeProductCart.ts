@@ -1,3 +1,4 @@
+import { somePrice } from "../../../utils"
 import { User } from "../../models"
 
 export const excludeProductCart = async (userId: string, productId: string | undefined) => {
@@ -12,13 +13,15 @@ export const excludeProductCart = async (userId: string, productId: string | und
             return "Usuário não encontrado"
         }
 
-        const indexDeleted = user.cart.findIndex(product => product.uuid === productId)
+        const indexDeleted = user.cart.products.findIndex(product => product.uuid === productId)
         if(indexDeleted === -1) {
             return "Produto não encontrado no carrinho"
         }
-        user.cart.splice(indexDeleted, 1)
+        user.cart.products.splice(indexDeleted, 1)
 
-        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: user.cart }, { new: true }).exec();
+        const total = somePrice(user.cart.products)
+
+        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: { total, products: user.cart.products } }, { new: true }).exec();
         return updatedUser?.cart;
 
     } catch (error) {
