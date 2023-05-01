@@ -38,6 +38,18 @@ export interface IProducts {
     img: string,
     quant: number
 }
+
+export interface IProductsAPI {
+    price: {
+        current_price: number
+    }
+    reviews: {
+        rating: number
+    }
+    title: string,
+    thumbnail: string,
+}
+
 export interface IParamProps {
     id?: string,
 }
