@@ -4,27 +4,25 @@ import { StatusCodes } from "http-status-codes";
 
 import { MyOrdersSchema } from "../../database/models";
 import { validation } from "../../shared/middleware"
-import { bodyAddressSchemaValidation } from "../address/CreateNewAddress";
 import { ProductsProviders } from "../../database/providers";
 
 import '../../shared/services/TraducoesYup'
 import { MyResponse } from "../../types";
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products' | 'total'>> = yup.object({
+const bodySchemaValidation: yup.ObjectSchema<Pick<MyOrdersSchema, 'info'>> = yup.object({
     info: yup.object({
         number: yup.string().required(),
         status: yup.boolean().default(true).required(),
         date: yup.string().required(),
         payment: yup.string().required(),
     }).required(),
-    address: bodyAddressSchemaValidation,
 })
 
 export const createMyOrderValidation = validation({
     body: bodySchemaValidation,
 })
 
-export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products' | 'total'>>, res: Response<{}, MyResponse>) => {
+export const Purchase = async (req: Request<{}, {}, Pick<MyOrdersSchema, 'info'>>, res: Response<{}, MyResponse>) => {
 
     const order = req.body
     const userId = res.locals.userId
@@ -45,7 +43,7 @@ export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'produc
             }
         });
 
-    if (myOrders === 'Usuário não encontrado id')
+    if (myOrders === 'Usuário não encontrado id' || myOrders === 'Endereço selecionado não encontrado.')
         return res.status(StatusCodes.NOT_FOUND).json({
             errors: {
                 default: myOrders

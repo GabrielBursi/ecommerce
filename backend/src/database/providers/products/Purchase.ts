@@ -1,7 +1,7 @@
 import { somePrice } from "../../../utils";
 import { MyOrdersSchema, User } from "../../models";
 
-export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 'products' | 'total'>) => {
+export const createMyOrder = async (userId: string, order: Pick<MyOrdersSchema, 'info'>) => {
     try {
         const user = await User.findOne({ uuid: userId }).exec();
 
@@ -13,23 +13,18 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
             return 'O carrinho está vazio.'
         }
 
+        const address = user.address.find(ads => ads.isSelected === true)
+
+        if (!address) {
+            return 'Endereço selecionado não encontrado.'
+        }
+
         const productIsAlreadyOrder = user.myOrders.find((product) => product.info.number === order.info.number)
         if (user.myOrders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
             const total = somePrice(user.cart.products)
             const newOrder: MyOrdersSchema[] = [
                 {
-                    address: {
-                        cep: order.address.cep,
-                        identification: order.address.identification,
-                        neighborhood: order.address.neighborhood,
-                        number: order.address.number,
-                        street: order.address.street,
-                        city: order.address.city,
-                        complement: order.address.complement,
-                        isSelected: false,
-                        ref: order.address.ref,
-                        state: order.address.state,
-                    },
+                    address,
                     info: {
                         date: order.info.date,
                         number: order.info.number,
@@ -48,17 +43,7 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
             const newOrder: MyOrdersSchema[] = [
                 ...user.myOrders,
                 {
-                    address: {
-                        cep: order.address.cep,
-                        identification: order.address.identification,
-                        neighborhood: order.address.neighborhood,
-                        number: order.address.number,
-                        street: order.address.street,
-                        city: order.address.city,
-                        isSelected: false,
-                        ref: order.address.ref,
-                        state: order.address.state,
-                    },
+                    address,
                     info: {
                         date: order.info.date,
                         number: order.info.number,
