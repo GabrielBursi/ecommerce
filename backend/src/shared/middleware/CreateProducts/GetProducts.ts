@@ -2,6 +2,8 @@ import { Request, Response, NextFunction, Locals } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { IProductsAPI } from '../../../types';
 import { Api } from '../../services';
+import { ProductsProviders } from '../../../database/providers';
+import { arrayTESTE } from '../../../utils';
 
 interface Body {
     page?: number, 
@@ -24,10 +26,12 @@ export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}
             const productsApi = await Api(queryItem, page);
 
             if (productsApi instanceof Error) {
+                const products = await ProductsProviders.createProduct(arrayTESTE)
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
                         default: productsApi.message
-                    }
+                    },
+                    products
                 });
             }
 
