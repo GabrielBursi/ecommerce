@@ -1,6 +1,6 @@
 import express from "express";
 import { AddressController, ProductsController, UsersController } from "../controllers";
-import { ensureAuthenticated, myAuth, searchId } from "../shared/middleware";
+import { ensureAuthenticated, fetchProducts, formatProductPrice, formatProducts, myAuth, searchId } from "../shared/middleware";
 
 export const router = express.Router({mergeParams: true});
 
@@ -27,4 +27,4 @@ router.delete('/cart/clear', ensureAuthenticated, searchId, ProductsController.C
 router.delete('/cart/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductCartValidation, ProductsController.ExcludeProductCart) //* PRIVATE
 router.delete('/favorite/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductFavoriteValidation, ProductsController.ExcludeProductFavorite) //* PRIVATE
 
-router.post('/products', myAuth, ProductsController.AddProduct) //* PRIVATE
+router.post('/products', myAuth, ProductsController.createProductValidation, fetchProducts, formatProducts, formatProductPrice, ProductsController.AddProduct) //* PRIVATE

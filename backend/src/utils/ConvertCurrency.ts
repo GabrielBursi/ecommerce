@@ -14,7 +14,6 @@ export async function convertCurrency(products: IProducts[], imposto: number = 0
             const priceDolar = typeof product.price === 'number' ? product.price : 1;
             const priceReal = priceDolar * currencyBRL;
             product.price = priceReal + tax;
-            product.price = product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
         }
     } catch (error) {
         return new Error('Não esta convertido o preço. ' + error)

@@ -1,26 +1,45 @@
-import { Request, Response } from "express";
+import { Locals, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import * as yup from 'yup'
 
 import { IProducts } from "../../types";
 import { ProductsProviders } from "../../database/providers";
 import '../../shared/services/TraducoesYup'
-import { convertCurrency, formaProductPrice } from "../../utils";
+import { validation } from "../../shared/middleware";
 
-export const AddProduct = async (req: Request<{}, {}, IProducts[]>, res: Response) => {
+interface Body {
+    query: string[],
+    page?: number,
+    convert?: boolean
+}
 
-    const newProducts = req.body
+const bodySchemaValidation: yup.ObjectSchema<Body> = yup.object({
+    query: yup.array().required(),
+    page: yup.number(),
+    convert: yup.boolean()
+})
 
-    const newProductsWithPriceFormated = formaProductPrice(newProducts)
-    const newProductsWithPriceFormatedAndConverted = await convertCurrency(newProductsWithPriceFormated, 0.6)
+export const createProductValidation = validation({
+    body: bodySchemaValidation
+})
 
-    if (newProductsWithPriceFormatedAndConverted instanceof Error)
+interface MyResponse extends Locals {
+    newProductsWithPriceFormated?: IProducts[]
+}
+
+export const AddProduct = async (req: Request, res: Response<{}, MyResponse>) => {
+
+    const productsFormated = res.locals.newProductsWithPriceFormated
+
+    if(!productsFormated){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: newProductsWithPriceFormatedAndConverted.message
+                default: 'Erro no processo de formatação do produto.'
             }
         });
+    }
 
-    const products = await ProductsProviders.createProduct(newProductsWithPriceFormatedAndConverted)
+    const products = await ProductsProviders.createProduct(productsFormated)
 
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
