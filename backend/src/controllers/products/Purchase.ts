@@ -11,10 +11,12 @@ import '../../shared/services/TraducoesYup'
 import { MyResponse } from "../../types";
 
 const bodySchemaValidation: yup.ObjectSchema<Omit<MyOrdersSchema, 'products' | 'total'>> = yup.object({
-    number: yup.string().required(),
-    status: yup.boolean().default(true).required(),
-    date: yup.string().required(),
-    payment: yup.string().required(),
+    info: yup.object({
+        number: yup.string().required(),
+        status: yup.boolean().default(true).required(),
+        date: yup.string().required(),
+        payment: yup.string().required(),
+    }).required(),
     address: bodyAddressSchemaValidation,
 })
 
@@ -22,7 +24,7 @@ export const createMyOrderValidation = validation({
     body: bodySchemaValidation,
 })
 
-export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products'>>, res: Response<{}, MyResponse>) => {
+export const Purchase = async (req: Request<{}, {}, Omit<MyOrdersSchema, 'products' | 'total'>>, res: Response<{}, MyResponse>) => {
 
     const order = req.body
     const userId = res.locals.userId

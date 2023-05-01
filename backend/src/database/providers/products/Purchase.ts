@@ -1,7 +1,7 @@
 import { somePrice } from "../../../utils";
 import { MyOrdersSchema, User } from "../../models";
 
-export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 'products'>) => {
+export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 'products' | 'total'>) => {
     try {
         const user = await User.findOne({ uuid: userId }).exec();
 
@@ -13,7 +13,7 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
             return 'O carrinho está vazio.'
         }
 
-        const productIsAlreadyOrder = user.myOrders.find((product) => product.number === order.number)
+        const productIsAlreadyOrder = user.myOrders.find((product) => product.info.number === order.info.number)
         if (user.myOrders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
             const total = somePrice(user.cart.products)
             const newOrder: MyOrdersSchema[] = [
@@ -30,12 +30,16 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
                         ref: order.address.ref,
                         state: order.address.state,
                     },
-                    date: order.date,
-                    number: order.number,
-                    payment: order.payment,
-                    status: true,
-                    products: user.cart.products,
-                    total
+                    info: {
+                        date: order.info.date,
+                        number: order.info.number,
+                        payment: order.info.payment,
+                        status: true,
+                    },
+                    products: {
+                        products: user.cart.products,
+                        total
+                    }
                 }
             ];
             user.myOrders = newOrder;
@@ -55,12 +59,16 @@ export const createMyOrder = async (userId: string, order: Omit<MyOrdersSchema, 
                         ref: order.address.ref,
                         state: order.address.state,
                     },
-                    date: order.date,
-                    number: order.number,
-                    payment: order.payment,
-                    status: true,
-                    products: user.cart.products,
-                    total
+                    info: {
+                        date: order.info.date,
+                        number: order.info.number,
+                        payment: order.info.payment,
+                        status: true,
+                    },
+                    products: {
+                        products: user.cart.products,
+                        total
+                    }
                 }
             ];
             user.myOrders = newOrder;

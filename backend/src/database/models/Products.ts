@@ -2,12 +2,16 @@ import { Schema, model } from "mongoose";
 import { IProducts, NewAddress } from "../../types";
 
 export interface MyOrdersSchema {
-    products: IProducts[];
-    total: number;
-    number: string,
-    status: boolean,
-    date: string,
-    payment: string,
+    info: {
+        number: string,
+        status: boolean,
+        date: string,
+        payment: string,
+    },
+    products: {
+        products: IProducts[];
+        total: number;
+    }
     address: NewAddress
 }
 
