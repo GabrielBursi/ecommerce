@@ -1,4 +1,4 @@
-export type ICep = {
+export type IDelivery = {
     name: string,
     rating: number,
     price: number,

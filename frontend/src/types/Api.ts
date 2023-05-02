@@ -10,13 +10,20 @@ export interface IProducts {
     quant?: number
 }
 
+export interface ICartAPI {
+    total: number,
+    products: IProducts[]
+}
+
 export interface IMyOrders {
-    number: string,
-    status: boolean,
-    date: string,
-    payment: string,
-    products: IProducts[],
-    address: IAddress | undefined
+    address: IAddress | undefined,
+    info: {
+        number: string,
+        status: boolean,
+        date: string,
+        payment: string,
+    },
+    products: ICartAPI
 }
 
 export interface TabBarProducts {
