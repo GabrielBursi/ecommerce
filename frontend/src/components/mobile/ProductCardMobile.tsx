@@ -22,7 +22,7 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
-        const productIsInCart = userShop?.cart.find(p => p.uuid === uuid)
+        const productIsInCart = userShop?.cart.products.find(p => p.uuid === uuid)
         if (productIsInCart) {
             setIsAlreadyInCart(true)
         }
@@ -31,7 +31,7 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
             setIsFavorite(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.favorites, userShop?.cart]);
+    }, [userShop?.favorites, userShop?.cart.products]);
 
     return (
         <Card sx={{ width: '100%', height: 220 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} elevation={hover ? 10 : 2}>

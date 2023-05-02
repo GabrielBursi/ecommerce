@@ -25,7 +25,7 @@ export function Actions() {
             <StyledBadge badgeContent={userShop?.favorites.length} color="info">
                 <FavoriteIcon color="primary" fontSize="large" sx={{ cursor: "pointer" }} onClick={() => {navigate('/favorite')}}/>
             </StyledBadge>
-            <StyledBadge badgeContent={userShop?.cart.length} color="info">
+            <StyledBadge badgeContent={userShop?.cart.products.length} color="info">
                 <ShoppingCartIcon color="primary" fontSize="large" sx={{ cursor: "pointer" }} onClick={() => {navigate('/cart')}}/>
             </StyledBadge>
         </Box>

@@ -24,11 +24,16 @@ export function Resume() {
         const orderNumber = Math.floor(Math.random() * 999999)
 
         const newOrder: IMyOrders = {
-            date: new Date(Date.now()).toISOString(),
-            number: `#${orderNumber}`,
-            payment: payment.toUpperCase(),
-            status: true,
-            products: userShop?.cart || [],
+            info:{
+                date: new Date(Date.now()).toISOString(),
+                number: `#${orderNumber}`,
+                payment: payment.toUpperCase(),
+                status: true,
+            },
+            products:{
+                products: userShop?.cart.products || [],
+                total: 0
+            },
             address: userShop?.address.find(address => address.isSelected === true)
         }
         
@@ -38,7 +43,7 @@ export function Resume() {
     }
 
     useEffect(() => {
-        const soma = userShop?.cart.reduce((acumulador, product) => { 
+        const soma = userShop?.cart.products.reduce((acumulador, product) => { 
             if(typeof product.price === "number"){
                 const PricePerQuant = product.price * (product.quant || 1)
                 return acumulador + PricePerQuant
@@ -48,7 +53,7 @@ export function Resume() {
         setSomeProducts(soma || 1)
         setTotal(soma || 1 + frete)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.cart, frete]);
+    }, [userShop?.cart.products, frete]);
 
     return (
         <Box component={Paper} elevation={2} width='25%' height='80%' padding={2} display='flex' flexDirection='column' gap={2}>

@@ -1,5 +1,5 @@
 import { IAddress } from "./Address"
-import { IMyOrders, IProducts } from "./Api"
+import { ICartAPI, IMyOrders, IProducts } from "./Api"
 
 export interface IUser {
     uuid: string,
@@ -17,7 +17,7 @@ export interface DataApiTeste extends IUser {
 export interface IUserShopData {
     address: IAddress[],
     favorites: IProducts[],
-    cart: IProducts[],
+    cart: ICartAPI,
     myOrders: IMyOrders[]
 }
 

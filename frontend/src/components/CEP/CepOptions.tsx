@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "react";
 import { Box, Radio, Rating, Typography } from "@mui/material";
-import { ICep } from "../../types";
+import { IDelivery } from "../../types";
 import { ResumeContext } from "../../contexts";
 
-interface CepProps extends ICep{
+interface CepProps extends IDelivery{
     showInputRadio?: boolean,
-    onchange?: (value: ICep) => void;
+    onchange?: (value: IDelivery) => void;
 }
 
 export function Cep({ days, name, price, rating, selected, showInputRadio = false, onchange }: CepProps) {

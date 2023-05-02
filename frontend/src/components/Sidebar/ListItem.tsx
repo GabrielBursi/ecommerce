@@ -41,14 +41,14 @@ export function ListItem({ icon, label, to, onClick }: ListItemProps) {
             );
         } else if (icon === 'shopping_cart') {
             return (
-                <StyledBadge badgeContent={userShop?.cart.length} color="info">
+                <StyledBadge badgeContent={userShop?.cart.products.length} color="info">
                     <Icon color='primary'>{icon}</Icon>
                 </StyledBadge>
             );
         } else {
             return <Icon color='primary'>{icon}</Icon>;
         }
-    }, [icon, userShop?.favorites.length, userShop?.cart.length]);
+    }, [icon, userShop?.favorites.length, userShop?.cart.products.length]);
 
     return (
         <ListItemButton selected={!!match} onClick={handleClick}>

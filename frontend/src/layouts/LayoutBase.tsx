@@ -82,7 +82,7 @@ export function LayoutBase({ children, showResearchInput = false, showActions = 
                     <Box width='auto' height='50%' display='flex' alignItems='center' justifyContent="center" gap={2}>
                         {isLogged ? 
                             <>
-                                <StyledBadge badgeContent={userShop?.cart.length} color="info">
+                                <StyledBadge badgeContent={userShop?.cart.products.length} color="info">
                                     <ShoppingCartIcon color="primary" sx={{ cursor: "pointer" }} onClick={() => navigate('/cart')}/> 
                                 </StyledBadge>
                                 <Icon onClick={toggleDrawer}>menu</Icon>

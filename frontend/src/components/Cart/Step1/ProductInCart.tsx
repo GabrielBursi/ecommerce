@@ -16,7 +16,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const productInUse = userShop?.cart.filter(product => product.uuid === uuid) || []
+    const productInUse = userShop?.cart.products.filter(product => product.uuid === uuid) || []
     const [product, setProduct] = useState<IProducts>(productInUse[0]);
 
     const match = useMatch('/cart/identification/payment/confirm')

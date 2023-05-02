@@ -138,10 +138,12 @@ function ProductsProvider({ children }: ChildrenProp) {
         if(cart instanceof Error){
             return toast.error(cart.message, { position: 'top-center' })
         }
+
+        const { total, products } = cart
         
         if (userShop) {
             navigate(`/precart/${uuid}`)
-            return setUserShop({ ...userShop, cart })
+            return setUserShop({ ...userShop, cart: { total, products } })
         }
     }
 
@@ -156,7 +158,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             return toast.error(cart.message, { position: 'top-center' })
         }
 
-        const productAltered = cart.filter(product => product.uuid === uuid)
+        const productAltered = cart.products.filter(product => product.uuid === uuid)
         if(userShop){
             setUserShop({
                 ...userShop,
@@ -178,7 +180,7 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
 
         if (userShop) {
-            return setUserShop({ ...userShop, myOrders, cart: [] })
+            return setUserShop({ ...userShop, myOrders, cart: { total: 0, products: [] } })
         }
     }
 
@@ -204,7 +206,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             return toast.error(clearCart.message, { position: 'top-center' })
         }
         if (userShop) {
-            return setUserShop({ ...userShop, cart: [] })
+            return setUserShop({ ...userShop, cart: {total: 0, products: []} })
         }
     }
 

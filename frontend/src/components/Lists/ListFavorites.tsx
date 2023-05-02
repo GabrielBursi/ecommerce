@@ -26,7 +26,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
 
     useEffect(() => {
-        const productIsInCart = userShop?.cart.find(p => p.uuid === uuid)
+        const productIsInCart = userShop?.cart.products.find(p => p.uuid === uuid)
         if (productIsInCart) {
             setIsAlreadyInCart(true)
         }
@@ -35,7 +35,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
             setIsFavorite(true)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.favorites, userShop?.cart]);
+    }, [userShop?.favorites, userShop?.cart.products]);
 
     if(smDown) 
     return <ListFavoriteMobile

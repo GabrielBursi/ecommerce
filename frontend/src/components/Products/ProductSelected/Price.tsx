@@ -20,7 +20,7 @@ export function Price({ product }: PriceProps) {
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
-        const productFavoriteInCart = userShop?.cart.find(p => p.uuid === product.uuid)
+        const productFavoriteInCart = userShop?.cart.products.find(p => p.uuid === product.uuid)
         if (productFavoriteInCart) {
             setIsAlreadyInCart(true)
         }

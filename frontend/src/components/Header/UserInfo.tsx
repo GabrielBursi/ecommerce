@@ -8,8 +8,8 @@ import { ModalAction } from "../Modal";
 
 export function UserInfo (){
 
-    const { isLogged, loginInfo, setFormLoginInfo, setIsLogged } = useContext(LoginContext)
-    const { getUserShopData } = useContext(ShoppingContext)
+    const { isLogged, loginInfo, setFormLoginInfo, setIsLogged, logOut } = useContext(LoginContext)
+    const { getUserShopData, setUserShop } = useContext(ShoppingContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -43,13 +43,6 @@ export function UserInfo (){
         setFormLoginInfo(user.user)
         setIsLogged(true)
 
-    }
-
-    function logOut() {
-        setFormLoginInfo(undefined)
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('email');
-        setIsLogged(false);
     }
 
     if (!isLogged) 
@@ -126,7 +119,7 @@ export function UserInfo (){
                 </Box>
             }
             <ModalAction
-                action={logOut}
+                action={() => logOut(setUserShop)}
                 isOpen={isOpen}
                 question="Tem certeza que deseja sair da conta?"
                 title="SAIR DA CONTA"

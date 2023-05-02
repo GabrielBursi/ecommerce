@@ -21,7 +21,7 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
     const navigate = useNavigate()
 
     useEffect(() => {
-        const productIsInCart = userShop?.cart.find(p => p.uuid === uuid)
+        const productIsInCart = userShop?.cart.products.find(p => p.uuid === uuid)
         if (productIsInCart) {
             setIsAlreadyInCart(true)
         }
@@ -30,7 +30,7 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
             setIsFavorite(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.favorites, userShop?.cart]);
+    }, [userShop?.favorites, userShop?.cart.products]);
 
     return (
         <Box component={Paper} display="flex" flexDirection="column" width='100%' height="200px" padding={2} gap={1} elevation={2}>

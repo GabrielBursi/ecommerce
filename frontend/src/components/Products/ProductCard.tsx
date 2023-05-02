@@ -28,7 +28,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const navigate = useNavigate()
 
     useEffect(() => {
-        const productIsInCart = userShop?.cart.find(p => p.uuid === uuid)
+        const productIsInCart = userShop?.cart.products.find(p => p.uuid === uuid)
         if (productIsInCart) {
             setIsAlreadyInCart(true)
         }
@@ -37,7 +37,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
             setIsFavorite(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.favorites, userShop?.cart]);
+    }, [userShop?.favorites, userShop?.cart.products]);
 
     function seeProduct(){
         navigate(`/product/${uuid}`)

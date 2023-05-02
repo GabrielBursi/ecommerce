@@ -7,7 +7,7 @@ export function CartEmptyRoute({ children }: PrivateRouteChildren) {
 
     const { userShop } = useContext(ShoppingContext)
 
-    if (userShop?.cart.length === 0)
+    if (userShop?.cart.products.length === 0)
         return <Navigate to='/cart_empty' />
 
     return children

@@ -12,28 +12,28 @@ function HeaderContextProvider({ children }: ChildrenProp) {
     
     const productsTabBar: TabBarProducts[] = [
         {
-            name: "hardware",
-            to: '/products/hardware'
-        },
-        {
-            name: "periféricos",
-            to: '/products/perifericos'
-        },
-        {
             name: "computadores",
-            to: '/products/computadores'
+            to: '/products/pc gamer'
         },
         {
             name: "monitores",
-            to: '/products/monitores'
+            to: '/products/monitor gamer'
         },
         {
-            name: "cadeira e mesa",
-            to: '/products/cadeira_e_mesa'
+            name: "cadeiras",
+            to: '/products/cadeira gamer'
+        },
+        {
+            name: "mouse e teclado",
+            to: '/products/mouse e teclado'
+        },
+        {
+            name: "celulares",
+            to: '/products/celular'
         },
         {
             name: "vídeo games",
-            to: '/products/video_games'
+            to: '/products/vídeo games'
         },
         {
             name: "mundo geek",

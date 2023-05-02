@@ -26,7 +26,7 @@ export function PreCartPage() {
             return console.log('teste');
             
         }
-        const arrProductAdded = userShop?.cart.filter(product => product.uuid === uuid);
+        const arrProductAdded = userShop?.cart.products.filter(product => product.uuid === uuid);
         const [productAdded] = arrProductAdded || []
         setProductAddInCart(productAdded)
     // eslint-disable-next-line react-hooks/exhaustive-deps

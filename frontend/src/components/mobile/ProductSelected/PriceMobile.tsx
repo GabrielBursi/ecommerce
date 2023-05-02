@@ -18,12 +18,12 @@ export function PriceMobile({ product }: PriceProps) {
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
-        const productIsInCart = userShop?.cart.find(p => p.uuid === product.uuid)
+        const productIsInCart = userShop?.cart.products.find(p => p.uuid === product.uuid)
         if (productIsInCart) {
             setIsAlreadyInCart(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.cart]);
+    }, [userShop?.cart.products]);
 
     return (
         <Box height='40%' display='flex' flexDirection='column'  gap={2}>

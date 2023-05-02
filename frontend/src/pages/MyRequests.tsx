@@ -24,16 +24,13 @@ export const MyRequests = () => {
                             <Box flex={1} display='flex' flexDirection='column' gap={2}>
                                 {
                                     userShop?.myOrders.sort((a, b) => {
-                                        let x = new Date(b.date).valueOf()
-                                        let y = new Date(a.date).valueOf()
+                                        let x = new Date(b.info.date).valueOf()
+                                        let y = new Date(a.info.date).valueOf()
                                         return x - y
                                     }).map(order => 
                                         <ListMyRequests 
-                                            key={order.number}
-                                            date={order.date} 
-                                            number={order.number}
-                                            payment={order.payment} 
-                                            status={order.status}
+                                            key={order.info.number}
+                                            info={order.info}
                                             products={order.products}
                                             address={order.address}
                                         />

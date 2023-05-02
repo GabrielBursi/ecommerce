@@ -46,7 +46,7 @@ export function ListProductsInCart() {
             </Box>
             <Divider/>
             <Box height='auto' display='flex' flexDirection='column' gap={4}>
-                {userShop?.cart.map(product => (
+                {userShop?.cart.products.map(product => (
                     <ProductInCart 
                         key={product.uuid}
                         uuid={product.uuid}

@@ -6,7 +6,7 @@ import { IMyOrders } from "../../types";
 import { MyRequestsList } from "../Products";
 import { ResumeContext } from "../../contexts";
 
-export const ListMyRequests = ({ date, number, payment, status, products, address }: IMyOrders) => {
+export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
 
     const [showDetails, setShowDetails] = useState(false);
 
@@ -20,15 +20,15 @@ export const ListMyRequests = ({ date, number, payment, status, products, addres
                         NÚMERO DO PEDIDO
                     </Typography>
                     <Typography variant="subtitle1">
-                        {number}
+                        {info.number}
                     </Typography>
                 </Box>
                 <Box width='18%' height='100%' display='flex' alignItems='start' justifyContent='center' flexDirection='column' gap={3}>
                     <Typography variant="h6" fontWeight='bold'>
                         STATUS
                     </Typography>
-                    <Typography variant="subtitle1" color={status ? 'green' : 'error'} fontWeight='bold'>
-                        {status ? 'Concluído' : 'Cancelado'}
+                    <Typography variant="subtitle1" color={info.status ? 'green' : 'error'} fontWeight='bold'>
+                        {info.status ? 'Concluído' : 'Cancelado'}
                     </Typography>
                 </Box>
                 <Box width='18%' height='100%' display='flex' alignItems='start' justifyContent='center' flexDirection='column' gap={3}>
@@ -36,7 +36,7 @@ export const ListMyRequests = ({ date, number, payment, status, products, addres
                         DATA
                     </Typography>
                     <Typography variant="subtitle1">
-                        {new Date(date).toLocaleString().split(',')[0]}
+                        {new Date(info.date).toLocaleString().split(',')[0]}
                     </Typography>
                 </Box>
                 <Box width='18%' height='100%' display='flex' alignItems='start' justifyContent='center' flexDirection='column' gap={3}>
@@ -44,7 +44,7 @@ export const ListMyRequests = ({ date, number, payment, status, products, addres
                         PAGAMENTO
                     </Typography>
                     <Typography variant="subtitle1" color='primary' fontWeight='bold'>
-                        {payment}
+                        {info.payment}
                     </Typography>
                 </Box>
                 <Box flex={1} height='auto' display='flex' alignItems='center' justifyContent='center'>
@@ -76,7 +76,7 @@ export const ListMyRequests = ({ date, number, payment, status, products, addres
                         <Typography variant="subtitle1" fontWeight='bold'>
                             PRODUTO(S)
                         </Typography>
-                        {products.map(product => 
+                        {products.products.map(product => 
                             <MyRequestsList
                                 key={product.uuid}
                                 uuid={product.uuid}
