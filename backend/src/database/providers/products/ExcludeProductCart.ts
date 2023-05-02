@@ -19,7 +19,9 @@ export const excludeProductCart = async (userId: string, productId: string | und
         }
         user.cart.products.splice(indexDeleted, 1)
 
-        const total = somePrice(user.cart.products)
+        const optionDeliverySelected = user.deliveryOptions.filter(opt => opt.selected === true)
+
+        const total = somePrice(user.cart.products, optionDeliverySelected[0])
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: { total, products: user.cart.products } }, { new: true }).exec();
         return updatedUser?.cart;

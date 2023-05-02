@@ -50,7 +50,9 @@ export const addInCart = async (userId: string, productId: string | undefined) =
             user.cart.products[existingProductIndex].quant++
         }
 
-        const total = somePrice(user.cart.products)
+        const optionDeliverySelected = user.deliveryOptions.filter(opt => opt.selected === true)
+
+        const total = somePrice(user.cart.products, optionDeliverySelected[0])
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: {total, products: user.cart.products} }, { new: true }).populate('cart.products').exec();
         return updatedUser?.cart;

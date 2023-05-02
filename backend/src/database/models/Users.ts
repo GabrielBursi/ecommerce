@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IProducts, NewAddress, NewUser } from "../../types";
+import { IDelivery, IProducts, NewAddress, NewUser } from "../../types";
 import { MyOrdersSchema } from "./Products";
 
 export interface UserSchema extends NewUser {
@@ -10,6 +10,7 @@ export interface UserSchema extends NewUser {
         products: IProducts[] | []
     },
     myOrders: MyOrdersSchema[],
+    deliveryOptions: IDelivery[]
 }
 
 const userSchema = new Schema<UserSchema>({
@@ -26,6 +27,7 @@ const userSchema = new Schema<UserSchema>({
         products: { type: Array, required: true, default: [] }
     },
     myOrders: { type: Schema.Types.Mixed, default: [] },
+    deliveryOptions: { type: Schema.Types.Mixed, default: [] }
 });
 
 export const User = model<UserSchema>('User', userSchema);

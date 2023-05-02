@@ -21,7 +21,10 @@ export const createMyOrder = async (userId: string, order: Pick<MyOrdersSchema, 
 
         const productIsAlreadyOrder = user.myOrders.find((product) => product.info.number === order.info.number)
         if (user.myOrders.length === 0) { //*QUANDO O CARRINHO ESTÁ VAZIO (NULL)
-            const total = somePrice(user.cart.products)
+
+            const optionDeliverySelected = user.deliveryOptions.filter(opt => opt.selected === true)
+            const total = somePrice(user.cart.products, optionDeliverySelected[0])
+
             const newOrder: MyOrdersSchema[] = [
                 {
                     address,
@@ -39,7 +42,10 @@ export const createMyOrder = async (userId: string, order: Pick<MyOrdersSchema, 
             ];
             user.myOrders = newOrder;
         } else if (user.myOrders.length > 0 && !productIsAlreadyOrder) { //*QUANDO O CARRINHO NÃO ESTÁ VAZIO (NULL) E O PRODUTO ADICIONADO NÃO ESTÁ NO CARRINHO
-            const total = somePrice(user.cart.products)
+
+            const optionDeliverySelected = user.deliveryOptions.filter(opt => opt.selected === true)
+            const total = somePrice(user.cart.products, optionDeliverySelected[0])
+
             const newOrder: MyOrdersSchema[] = [
                 ...user.myOrders,
                 {

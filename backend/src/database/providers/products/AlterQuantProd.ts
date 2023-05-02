@@ -30,7 +30,9 @@ export const alterQuant = async (userId: string, productId: string | undefined, 
                 break;
         }
         
-        const total = somePrice(user.cart.products)
+        const optionDeliverySelected = user.deliveryOptions.filter(opt => opt.selected === true)
+
+        const total = somePrice(user.cart.products, optionDeliverySelected[0])
 
         const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { cart: { total, products: user.cart.products } }, { new: true }).exec();
         return updatedUser?.cart;
