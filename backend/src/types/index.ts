@@ -39,6 +39,10 @@ export interface IProducts {
     quant: number
 }
 
+export interface ProductsSchema extends IProducts {
+    category: string
+}
+
 export interface IProductsAPI {
     price: {
         current_price: number
@@ -63,4 +67,13 @@ export interface IDelivery {
     price: number,
     days: number,
     selected?: boolean,
+}
+
+export interface IFilterProducts {
+    skip: number,
+    exibir: number,
+    price: {
+        min: number,
+        max: number
+    }
 }

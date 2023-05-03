@@ -8,7 +8,8 @@ import { arrayTESTE } from '../../../utils';
 interface Body {
     page?: number, 
     query: string[],
-    convert?: boolean
+    convert?: boolean,
+    category: string
 }
 
 interface MyResponse extends Locals {
@@ -17,7 +18,7 @@ interface MyResponse extends Locals {
 }
 
 export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}, MyResponse>, next: NextFunction) => {
-    const { page, query, convert = false } = req.body;
+    const { page, query, convert = false, category } = req.body;
 
     const items: IProductsAPI[] = [];
 
@@ -26,7 +27,7 @@ export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}
             const productsApi = await Api(queryItem, page);
 
             if (productsApi instanceof Error) {
-                const products = await ProductsProviders.createProduct(arrayTESTE)
+                const products = await ProductsProviders.createProduct(arrayTESTE, category)
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
                         default: productsApi.message

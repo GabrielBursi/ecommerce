@@ -9,12 +9,14 @@ import { validation } from "../../shared/middleware";
 
 interface Body {
     query: string[],
+    category: string,
     page?: number,
     convert?: boolean
 }
 
 const bodySchemaValidation: yup.ObjectSchema<Body> = yup.object({
     query: yup.array().required(),
+    category: yup.string().required(),
     page: yup.number(),
     convert: yup.boolean()
 })
@@ -27,9 +29,10 @@ interface MyResponse extends Locals {
     newProductsWithPriceFormated?: IProducts[]
 }
 
-export const AddProduct = async (req: Request, res: Response<{}, MyResponse>) => {
+export const AddProduct = async (req: Request<{}, {}, Body>, res: Response<{}, MyResponse>) => {
 
     const productsFormated = res.locals.newProductsWithPriceFormated
+    const { category } = req.body
 
     if(!productsFormated){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -39,7 +42,7 @@ export const AddProduct = async (req: Request, res: Response<{}, MyResponse>) =>
         });
     }
 
-    const products = await ProductsProviders.createProduct(productsFormated)
+    const products = await ProductsProviders.createProduct(productsFormated, category)
 
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
