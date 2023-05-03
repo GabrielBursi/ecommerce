@@ -17,14 +17,14 @@ export const create = async (user: NewUser): Promise<NewUser | Error | string> =
             {
                 name: "Entrega Padrão",
                 rating: 4.5,
-                price: 10.59,
+                price: 14.59,
                 days: 7,
                 selected: true
             },
             {
                 name: "Entrega Expressa",
                 rating: 4.9,
-                price: 20.99,
+                price: 22.99,
                 days: 3,
                 selected: false
             },
@@ -38,7 +38,7 @@ export const create = async (user: NewUser): Promise<NewUser | Error | string> =
             {
                 name: "Entrega Econômica",
                 rating: 4.2,
-                price: 7.89,
+                price: 11.99,
                 days: 14,
                 selected: false
             }

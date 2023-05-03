@@ -28,7 +28,7 @@ router.delete('/cart/remove/:id', ensureAuthenticated, searchId, ProductsControl
 router.delete('/favorite/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductFavoriteValidation, ProductsController.ExcludeProductFavorite) //* PRIVATE
 
 //!DELIVERY
-router.get('/delivery', ensureAuthenticated, searchId, DeliveryController.SelectDeliveryOption)
+router.get('/delivery', ensureAuthenticated, searchId, DeliveryController.GetAllDeliveryOptions)
 router.patch('/delivery/select', ensureAuthenticated, searchId, DeliveryController.selectDeliveryValidation, DeliveryController.SelectDeliveryOption)
 
 router.post('/products', myAuth, ProductsController.createProductValidation, fetchProducts, formatProducts, formatProductPrice, ProductsController.AddProduct) //* PRIVATE
