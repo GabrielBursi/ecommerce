@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Box, Button, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
@@ -9,10 +9,15 @@ import { Carousel, DepartmentCard } from "../components";
 export function HomePage() {
 
     const { isLogged, setIsLogged } = useContext(LoginContext)
-    const { productsDepartments } = useContext(ProductsContext)
+    const { productsDepartments, getAllProducts } = useContext(ProductsContext)
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+
+    useEffect(() => {
+        getAllProducts()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <LayoutBase showResearchInput showUserInfo showBanner showTabBar showActions = {isLogged}>

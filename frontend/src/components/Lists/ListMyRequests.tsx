@@ -1,16 +1,27 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { IMyOrders } from "../../types";
+import { IDelivery, IMyOrders } from "../../types";
 import { MyRequestsList } from "../Products";
-import { ResumeContext } from "../../contexts";
+import { ResumeContext, ShoppingContext } from "../../contexts";
 
 export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
 
     const [showDetails, setShowDetails] = useState(false);
+    const [optionSelected, setOptionSelected] = useState<IDelivery>();
+    const [total, setTotal] = useState<number>();
 
-    const { frete, someProducts, total } = useContext(ResumeContext)
+    const { userShop } = useContext(ShoppingContext)
+    const { deliveryOptions } = useContext(ResumeContext)
+
+    useEffect(() => {
+        const selected = deliveryOptions?.find(opt => opt.selected === true)
+        setOptionSelected(selected)
+        const totalRequest = userShop?.myOrders.find(item => item.info.number === info.number)
+        setTotal(totalRequest?.products.total)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Box component={Paper} display='flex' alignItems='center' flexDirection='column' width='100%' height='auto' padding={4} gap={2} elevation={2}>
@@ -94,7 +105,7 @@ export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
                                 TOTAL PRODUTO(S)
                             </Typography>
                             <Typography variant="subtitle1" fontWeight='bold' color='primary'>
-                                {someProducts.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                {((total || 1) - (optionSelected?.price || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </Typography>
                         </Box>
                         <Box width='100%' padding={2} display='flex' alignItems='center' justifyContent='space-between'>
@@ -102,7 +113,7 @@ export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
                                 FRETE
                             </Typography>
                             <Typography variant="subtitle1" fontWeight='bold' color='primary'>
-                                {frete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                {optionSelected?.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </Typography>
                         </Box>
                         <Box width='100%' padding={2} bgcolor='#fafafb' display='flex' alignItems='center' justifyContent='space-between'>
@@ -110,7 +121,7 @@ export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
                                 TOTAL DO PEDIDO
                             </Typography>
                             <Typography variant="subtitle1" fontWeight='bold' color='primary'>
-                                {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                {total?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </Typography>
                         </Box>
                     </Box>

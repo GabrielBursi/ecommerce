@@ -1,27 +1,22 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { Box, Divider, Typography } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import { Cep } from "../../CEP";
 import { ResumeContext } from "../../../contexts";
-import { IDelivery } from "../../../types";
 
 export function ListOptionsCep() {
 
-    const { cepOptions, setCepOptions } = useContext(ResumeContext)
+    const { getAllDeliveryOptions, deliveryOptions } = useContext(ResumeContext)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setSelectedOption] = useState<IDelivery>();
+    useEffect(() => {
+        getOptions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    function handleOptionSelect(optionSelected: IDelivery) {
-        setSelectedOption(optionSelected);
-
-        const updatedOptions = cepOptions.map((option) =>
-            option.name === optionSelected.name ? { ...option, selected: true } : { ...option, selected: false }
-        );
-
-        setCepOptions(updatedOptions);
+    async function getOptions(){
+        await getAllDeliveryOptions()
     }
 
     return (
@@ -34,7 +29,7 @@ export function ListOptionsCep() {
                         FRETE:
                     </Typography>
                 </Box>
-                {cepOptions.map(option => (
+                {deliveryOptions && deliveryOptions.map(option => (
                     <Cep
                         key={option.name}
                         days={option.days}
@@ -42,7 +37,6 @@ export function ListOptionsCep() {
                         price={option.price}
                         rating={option.rating}
                         selected={option.selected}
-                        onchange={handleOptionSelect}
                         showInputRadio={true}
                     />
                 ))

@@ -1,24 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Box, Radio, Rating, Typography } from "@mui/material";
 import { IDelivery } from "../../types";
 import { ResumeContext } from "../../contexts";
 
 interface CepProps extends IDelivery{
     showInputRadio?: boolean,
-    onchange?: (value: IDelivery) => void;
 }
 
-export function Cep({ days, name, price, rating, selected, showInputRadio = false, onchange }: CepProps) {
+export function Cep({ days, name, price, rating, selected, showInputRadio = false }: CepProps) {
 
-    const { cepOptions, setFrete } = useContext(ResumeContext)
-
-    useEffect(() => {
-        const nameFindArr = cepOptions.filter(option => option.selected === true)
-        const [ nameFind ] = nameFindArr
-        setFrete(nameFind.price)
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected]);
+    const { selectDeliveryOptions } = useContext(ResumeContext)
 
     return (
         <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -27,7 +18,7 @@ export function Cep({ days, name, price, rating, selected, showInputRadio = fals
                     <Box display='flex' height='100%' alignItems='start' justifyContent='center'>
                         <Radio
                             checked={selected}
-                            onChange={(_e, _c) => {onchange && onchange({days, name, price, selected, rating})}}
+                            onChange={async (_e, _c) => await selectDeliveryOptions(name)}
                             size="small"
                             value={name}
                             name="radio-buttons"

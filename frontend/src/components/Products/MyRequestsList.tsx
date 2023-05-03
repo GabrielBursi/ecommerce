@@ -33,7 +33,12 @@ export const MyRequestsList = ({ img, name, price, quant }: IProducts) => {
                     </Typography>
                 </Box>
             </Box>
-            <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center'>
+            <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column'>
+                {quant && quant > 1 &&
+                    <Typography color='black' variant='body2' fontWeight='light'>
+                        {quant}x {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </Typography>
+                }
                 <Typography color='primary' variant='h5' fontWeight='bold'>
                     {(Number(price) * (quant || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>

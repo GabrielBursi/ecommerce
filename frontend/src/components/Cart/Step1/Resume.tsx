@@ -4,56 +4,44 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import DescriptionIcon from '@mui/icons-material/Description';
 import ReCAPTCHA from "react-google-recaptcha";
 import { ProductsContext, ResumeContext, ShoppingContext } from "../../../contexts";
-import { IMyOrders } from "../../../types";
+import { IDelivery, IMyOrders } from "../../../types";
 
 export function Resume() {
 
     const { userShop } = useContext(ShoppingContext)
-    const { frete, setSomeProducts, setTotal, someProducts, total, payment, setOrderNumber } = useContext(ResumeContext)
+    const { payment, setOrderNumber, deliveryOptions } = useContext(ResumeContext)
     const { purchase } = useContext(ProductsContext)
 
     const [reCaptcha, setReCaptcha] = useState(true);
+    const [optionSelected, setOptionSelected] = useState<IDelivery>();
 
     const navigate = useNavigate()
 
     const match = useMatch('/cart/identification/payment/confirm')
     const isConfirmationPage = match?.pathname === '/cart/identification/payment/confirm'
 
+    useEffect(() => {
+        const selected = deliveryOptions?.find(opt => opt.selected === true)
+        setOptionSelected(selected)
+    }, [deliveryOptions]);
+
     async function finishPurchase(){
 
         const orderNumber = Math.floor(Math.random() * 999999)
 
-        const newOrder: IMyOrders = {
-            info:{
+        const newOrder: Pick<IMyOrders, 'info'> = {
+            info: {
                 date: new Date(Date.now()).toISOString(),
                 number: `#${orderNumber}`,
                 payment: payment.toUpperCase(),
                 status: true,
-            },
-            products:{
-                products: userShop?.cart.products || [],
-                total: 0
-            },
-            address: userShop?.address.find(address => address.isSelected === true)
+            }
         }
         
         setOrderNumber(orderNumber);
         await purchase(newOrder)
         navigate('/cart/identification/payment/confirm/done')
     }
-
-    useEffect(() => {
-        const soma = userShop?.cart.products.reduce((acumulador, product) => { 
-            if(typeof product.price === "number"){
-                const PricePerQuant = product.price * (product.quant || 1)
-                return acumulador + PricePerQuant
-            }
-            return 0
-        }, 0);
-        setSomeProducts(soma || 1)
-        setTotal(soma || 1 + frete)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.cart.products, frete]);
 
     return (
         <Box component={Paper} elevation={2} width='25%' height='80%' padding={2} display='flex' flexDirection='column' gap={2}>
@@ -69,7 +57,7 @@ export function Resume() {
                         Valor dos Produtos: 
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        {someProducts.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        {( (userShop?.cart.total || 1) - (optionSelected?.price || 1) ).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Divider />
@@ -78,7 +66,7 @@ export function Resume() {
                         Frete:
                     </Typography>
                     <Typography variant="h6" fontWeight='bold'>
-                        {frete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        {optionSelected?.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
                 <Box display='flex' bgcolor='#e5fff1' flexDirection='column' justifyContent='center' alignItems='center' height='100%' paddingX={2}>
@@ -91,7 +79,7 @@ export function Resume() {
                         Valor Total:
                     </Typography>
                     <Typography variant="h4" fontWeight='bold'>
-                        {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        {userShop?.cart.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>
                 </Box>
             </Box>
@@ -114,7 +102,7 @@ export function Resume() {
                         size="large" 
                         sx={{ fontSize: '1.2rem' }} 
                         disabled={isConfirmationPage ?  reCaptcha : userShop?.address.length === 0} 
-                        onClick={() => isConfirmationPage ? finishPurchase() : navigate('/cart/identification')}
+                        onClick={async () => isConfirmationPage ? await finishPurchase() : navigate('/cart/identification')}
                     >
                         {isConfirmationPage ? 'FINALIZAR' : 'IR PARA O PAGAMENTO'}
                     </Button>

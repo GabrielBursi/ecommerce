@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
 import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
 import { ServicesProducts } from "../services/api";
-import { convertCurrency, formaProductPrice } from "../services/utils";
 import { LoginContext } from "./LoginContext";
 import { ShoppingContext } from "./ShoppingContext";
 
@@ -17,7 +16,7 @@ interface ProductsContextData {
     getProductById: (uuid: string, setProduct: (value: IProducts) => void) => Promise<void | Id>
     addProductInCart: (uuid: string, isAlreadyInCart: boolean) => Promise<void | Id>,
     alterQuantProduct: (uuid: string, action: '+' | '-', setProduct: (value: IProducts) => void) => Promise<void | Id>,
-    purchase: (order: IMyOrders) => Promise<void | Id>,
+    purchase: (order: Pick<IMyOrders, 'info'>) => Promise<void | Id>,
     removeProductInCart: (uuid: string) => Promise<void | Id>,
     clearCart: () => Promise<void | Id>,
     addProductInFavorited: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
@@ -98,21 +97,14 @@ function ProductsProvider({ children }: ChildrenProp) {
         },
     ]
 
-    async function getAllProducts(convert = false) {
+    async function getAllProducts() {
         const products = await ServicesProducts.getAll()
 
         if (products instanceof Error) {
             return toast.error(products.message, {position: 'top-center'})
         }
         
-        const productsFormated = formaProductPrice(products)
-
-        if(convert){
-            const productsFormatedAndConverted = await convertCurrency(productsFormated)
-            setProducts(productsFormatedAndConverted)
-        }else{
-            setProducts(productsFormated)
-        }
+        setProducts(products)
 
     }
 
@@ -168,7 +160,7 @@ function ProductsProvider({ children }: ChildrenProp) {
         return setProduct(productAltered[0])
     }
 
-    async function purchase(order: IMyOrders) {
+    async function purchase(order: Pick<IMyOrders, 'info'>) {
         if (!isLogged) {
             return navigate('/login')
         }

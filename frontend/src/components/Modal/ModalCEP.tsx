@@ -34,7 +34,7 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
 
     const [showOptions, setShowOptions] = useState(true);
 
-    const { cepOptions } = useContext(ResumeContext)
+    const { deliveryOptions } = useContext(ResumeContext)
 
     function showCepOptions() {
         if (cep.length >= 9) {
@@ -88,7 +88,7 @@ export function ModalCEP({ isOpen, setIsOpen, cep, setCep }: ModalProps) {
                 </Box>
                 <Box display='flex' flexDirection='column' gap={1}>
                     {showOptions && 
-                        cepOptions.map(option => (
+                        deliveryOptions?.map(option => (
                             <Cep days={option.days} name={option.name} price={option.price} rating={option.rating} key={option.name}/>
                         ))
                     }

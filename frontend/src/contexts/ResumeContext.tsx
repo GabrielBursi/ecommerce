@@ -1,15 +1,13 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { Id, toast } from "react-toastify";
 import { IDelivery, ChildrenProp, ICreditCard} from "../types";
+import { DeliveryServices } from "../services/api";
+import { ShoppingContext } from "./ShoppingContext";
 
 interface ResumeContextData {
-    frete: number,
-    setFrete: (value: number) => void,
-    cepOptions: IDelivery[],
-    setCepOptions: (value: IDelivery[]) => void,
-    total: number,
-    setTotal: (value: number) => void,
-    someProducts: number, 
-    setSomeProducts: (value: number) => void,
+    getAllDeliveryOptions: () => Promise<Id | undefined>,
+    selectDeliveryOptions: (name: string) => Promise<Id | undefined>,
+    deliveryOptions: IDelivery[] | undefined,
     payment: string, 
     setPayment: (value: string) => void,
     creditCardData: ICreditCard| undefined, 
@@ -22,35 +20,41 @@ export const ResumeContext = createContext({} as ResumeContextData)
 
 export function ResumeContextProvider({children}: ChildrenProp){
 
-    const cepOptionsDefault: IDelivery[] = [
-        { name: 'Rede Sul', rating: 5, price: 22.69, days: 4, selected: true },
-        { name: 'Sedex', rating: 4.5, price: 23.12, days: 6, selected: false },
-        { name: 'GFL', rating: 5, price: 30.24, days: 9, selected: false },
-        { name: 'Correios PAC', rating: 4.5, price: 47.49, days: 5, selected: false },
-    ]
+    const { setUserShop, userShop } = useContext(ShoppingContext)
 
-    const [cepOptions, setCepOptions] = useState<IDelivery[]>(cepOptionsDefault);
-
-    const [frete, setFrete] = useState<number>(0);
-
-    const [total, setTotal] = useState<number>(0);
-    const [someProducts, setSomeProducts] = useState<number>(0);
-
+    const [deliveryOptions, setDeliveryOptions] = useState<IDelivery[]>();
     const [payment, setPayment] = useState<string>('');
     const [creditCardData, setCreditCardData] = useState<ICreditCard>();
-
     const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
+
+    async function getAllDeliveryOptions() {
+        const options = await DeliveryServices.getAll()
+
+        if(options instanceof Error){
+            return toast.error(options.message, {position: 'top-center'})
+        }
+        setDeliveryOptions(options)
+    }
+
+    async function selectDeliveryOptions(name: string) {
+        const options = await DeliveryServices.select(name)
+
+        if (options instanceof Error) {
+            return toast.error(options.message, { position: 'top-center' })
+        }
+
+        setDeliveryOptions(options.options)
+        if(userShop){
+            setUserShop({...userShop, cart: { ...userShop?.cart, total: options.total }})
+        }
+    }
+    
     return (
         <ResumeContext.Provider value={{
-            cepOptions,
-            setCepOptions,
-            frete,
-            setFrete,
-            total, 
-            setTotal,
-            someProducts, 
-            setSomeProducts,
+            deliveryOptions,
+            getAllDeliveryOptions,
+            selectDeliveryOptions,
             payment, 
             setPayment,
             creditCardData, 

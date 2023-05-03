@@ -90,7 +90,12 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                     </Button>
                 }
             </Box>
-            <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center'>
+            <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column'>
+                { product.quant && product.quant > 1 &&
+                    <Typography color='black' variant='body2' fontWeight='light'>
+                        {product.quant}x {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </Typography>
+                }
                 <Typography color='primary' variant='h5' fontWeight='bold'>
                     {(Number(price) * (product.quant || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Typography>

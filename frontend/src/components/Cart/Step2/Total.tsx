@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { Box, Typography } from '@mui/material';
-import { ResumeContext } from '../../../contexts';
+import { ShoppingContext } from '../../../contexts';
 
 export function Total() {
 
-    const { total } = useContext(ResumeContext)
+    const { userShop } = useContext(ShoppingContext)
 
     return (
         <Box height='25%' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
@@ -12,7 +12,7 @@ export function Total() {
                 Total do pedido:
             </Typography>
             <Typography color='primary' fontWeight='bold' variant="h3">
-                {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                {userShop?.cart.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </Typography>
         </Box>
     );

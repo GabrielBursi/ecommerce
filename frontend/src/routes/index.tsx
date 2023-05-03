@@ -1,19 +1,9 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { ProductsContext } from "../contexts";
 import { CartPage, FavoritePage, HomePage, Login, PreCartPage, ListProductsPage, ProductPage, IndentificationPage, PaymentPage, ConfirmPage, DonePage, CartEmptyPage, MyRequests } from "../pages";
 import { CartEmptyRoute, PrivateRoute } from "./private";
 
 export function RoutesApp() {
-
-    const { getAllProducts } = useContext(ProductsContext)
-
-    useEffect(() => {
-        getAllProducts()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />
