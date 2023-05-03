@@ -31,9 +31,11 @@ export function ActionsProduct({ product }: ActionsProductProps) {
         const productIsFavorite = userShop?.favorites.find(p => p.uuid === product.uuid)
         if(productIsFavorite){
             setIsFavorite(true)
+        }else{
+            setIsFavorite(false)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userShop?.favorites]);
+    }, [userShop?.favorites, product.uuid]);
 
     return (
         <Box width='100%' height='10%' display='flex' justifyContent='space-between' gap={1}>

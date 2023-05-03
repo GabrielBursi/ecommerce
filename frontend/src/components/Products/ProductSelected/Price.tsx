@@ -23,9 +23,11 @@ export function Price({ product }: PriceProps) {
         const productFavoriteInCart = userShop?.cart.products.find(p => p.uuid === product.uuid)
         if (productFavoriteInCart) {
             setIsAlreadyInCart(true)
+        }else{
+            setIsAlreadyInCart(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [product.uuid]);
 
 
     return (
