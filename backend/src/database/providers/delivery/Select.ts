@@ -26,7 +26,11 @@ export const select = async (userId: string, name: string) => {
         const total = somePrice(user.cart.products, selectedOption)
 
         const optionsUpdated = await User.findOneAndUpdate({ uuid: userId }, { deliveryOptions, cart: { ...user.cart, total } }, { new: true }).exec()
-        return optionsUpdated?.deliveryOptions
+        const totalWithOptions = {
+            total: optionsUpdated?.cart.total,
+            options: optionsUpdated?.deliveryOptions
+        }
+        return totalWithOptions
     } catch (error) {
         return new Error('Erro ao consultar o registro');
     }
