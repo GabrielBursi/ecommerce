@@ -17,6 +17,7 @@ router.patch('/address/select', ensureAuthenticated, searchId, AddressController
 router.patch('/address/edit/:cep', ensureAuthenticated, searchId, AddressController.editAddressValidation, AddressController.EditAddress) //* PRIVATE
 
 //!PRODUCTS
+router.get('/products/:category', ProductsController.filterProductValidation, ProductsController.GetProductsByCategory)
 router.get('/products', ProductsController.GetAllProducts)
 router.get('/products/:id', ProductsController.getByIdValidation, ProductsController.GetProductById)
 router.post('/favorites/add/:id', ensureAuthenticated, searchId, ProductsController.addProductInFavoriteValidation, ProductsController.AddFavorite) //* PRIVATE
