@@ -17,7 +17,7 @@ export function Api(item: string): Promise<AxiosResponse<any, any>>{
 }   
 
 export const MyApi = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: process.env.REACT_APP_BACKEND_URL,
 })
 
 MyApi.interceptors.request.use(
