@@ -1,8 +1,8 @@
 import cors from 'cors'
 import express from 'express'
-import { router } from './routes'
 import dotenv from 'dotenv'
-import { connectToDatabase } from './database'
+import { router } from './src/routes'
+import { connectToDatabase } from './src/database'
 const app = express()
 
 dotenv.config()
