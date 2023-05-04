@@ -2,12 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./build/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm ./src/index.ts",
     "start": "node ./build/index.js",
     "build": "tsc",
-    "postinstall": "tsc"
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
