@@ -46,7 +46,7 @@ export function Carousel({showMiniCard = false}: CarouselProps) {
                     height: '100%'
                 }}
             >
-                {products.map(product => (
+                {products && products.map(product => (
                     <Box
                         key={product.uuid}
                         sx={{
