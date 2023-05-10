@@ -67,7 +67,9 @@ export const createMyOrder = async (userId: string, order: Pick<MyOrdersSchema, 
             return 'O numero de pedido já existe.'
         }
 
-        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { myOrders: user.myOrders, cart: { total: 0, products: [] } }, { new: true }).populate('myOrders.orders').exec();
+        const optionDeliverySelected = user.deliveryOptions.find(opt => opt.selected === true)
+
+        const updatedUser = await User.findOneAndUpdate({ uuid: userId }, { myOrders: user.myOrders, cart: { total: optionDeliverySelected?.price, products: [] } }, { new: true }).populate('myOrders.orders').exec();
         return updatedUser?.myOrders;
 
     } catch (error) {
