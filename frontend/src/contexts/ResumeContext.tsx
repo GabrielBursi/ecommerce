@@ -13,7 +13,9 @@ interface ResumeContextData {
     creditCardData: ICreditCard| undefined, 
     setCreditCardData: (value: ICreditCard) => void,
     orderNumber: number | null, 
-    setOrderNumber: (value: number) => void
+    setOrderNumber: (value: number) => void,
+    isLoadingGetDeliveryOptions: boolean,
+    isLoadingSelectDeliveryOptions: boolean,
 }
 
 export const ResumeContext = createContext({} as ResumeContextData)
@@ -26,10 +28,13 @@ export function ResumeContextProvider({children}: ChildrenProp){
     const [payment, setPayment] = useState<string>('');
     const [creditCardData, setCreditCardData] = useState<ICreditCard>();
     const [orderNumber, setOrderNumber] = useState<number | null>(null);
-
+    const [isLoadingGetDeliveryOptions, setIsLoadingGetDeliveryOptions] = useState(false);
+    const [isLoadingSelectDeliveryOptions, setIsLoadingSelectDeliveryOptions] = useState(false);
 
     async function getAllDeliveryOptions() {
+        setIsLoadingGetDeliveryOptions(true)
         const options = await DeliveryServices.getAll()
+        setIsLoadingGetDeliveryOptions(false)
 
         if(options instanceof Error){
             return toast.error(options.message, {position: 'top-center'})
@@ -38,7 +43,9 @@ export function ResumeContextProvider({children}: ChildrenProp){
     }
 
     async function selectDeliveryOptions(name: string) {
+        setIsLoadingSelectDeliveryOptions(true)
         const options = await DeliveryServices.select(name)
+        setIsLoadingSelectDeliveryOptions(false)
 
         if (options instanceof Error) {
             return toast.error(options.message, { position: 'top-center' })
@@ -60,7 +67,9 @@ export function ResumeContextProvider({children}: ChildrenProp){
             creditCardData, 
             setCreditCardData,
             orderNumber, 
-            setOrderNumber
+            setOrderNumber,
+            isLoadingGetDeliveryOptions,
+            isLoadingSelectDeliveryOptions
         }}>
             {children}
         </ResumeContext.Provider>

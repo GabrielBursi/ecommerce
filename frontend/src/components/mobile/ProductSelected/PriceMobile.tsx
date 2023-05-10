@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { IProducts } from "../../../types";
@@ -14,7 +14,7 @@ export function PriceMobile({ product }: PriceProps) {
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState(false);
 
-    const { addProductInCart } = useContext(ProductsContext)
+    const { addProductInCart, isLoadingAddProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
@@ -41,13 +41,14 @@ export function PriceMobile({ product }: PriceProps) {
                         variant="contained"
                         fullWidth
                         size="large"
-                        startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
+                        startIcon={isLoadingAddProduct ? '' : isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: '1.2rem'}}
-                        onClick={() => {
-                            addProductInCart(product.uuid, isAlreadyInCart)
+                        disabled={isLoadingAddProduct}
+                        onClick={async () => {
+                            await addProductInCart(product.uuid, isAlreadyInCart)
                         }}
                     >
-                        {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
+                        {isLoadingAddProduct ? <CircularProgress color="primary" /> : isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                     </Button>
                 </Box>
             </Box>

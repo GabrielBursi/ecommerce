@@ -19,8 +19,13 @@ interface ProductsContextData {
     purchase: (order: Pick<IMyOrders, 'info'>) => Promise<void | Id>,
     removeProductInCart: (uuid: string) => Promise<void | Id>,
     clearCart: () => Promise<void | Id>,
-    addProductInFavorited: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
+    addProductInFavorites: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
     removeProductFavorited: (uuid: string, setIsFavorite: (value: boolean) => void) => Promise<void | Id>,
+
+    isLoadingQuantProduct: boolean,
+    isLoadingRemoveProduct: boolean,
+    isLoadingPurchase: boolean,
+    isLoadingAddProduct: boolean
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -28,6 +33,10 @@ const ProductsContext = createContext({} as ProductsContextData)
 function ProductsProvider({ children }: ChildrenProp) {
 
     const [products, setProducts] = useState<IProducts[]>([]); 
+    const [isLoadingQuantProduct, setIsLoadingQuantProduct] = useState(false);
+    const [isLoadingRemoveProduct, setIsLoadingRemoveProduct] = useState(false);
+    const [isLoadingAddProduct, setIsLoadingAddProduct] = useState(false);
+    const [isLoadingPurchase, setIsLoadingPurchase] = useState(false);
 
     const { isLogged } = useContext(LoginContext)
     const { setUserShop, userShop } = useContext(ShoppingContext)
@@ -37,7 +46,7 @@ function ProductsProvider({ children }: ChildrenProp) {
     const productsDepartments: DepartmentCardProps[] = [
         {
             name: 'hardware',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/HARDWARE_1648493892.png&w=384&h=280&q=70',
+            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/HARDWARE_1683123741.png&w=384&h=280&q=70',
             to: '/products/hardware'
         },
         {
@@ -125,7 +134,9 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (isAlreadyInCart)
             return navigate('/cart')
 
+        setIsLoadingAddProduct(true)
         const cart = await ServicesProducts.addInCart(uuid)
+        setIsLoadingAddProduct(false)
 
         if(cart instanceof Error){
             return toast.error(cart.message, { position: 'top-center' })
@@ -143,8 +154,9 @@ function ProductsProvider({ children }: ChildrenProp) {
         if(!isLogged){
             return navigate('/login')
         }
-
+        setIsLoadingQuantProduct(true)
         const cart = await ServicesProducts.alterQuant(uuid, action)
+        setIsLoadingQuantProduct(false)
 
         if (cart instanceof Error) {
             return toast.error(cart.message, { position: 'top-center' })
@@ -165,7 +177,9 @@ function ProductsProvider({ children }: ChildrenProp) {
             return navigate('/login')
         }
 
+        setIsLoadingPurchase(true)
         const myOrders = await ServicesProducts.purchase(order)
+        setIsLoadingPurchase(false)
 
         if (myOrders instanceof Error) {
             return toast.error(myOrders.message, { position: 'top-center' })
@@ -180,7 +194,9 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (!isLogged)
             return navigate('/login')
 
+        setIsLoadingRemoveProduct(true)
         const cart = await ServicesProducts.excludeProductInCart(uuid)
+        setIsLoadingRemoveProduct(false)
 
         if (cart instanceof Error) {
             return toast.error(cart.message, { position: 'top-center' })
@@ -192,7 +208,9 @@ function ProductsProvider({ children }: ChildrenProp) {
     }
 
     async function clearCart() {
+        setIsLoadingRemoveProduct(true)
         const clearCart = await ServicesProducts.clear()
+        setIsLoadingRemoveProduct(false)
 
         if (clearCart instanceof Error) {
             return toast.error(clearCart.message, { position: 'top-center' })
@@ -202,12 +220,14 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
     }
 
-    async function addProductInFavorited(uuid: string, setIsFavorite: (value: boolean) => void) {
+    async function addProductInFavorites(uuid: string, setIsFavorite: (value: boolean) => void) {
 
         if (!isLogged)
             return navigate('/login')
 
+        setIsLoadingAddProduct(true)
         const favorites = await ServicesProducts.addInFavorites(uuid)
+        setIsLoadingAddProduct(false)
 
         if (favorites instanceof Error) {
             return toast.error(favorites.message, { position: 'top-center' })
@@ -223,7 +243,9 @@ function ProductsProvider({ children }: ChildrenProp) {
         if (!isLogged)
             return navigate('/login')
 
+        setIsLoadingRemoveProduct(true)
         const favorites = await ServicesProducts.excludeProductInFavorite(uuid)
+        setIsLoadingRemoveProduct(false)
 
         if (favorites instanceof Error) {
             return toast.error(favorites.message, { position: 'top-center' })
@@ -245,13 +267,19 @@ function ProductsProvider({ children }: ChildrenProp) {
             getAllProducts,
             getProductById,
             addProductInCart,
-            addProductInFavorited,
+            addProductInFavorites,
             removeProductInCart,
             removeProductFavorited,
 
             clearCart,
             alterQuantProduct,
-            purchase
+            purchase,
+
+            isLoadingPurchase,
+            isLoadingQuantProduct,
+            isLoadingRemoveProduct,
+            isLoadingAddProduct
+            
         }}>
             {children}
         </ProductsContext.Provider>

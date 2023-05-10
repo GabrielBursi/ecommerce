@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, IconButton, Rating, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CircularProgress, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,9 +16,9 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
     const [hover, setHover] = useState(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-
-    const { addProductInCart, addProductInFavorited, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInCart, addProductInFavorites, removeProductFavorited } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
@@ -47,8 +47,10 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
                     }}
                 >
                     <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
-                    <IconButton size="small" onClick={() => {
-                            isFavorite ? removeProductFavorited(uuid, setIsFavorite) : addProductInFavorited(uuid, setIsFavorite)
+                    <IconButton disabled={isLoading} size="small" onClick={async () => {
+                            setIsLoading(true)
+                            isFavorite ? await removeProductFavorited(uuid, setIsFavorite) : await addProductInFavorites(uuid, setIsFavorite)
+                            setIsLoading(false)
                         }}>
                         <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="small" />
                     </IconButton>
@@ -99,14 +101,15 @@ export function ProductCardMobile({ img, price, name, rating, uuid, seeProduct, 
             <CardActions disableSpacing>
                 <Button
                     variant="contained"
-                    startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
+                    startIcon={isLoading ? '' : isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                     fullWidth
                     size="medium"
-                    onClick={() => {
-                        uuid && addProductInCart(uuid, isAlreadyInCart)
+                    disabled={isLoading}
+                    onClick={ async () => {
+                        uuid && await addProductInCart(uuid, isAlreadyInCart)
                     }}
                 >
-                    {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
+                    {isLoading ? <CircularProgress color="primary" size={25}/> : isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                 </Button>
             </CardActions>
         </Card>

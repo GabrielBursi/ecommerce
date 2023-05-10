@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, LinearProgress, Typography } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from 'react-modal';
-import { ShoppingContext } from '../../contexts';
+import { AddressContext, ShoppingContext } from '../../contexts';
 import { InfoAddress } from '../Cart';
 
 interface ModalProps {
@@ -26,6 +26,7 @@ const customStyles = {
 export function ModalAddressList({ isOpen, setIsOpen }: ModalProps) {
 
     const { userShop } = useContext(ShoppingContext)
+    const { isLoading } = useContext(AddressContext)
     
     return (
         <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles} overlayClassName="Overlay">
@@ -38,9 +39,10 @@ export function ModalAddressList({ isOpen, setIsOpen }: ModalProps) {
                         </Typography>
                     </Box>
                     <IconButton onClick={() => setIsOpen(false)}>
-                        <CloseIcon sx={{ fontSize: '1.2rem' }} />
+                        <CloseIcon sx={{ fontSize: '1.2rem' }} color='primary'/>
                     </IconButton>
                 </Box>
+                {isLoading && <LinearProgress sx={{ marginBottom: '2%' }} />}
                 <Box flex={1} display='flex' flexDirection='column' gap={1} width='600px'>
                     {userShop && userShop?.address.map(address => 
                         <InfoAddress key={address.cep} address={address} isOnModal/>

@@ -9,9 +9,9 @@ interface ButtonSelectProps {
 
 export function ButtonSelect({ address }: ButtonSelectProps) {
 
-    const { selectAddress } = useContext(AddressContext)
+    const { selectAddress, isLoading } = useContext(AddressContext)
 
     return (
-        <Button onClick={async () => await selectAddress(address?.cep || '')}>SELECIONAR ESTE</Button>
+        <Button disabled={isLoading} onClick={async () => await selectAddress(address?.cep || '')}>SELECIONAR ESTE</Button>
     );
 }

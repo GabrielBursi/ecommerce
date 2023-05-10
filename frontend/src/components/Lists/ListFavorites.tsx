@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, IconButton, Paper, Rating, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -15,12 +15,13 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
+    const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
+    const { userShop } = useContext(ShoppingContext)
+    
     const [color, setColor] = useState(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
     const [_, setIsFavorite] = useState<boolean>(false);
-
-    const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
-    const { userShop } = useContext(ShoppingContext)
+    const [isLoading, setIsLoading] = useState(false);
 
     const brand = name.split(' ')[0]
     const nameWithoutBrand = name.replace(name.split(' ')[0], '')
@@ -82,7 +83,7 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"onClick={() => removeProductFavorited(uuid, setIsFavorite)}/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={async () => await removeProductFavorited(uuid, setIsFavorite)}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
@@ -93,14 +94,17 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
                     <Button 
                         variant="contained" 
-                        startIcon={ isAlreadyInCart ? <ShoppingCartCheckoutIcon/> : <AddShoppingCartIcon/>} 
+                        startIcon={isLoading ? '' : isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         fullWidth 
                         size="large" 
-                        onClick={() => {
-                            uuid && addProductInCart(uuid, isAlreadyInCart)
+                        disabled={isLoading}
+                        onClick={async () => {
+                            setIsLoading(true)
+                            uuid && await addProductInCart(uuid, isAlreadyInCart)
+                            setIsLoading(false)
                         }}
                     >
-                        { isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
+                        {isLoading ? <CircularProgress color="primary" /> : isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                     </Button>
                 </Box>
             </Box>

@@ -15,7 +15,7 @@ export function ActionsProduct({ product }: ActionsProductProps) {
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
-    const { addProductInFavorited, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInFavorites, removeProductFavorited, isLoadingAddProduct, isLoadingRemoveProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     const [isFavorite, setIsFavorite] = useState(false);
@@ -53,8 +53,8 @@ export function ActionsProduct({ product }: ActionsProductProps) {
                 <IconButton color='primary' size={mdDown ? "small" : "medium"} onClick={() => setIsOpen(true)}>
                     <ShareIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} />
                 </IconButton>
-                <IconButton size={mdDown ? "small" : "medium"} onClick={() => {
-                    isFavorite ? removeProductFavorited(product.uuid, setIsFavorite) : addProductInFavorited(product.uuid, setIsFavorite)
+                <IconButton disabled={isLoadingAddProduct || isLoadingRemoveProduct} size={mdDown ? "small" : "medium"} onClick={async () => {
+                    isFavorite ? await removeProductFavorited(product.uuid, setIsFavorite) : await addProductInFavorites(product.uuid, setIsFavorite)
                 }}>
                     <FavoriteIcon sx={{ fontSize: mdDown ? '1.4rem' : '1.8rem' }} color={isFavorite ? 'primary' : 'inherit'} />
                 </IconButton>

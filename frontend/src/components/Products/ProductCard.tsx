@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, IconButton, Rating, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, CircularProgress, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -20,9 +20,9 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const [hover, setHover] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-
-    const { addProductInCart, addProductInFavorited, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInCart, addProductInFavorites, removeProductFavorited } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     const navigate = useNavigate()
@@ -68,8 +68,10 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                     <CardHeader 
                         action={
                             hover ? 
-                            <IconButton size="medium" onClick={ () => {
-                                    isFavorite ? removeProductFavorited(uuid, setIsFavorite) : addProductInFavorited(uuid, setIsFavorite)
+                            <IconButton size="medium" onClick={ async () => {
+                                    setIsLoading(true)
+                                    isFavorite ? await removeProductFavorited(uuid, setIsFavorite) : await addProductInFavorites(uuid, setIsFavorite)
+                                    setIsLoading(false)
                                 }}>
                                 <FavoriteIcon color={isFavorite ? "primary" : "inherit"} fontSize="medium" />
                             </IconButton>
@@ -110,14 +112,15 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
             <CardActions disableSpacing>
                 <Button
                     variant="contained"
-                    startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
+                    startIcon={isLoading ? '' : isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                     fullWidth
                     size="large"
-                    onClick={() => {
-                        uuid && addProductInCart(uuid, isAlreadyInCart)
+                    disabled={isLoading}
+                    onClick={async () => {
+                        uuid && await addProductInCart(uuid, isAlreadyInCart)
                     }}
                     >
-                    {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
+                        {isLoading ? <CircularProgress color="primary" size={25}/> : isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}
                 </Button>
             </CardActions>
             </CardActionArea>

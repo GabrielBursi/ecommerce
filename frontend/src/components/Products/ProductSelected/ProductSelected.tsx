@@ -1,9 +1,11 @@
-import { Box, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useContext } from "react";
+import { Box, CircularProgress, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import SellIcon from '@mui/icons-material/Sell';
 import { ActionsProduct, ImagemZoom, NameProduct, Price, SearchCep } from ".";
 import { Carousel } from "../Carousel";
 import { IProducts, MyImageProps } from "../../../types";
 import { ProductSelectedMobile } from "../../mobile";
+import { ProductsContext } from "../../../contexts";
 
 
 interface ProductSelectedProps extends IProducts, MyImageProps {}
@@ -14,6 +16,8 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
+
+    const { isLoadingAddProduct, isLoadingRemoveProduct } = useContext(ProductsContext)
 
     if(smDown)
     return <ProductSelectedMobile
@@ -28,7 +32,12 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
 
     return (
         <Box component={Paper} elevation={2} width={lgDown ? '100%' : '70%'} height='80%' display='flex' flexDirection='column' padding={2}>
-            <NameProduct name={name}/> 
+            <Box display='flex' width='100%' minHeight={mdDown ? '10%' : '15%'}>
+                <NameProduct name={name}/> 
+                <Box width='20%' height='100%' display='flex' alignItems='center' justifyContent='center'>
+                    {(isLoadingAddProduct || isLoadingRemoveProduct) && <CircularProgress color="primary" size={70}/>}
+                </Box>
+            </Box>
             <Box flex={1} width='100%' display='flex'>
                 <Box flex={1} display='flex' flexDirection='column'>
                     <Box flex={1} width='100%' display='flex' flexDirection='column'>

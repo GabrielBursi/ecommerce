@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useMatch } from "react-router-dom";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,7 +12,7 @@ import { ModalAction } from "../../Modal";
 export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
     const { userShop } = useContext(ShoppingContext)
-    const { removeProductInCart, alterQuantProduct } = useContext(ProductsContext)
+    const { removeProductInCart, alterQuantProduct, isLoadingQuantProduct } = useContext(ProductsContext)
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
     return (
         <Box width='100%' height='160px' display='flex' alignItems='center' justifyContent='center' gap={2}>
             <ModalAction 
-                action={() => removeProductInCart(uuid)} 
+                action={async () => await removeProductInCart(uuid)} 
                 question='Você tem certeza que deseja remover esse produto do carrinho?' 
                 isOpen={isOpen} 
                 setIsOpen={setIsOpen}
@@ -64,7 +64,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                             onClick={async () => {
                                 await alterQuantProduct(uuid, '-', setProduct)
                             }} 
-                            disabled = {product.quant === 1}
+                            disabled = {product.quant === 1 || isLoadingQuantProduct}
                         >
                             <ArrowBackIosIcon/>
                         </IconButton>
@@ -79,6 +79,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                             onClick={async () => {
                                 await alterQuantProduct(uuid, '+', setProduct)
                             }}
+                            disabled={isLoadingQuantProduct}
                         >
                             <ArrowForwardIosIcon />
                         </IconButton>
@@ -91,14 +92,20 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                 }
             </Box>
             <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column'>
-                { product.quant && product.quant > 1 &&
-                    <Typography color='black' variant='body2' fontWeight='light'>
-                        {product.quant}x {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                    </Typography>
+                {isLoadingQuantProduct ? 
+                    <CircularProgress color="primary" sx={{ fontSize: '0.4rem' }} /> 
+                    : 
+                    <>
+                        { product.quant && product.quant > 1 &&
+                            <Typography color='black' variant='body2' fontWeight='light'>
+                                {product.quant}x {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                            </Typography>
+                        }
+                        <Typography color='primary' variant='h5' fontWeight='bold'>
+                            {(Number(price) * (product.quant || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        </Typography>
+                    </>
                 }
-                <Typography color='primary' variant='h5' fontWeight='bold'>
-                    {(Number(price) * (product.quant || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                </Typography>
             </Box>
         </Box>
     );

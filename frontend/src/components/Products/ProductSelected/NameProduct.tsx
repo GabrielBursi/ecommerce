@@ -7,7 +7,7 @@ export function NameProduct({name}: Pick<IProducts, 'name'>) {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
-        <Box width='100%' minHeight={mdDown ? '10%' : '15%'}>
+        <Box flex={1} height='100%'>
             <Typography
                 variant={mdDown ? "subtitle1" : "h6"}
                 color="black"

@@ -8,7 +8,7 @@ import '../../TraducoesYup'
 
 import Modal from 'react-modal';
 
-import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, LinearProgress, TextField, Typography } from '@mui/material';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LockIcon from '@mui/icons-material/Lock';
@@ -72,21 +72,21 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
 
     const cep = watch('cep', '')
 
-    const { createAddress, editAddress } = useContext(AddressContext)
+    const { createAddress, editAddress, isLoading } = useContext(AddressContext)
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingViaCep, setIsLoadingViaCep] = useState(false);
 
     useEffect(() => {
         
         clearErrors('cep')
 
-        if(!cep.includes('_') && cep !== ''){
+        if(!cep.includes('_') && cep !== '' && isNewAddress){
 
-            setIsLoading(true)
+            setIsLoadingViaCep(true)
 
             axios(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`)
                 .then(({data}) => {
-                    setIsLoading(false)
+                    setIsLoadingViaCep(false)
                     
                     if(data.erro){
                         return setError('cep', { type: 'custom', message: 'CEP não encontrado' });
@@ -131,7 +131,11 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                     await editAddress(addressFind.cep, validData)
                     setIsOpen(false)
                 }else{
-                    await createAddress(validData)
+                    const newAddress =  await createAddress(validData)
+                    if(newAddress instanceof Error){
+                        setError('cep', {type: 'custom', message: newAddress.message})
+                        return
+                    }
                     setIsOpen(false) 
                 }
             })
@@ -151,6 +155,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                         <CloseIcon sx={{ fontSize: '1.2rem' }} />
                     </IconButton>
                 </Box>
+                {isLoading && <LinearProgress color='primary' sx={{marginBottom: '2%'}}/>}
                 <Box>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}>
@@ -164,11 +169,11 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             autoComplete='off'
                                             variant='outlined'
                                             fullWidth 
-                                            label='CEP'
+                                            label='CEP *'
                                             placeholder='Insira o CEP'
                                             error={!!errors.cep}
                                             helperText={errors?.cep?.message}
-                                            disabled={isLoading || !isNewAddress}
+                                            disabled={isLoadingViaCep || !isNewAddress}
                                             InputProps={{
                                                 inputComponent: CustomInput as any,
                                                 inputProps: {
@@ -194,7 +199,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             error={!!errors.identification}
                                             helperText={errors?.identification?.message}
                                             fullWidth 
-                                            label='Indentificação'
+                                            label='Indentificação *'
                                             placeholder='Minha casa'
                                             defaultValue=''
                                         />
@@ -213,10 +218,10 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             error={!!errors.street}
                                             helperText={errors?.street?.message}
                                             fullWidth 
-                                            label='Rua'
+                                            label='Rua *'
                                             placeholder='Ex: Rua dos Dados Falsos'
-                                            disabled={isLoading || !isNewAddress}
-                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                            disabled={isLoadingViaCep || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoadingViaCep && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
                                             defaultValue=''
                                         />
                                     }
@@ -235,7 +240,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             error={!!errors.number}
                                             helperText={errors?.number?.message}
                                             fullWidth 
-                                            label='Número'
+                                            label='Número *'
                                             placeholder='000'
                                             defaultValue=''
                                         />
@@ -292,9 +297,9 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             error={!!errors.neighborhood}
                                             helperText={errors?.neighborhood?.message}
                                             fullWidth 
-                                            label='Bairro'
-                                            disabled={isLoading || !isNewAddress}
-                                            InputProps={{ endAdornment: (isLoading && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
+                                            label='Bairro *'
+                                            disabled={isLoadingViaCep || !isNewAddress}
+                                            InputProps={{ endAdornment: (isLoadingViaCep && <CircularProgress size={30} />) || (!isNewAddress && <IconButton disabled><LockIcon /></IconButton>) }}
                                             defaultValue=''
                                         />
                                     }
@@ -315,7 +320,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             label='Cidade' 
                                             required 
                                             disabled 
-                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                            InputProps={{endAdornment: (isLoadingViaCep ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
                                             defaultValue=''
                                         />
                                     }
@@ -336,7 +341,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                                             label='UF' 
                                             required 
                                             disabled 
-                                            InputProps={{endAdornment: (isLoading ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
+                                            InputProps={{endAdornment: (isLoadingViaCep ? <CircularProgress size={30} /> : <IconButton disabled><LockIcon /></IconButton>)}}
                                             defaultValue=''
                                         />
                                     }
@@ -344,7 +349,7 @@ export function ModalAddress({ isOpen, setIsOpen, btnText, title, isNewAddress =
                             </Grid>
                         </Grid>
                         <Box display='flex' justifyContent='end' mt={2} height='50px'>
-                            <Button type='submit' variant='contained' sx={{fontSize: '1rem'}}>
+                            <Button type='submit' variant='contained' sx={{fontSize: '1rem'}} disabled={isLoadingViaCep || isLoading}>
                                 {btnText}
                             </Button>
                         </Box>

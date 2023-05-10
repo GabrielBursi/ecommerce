@@ -16,7 +16,7 @@ export function Price({ product }: PriceProps) {
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState(false);
 
-    const { addProductInCart } = useContext(ProductsContext)
+    const { addProductInCart, isLoadingAddProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     useEffect(() => {
@@ -45,8 +45,9 @@ export function Price({ product }: PriceProps) {
                         size={mdDown ? "medium" : "large"}
                         startIcon={isAlreadyInCart ? <ShoppingCartCheckoutIcon /> : <AddShoppingCartIcon />}
                         sx={{ fontSize: mdDown ? '1rem' : '1.4rem' }}
-                        onClick={() => {
-                            addProductInCart(product.uuid, isAlreadyInCart)
+                        disabled={isLoadingAddProduct}
+                        onClick={async () => {
+                            await addProductInCart(product.uuid, isAlreadyInCart)
                         }}
                     >
                         {isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

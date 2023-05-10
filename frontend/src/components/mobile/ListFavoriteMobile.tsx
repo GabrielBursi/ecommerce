@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, IconButton, Paper, Rating, Typography } from "@mui/material"
+import { Box, CircularProgress, IconButton, Paper, Rating, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,7 +16,7 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
     const [_, setIsFavorite] = useState<boolean>(false);
-
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate()
 
@@ -38,15 +38,19 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
                 <Rating value={rating} precision={0.5} readOnly max={5} size='small' color="primary" />
                 <Box display='flex' justifyContent='end' alignItems='center' height='100%' width='30%'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="medium" onClick={() => removeProductFavorited(uuid, setIsFavorite)} />
+                        <FavoriteIcon color="primary" fontSize="medium" onClick={async () => await removeProductFavorited(uuid, setIsFavorite)} />
                     </IconButton>
-                    <IconButton size="medium" >
-                        {isAlreadyInCart ?
-                            <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
+                    <IconButton size="medium" disabled={!isAlreadyInCart && isLoading}>
+                        {isLoading ? <CircularProgress color="primary" size={20}/>
                             :
-                            <AddShoppingCartIcon color="primary" fontSize="medium" onClick={() => {
-                                uuid && addProductInCart(uuid, isAlreadyInCart)
-                            }} />
+                            isAlreadyInCart ?
+                                <ShoppingCartCheckoutIcon color="primary" fontSize="medium" onClick={() => navigate('/cart')} />
+                                :
+                                <AddShoppingCartIcon color="primary" fontSize="medium" onClick={async () => {
+                                    setIsLoading(true)
+                                    uuid && await addProductInCart(uuid, isAlreadyInCart)
+                                    setIsLoading(false)
+                                }} />
                         }
                     </IconButton>
                 </Box>

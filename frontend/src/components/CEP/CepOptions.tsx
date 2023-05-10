@@ -9,19 +9,22 @@ interface CepProps extends IDelivery{
 
 export function Cep({ days, name, price, rating, selected, showInputRadio = false }: CepProps) {
 
-    const { selectDeliveryOptions } = useContext(ResumeContext)
+    const { selectDeliveryOptions, isLoadingSelectDeliveryOptions } = useContext(ResumeContext)
 
     return (
         <Box display='flex' justifyContent='space-between' alignItems='center'>
             <Box display='flex' height='100%' alignItems='center' justifyContent='center'>
-                { showInputRadio &&
+                { showInputRadio && 
                     <Box display='flex' height='100%' alignItems='start' justifyContent='center'>
                         <Radio
                             checked={selected}
-                            onChange={async (_e, _c) => await selectDeliveryOptions(name)}
+                            onChange={async (_e, _c) => {
+                                await selectDeliveryOptions(name)
+                            }}
                             size="small"
                             value={name}
                             name="radio-buttons"
+                            disabled={isLoadingSelectDeliveryOptions}
                         />
                     </Box>
                 }

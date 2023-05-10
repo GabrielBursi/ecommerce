@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, LinearProgress, Skeleton, Typography } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import { Cep } from "../../CEP";
@@ -8,15 +8,15 @@ import { ResumeContext } from "../../../contexts";
 
 export function ListOptionsCep() {
 
-    const { getAllDeliveryOptions, deliveryOptions } = useContext(ResumeContext)
+    const { getAllDeliveryOptions, deliveryOptions, isLoadingGetDeliveryOptions, isLoadingSelectDeliveryOptions } = useContext(ResumeContext)
 
     useEffect(() => {
         getOptions()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    async function getOptions(){
-        await getAllDeliveryOptions()
+    async function getOptions() {
+        await getAllDeliveryOptions();
     }
 
     return (
@@ -29,17 +29,21 @@ export function ListOptionsCep() {
                         FRETE:
                     </Typography>
                 </Box>
-                {deliveryOptions && deliveryOptions.map(option => (
-                    <Cep
-                        key={option.name}
-                        days={option.days}
-                        name={option.name}
-                        price={option.price}
-                        rating={option.rating}
-                        selected={option.selected}
-                        showInputRadio={true}
-                    />
-                ))
+                {isLoadingSelectDeliveryOptions && <LinearProgress color="primary" sx={{margin: '1%'}}/>}
+                {isLoadingGetDeliveryOptions  ? 
+                    <Skeleton variant="rectangular" width={'100%'} height={130} />
+                    :
+                    deliveryOptions?.map(option => (
+                        <Cep
+                            key={option.name}
+                            days={option.days}
+                            name={option.name}
+                            price={option.price}
+                            rating={option.rating}
+                            selected={option.selected}
+                            showInputRadio={true}
+                        />
+                    ))
                 }
             </Box>
         </>

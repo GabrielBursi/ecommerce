@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
 import { Button } from "@mui/material";
-import { ShoppingContext } from "../../../../contexts";
+import { AddressContext, ShoppingContext } from "../../../../contexts";
 import { ModalAddressList } from "../../../Modal";
 
 export function ButtonList() {
     const { userShop } = useContext(ShoppingContext)
+    const { isLoading } = useContext(AddressContext)
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -15,7 +16,7 @@ export function ButtonList() {
                 setIsOpen={setIsOpen}
             />
             <Button 
-                disabled={userShop!.address.length <= 1 || false}
+                disabled={userShop!.address.length <= 1 || isLoading}
                 onClick={() => {setIsOpen(true)}}
             >
                 SELECIONAR OUTRO
