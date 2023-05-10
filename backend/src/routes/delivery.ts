@@ -4,6 +4,5 @@ import { DeliveryController } from "../controllers"
 
 export const routerDelivery = Router()
 
-routerDelivery.use(ensureAuthenticated, searchId)
-routerDelivery.get('/delivery', DeliveryController.GetAllDeliveryOptions)
-routerDelivery.patch('/delivery/select', DeliveryController.selectDeliveryValidation, DeliveryController.SelectDeliveryOption)
+routerDelivery.get('/delivery', ensureAuthenticated, searchId, DeliveryController.GetAllDeliveryOptions)
+routerDelivery.patch('/delivery/select', ensureAuthenticated, searchId, DeliveryController.selectDeliveryValidation, DeliveryController.SelectDeliveryOption)
