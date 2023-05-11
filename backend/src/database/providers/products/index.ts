@@ -1,4 +1,4 @@
-import * as getAll from './GetAll'
+import * as getHome from './GetHome'
 import * as getById from './GetById'
 import * as addInCart from './AddCart'
 import * as addInFavorites from './AddFavorite'
@@ -11,7 +11,7 @@ import * as alterQuant from './AlterQuantProd'
 import * as getByCategory from './GetByCategory'
 
 export const ProductsProviders = {
-    ...getAll,
+    ...getHome,
     ...getById,
     ...addInCart,
     ...addInFavorites,

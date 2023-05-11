@@ -1,6 +1,6 @@
 import { Products } from "../../models"
 
-export const getAll = async () => {
+export const getHome = async () => {
     try {
         const products = await Products.find({category: 'home'}).exec()
         return products

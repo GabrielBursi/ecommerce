@@ -5,7 +5,7 @@ import { ensureAuthenticated, fetchProducts, formatProductPrice, formatProducts,
 export const routerProducts = Router()
 
 routerProducts.get('/products/:category', ProductsController.filterProductValidation, ProductsController.GetProductsByCategory)
-routerProducts.get('/products', ProductsController.GetAllProducts)
+routerProducts.get('/products', ProductsController.GetHomeProducts)
 routerProducts.get('/product/:id', ProductsController.getByIdValidation, ProductsController.GetProductById)
 routerProducts.post('/favorites/add/:id', ensureAuthenticated, searchId, ProductsController.addProductInFavoriteValidation, ProductsController.AddFavorite) //* PRIVATE
 routerProducts.post('/cart/add/:id', ensureAuthenticated, searchId, ProductsController.addProductInCartValidation, ProductsController.AddCart) //* PRIVATE
