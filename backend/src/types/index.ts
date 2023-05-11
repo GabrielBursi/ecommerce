@@ -9,6 +9,13 @@ export interface NewUser {
     cpf: string
 }
 
+export interface IDepartment {
+    name: string,
+    src: string,
+    to: string,
+    uuid: string
+}
+
 export interface NewAddress {
     complement?: string;
     ref?: string;
