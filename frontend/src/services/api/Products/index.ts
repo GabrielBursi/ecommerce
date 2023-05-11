@@ -1,4 +1,5 @@
-import * as getAll from './GetAllProducts'
+import * as getHome from './GetProductsHome'
+import * as getDepartments from '../Departments/GetAll'
 import * as getById from './GetProductById'
 import * as addCart from './AddCart'
 import * as addFavorite from './AddFavorites'
@@ -9,7 +10,8 @@ import * as excludeInFavorite from './ExcludeProductInFavorite'
 import * as alterQuant from './QuantProduct'
 
 export const ServicesProducts = {
-    ...getAll,
+    ...getHome,
+    ...getDepartments,
     ...getById,
     ...addFavorite,
     ...addCart,

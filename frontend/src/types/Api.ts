@@ -31,10 +31,11 @@ export interface TabBarProducts {
     to: string
 }
 
-export interface DepartmentCardProps {
+export interface IDepartment {
     name: string,
     src: string,
-    to: string
+    to: string,
+    uuid: string
 }
 
 export interface IErrorAPI {

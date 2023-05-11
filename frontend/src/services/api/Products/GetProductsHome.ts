@@ -1,7 +1,7 @@
 import { IErrorAPI, IProducts } from "../../../types"
 import { MyApi } from "../../config"
 
-export const getAll = async (): Promise<IProducts[] | Error> => {
+export const getProductsHome = async (): Promise<IProducts[] | Error> => {
     try {
         const { data } = await MyApi('/products')
         return data.products as IProducts[]
