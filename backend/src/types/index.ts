@@ -11,7 +11,7 @@ export interface NewUser {
 
 export interface IDepartment {
     name: string,
-    src: string,
+    img: string,
     to: string,
     uuid: string
 }

@@ -11,7 +11,7 @@ import { DepartmentsProviders } from "../../database/providers";
 const bodySchemaValidation: yup.ObjectSchema<Omit<IDepartment, 'uuid'>> = yup.object({
     name: yup.string().required(),
     to: yup.string().required(),
-    src: yup.string().required(),
+    img: yup.string().required(),
 })
 
 export const createDepartmentValidation = validation({

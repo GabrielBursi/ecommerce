@@ -19,7 +19,6 @@ export const createProduct = async (products: IProducts[], category: string): Pr
         return [...savedProducts]
 
     } catch (error) {
-        console.log(error);
         return new Error('Erro ao criar registro: ' + error)
     }
 }

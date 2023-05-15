@@ -3,7 +3,7 @@ import { IDepartment } from "../../types";
 
 const departmentsSchema = new Schema<IDepartment>({
     uuid: { type: String, required: true },
-    src: { type: String, required: true },
+    img: { type: String, required: true },
     name: { type: String, required: true },
     to: { type: String, required: true }
 })
