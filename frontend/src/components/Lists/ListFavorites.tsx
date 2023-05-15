@@ -83,7 +83,11 @@ export function ListFavorites({ name, img, price, rating, uuid }: IProducts) {
             <Box flex={1} height='100%' display='flex' flexDirection="column" alignItems='center' justifyContent='space-between' gap={1}>
                 <Box width='100%' display='flex' justifyContent='end' alignItems='center'>
                     <IconButton size="medium">
-                        <FavoriteIcon color="primary" fontSize="large"onClick={async () => await removeProductFavorited(uuid, setIsFavorite)}/>
+                        <FavoriteIcon color="primary" fontSize="large"onClick={async () => {
+                                setIsLoading(true)
+                                await removeProductFavorited(uuid, setIsFavorite)
+                                setIsLoading(false)
+                            }}/>
                     </IconButton>
                 </Box>
                 <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>

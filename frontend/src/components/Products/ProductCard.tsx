@@ -117,7 +117,9 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                     size="large"
                     disabled={isLoading}
                     onClick={async () => {
+                        setIsLoading(true)
                         uuid && await addProductInCart(uuid, isAlreadyInCart)
+                        setIsLoading(false)
                     }}
                     >
                         {isLoading ? <CircularProgress color="primary" size={25}/> : isAlreadyInCart ? 'NO CARRINHO' : 'COMPRAR'}

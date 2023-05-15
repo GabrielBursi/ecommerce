@@ -12,9 +12,10 @@ import { ModalAction } from "../../Modal";
 export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
     const { userShop } = useContext(ShoppingContext)
-    const { removeProductInCart, alterQuantProduct, isLoadingQuantProduct } = useContext(ProductsContext)
+    const { removeProductInCart, alterQuantProduct } = useContext(ProductsContext)
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const productInUse = userShop?.cart.products.filter(product => product.uuid === uuid) || []
     const [product, setProduct] = useState<IProducts>(productInUse[0]);
@@ -62,9 +63,11 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                             size="small" 
                             color="primary" 
                             onClick={async () => {
+                                setIsLoading(true)
                                 await alterQuantProduct(uuid, '-', setProduct)
+                                setIsLoading(false)
                             }} 
-                            disabled = {product.quant === 1 || isLoadingQuantProduct}
+                            disabled = {product.quant === 1 || isLoading}
                         >
                             <ArrowBackIosIcon/>
                         </IconButton>
@@ -77,9 +80,11 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                             size="small" 
                             color="primary" 
                             onClick={async () => {
+                                setIsLoading(true)
                                 await alterQuantProduct(uuid, '+', setProduct)
+                                setIsLoading(false)
                             }}
-                            disabled={isLoadingQuantProduct}
+                            disabled={isLoading}
                         >
                             <ArrowForwardIosIcon />
                         </IconButton>
@@ -92,7 +97,7 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                 }
             </Box>
             <Box width='15%' height='100%' display='flex' alignItems='center' justifyContent='center' flexDirection='column'>
-                {isLoadingQuantProduct ? 
+                {isLoading ? 
                     <CircularProgress color="primary" sx={{ fontSize: '0.4rem' }} /> 
                     : 
                     <>
