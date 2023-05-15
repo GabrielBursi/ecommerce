@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Id, toast } from "react-toastify";
-import { ChildrenProp, DepartmentCardProps, IProducts, IMyOrders } from "../types";
-import { ServicesProducts } from "../services/api";
+import { ChildrenProp, IDepartment, IProducts, IMyOrders } from "../types";
+import { ServicesDepartments, ServicesProducts } from "../services/api";
 import { LoginContext } from "./LoginContext";
 import { ShoppingContext } from "./ShoppingContext";
 
@@ -10,9 +10,10 @@ interface ProductsContextData {
     products: IProducts[],
     setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
 
-    productsDepartments: DepartmentCardProps[],
+    productsDepartments: IDepartment[],
 
-    getAllProducts: () => Promise<Id | undefined>
+    getProductsHome: () => Promise<Id | undefined>,
+    getDepartments: () => Promise<Id | undefined>,
     getProductById: (uuid: string, setProduct: (value: IProducts) => void) => Promise<void | Id>
     addProductInCart: (uuid: string, isAlreadyInCart: boolean) => Promise<void | Id>,
     alterQuantProduct: (uuid: string, action: '+' | '-', setProduct: (value: IProducts) => void) => Promise<void | Id>,
@@ -25,7 +26,8 @@ interface ProductsContextData {
     isLoadingQuantProduct: boolean,
     isLoadingRemoveProduct: boolean,
     isLoadingPurchase: boolean,
-    isLoadingAddProduct: boolean
+    isLoadingAddProduct: boolean,
+    isLoadingGetProducts: boolean,
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -33,87 +35,42 @@ const ProductsContext = createContext({} as ProductsContextData)
 function ProductsProvider({ children }: ChildrenProp) {
 
     const [products, setProducts] = useState<IProducts[]>([]); 
+    const [productsDepartments, setProductsDepartments] = useState<IDepartment[]>([]);
+
     const [isLoadingQuantProduct, setIsLoadingQuantProduct] = useState(false);
     const [isLoadingRemoveProduct, setIsLoadingRemoveProduct] = useState(false);
     const [isLoadingAddProduct, setIsLoadingAddProduct] = useState(false);
     const [isLoadingPurchase, setIsLoadingPurchase] = useState(false);
+    const [isLoadingGetProducts, setIsLoadingGetProducts] = useState(false);
 
     const { isLogged } = useContext(LoginContext)
     const { setUserShop, userShop } = useContext(ShoppingContext)
 
     const navigate = useNavigate()
 
-    const productsDepartments: DepartmentCardProps[] = [
-        {
-            name: 'hardware',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/HARDWARE_1683123741.png&w=384&h=280&q=70',
-            to: '/products/hardware'
-        },
-        {
-            name: 'periféricos',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/PERIFERICOS.png&w=384&h=280&q=70',
-            to: '/products/periféricos'
-        },
-        {
-            name: 'games',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/GAMER.png&w=384&h=280&q=70',
-            to: '/products/games'
-        },
-        {
-            name: 'computadores',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/COMPUTADORES.png&w=384&h=280&q=70',
-            to: '/products/computadores'
-        },
-        {
-            name: 'tv',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TV_1645045665.png&w=384&h=280&q=70',
-            to: '/products/TV'
-        },
-        {
-            name: 'celular & smartphone',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CELULAR-SMARTPHONE_1645045581.png&w=384&h=280&q=70',
-            to: '/products/celular_smartphone'
-        },
-        {
-            name: 'espaço gamer',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/ESPACO-GAMER_1658426219.png&w=384&h=280&q=70',
-            to: '/products/espaço_gamer'
-        },
-        {
-            name: 'tablets, ipads e e-readers',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/TABLETS-IPADS-E-E-READERS_1645096620.png&w=384&h=280&q=70',
-            to: '/products/tablets'
-        },
-        {
-            name: 'áudio',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/AUDIO.png&w=384&h=280&q=70',
-            to: '/products/áudio'
-        },
-        {
-            name: 'casa inteligente',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CASA-INTELIGENTE_1661457250.png&w=384&h=280&q=70',
-            to: '/products/casa_inteligente'
-        },
-        {
-            name: 'câmeras e drones',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/CAMERAS-E-DRONES_1659439533.png&w=384&h=280&q=70',
-            to: '/products/câmeras_drones'
-        },
-        {
-            name: 'serviços digitais e softwares',
-            src: 'https://www.kabum.com.br/core/_next/image?url=https://static.kabum.com.br/conteudo/categorias/SERVICOS-DIGITAIS_1657908578.png&w=384&h=280&q=70',
-            to: '/products/serviços_digitais_softwares'
-        },
-    ]
-
-    async function getAllProducts() {
-        const products = await ServicesProducts.getAll()
+    async function getProductsHome(){
+        setIsLoadingGetProducts(true)
+        const products = await ServicesProducts.getProductsHome()
+        setIsLoadingGetProducts(false)
 
         if (products instanceof Error) {
             return toast.error(products.message, {position: 'top-center'})
         }
         
         setProducts(products)
+
+    }
+
+    async function getDepartments() {
+        setIsLoadingGetProducts(true)
+        const departments = await ServicesDepartments.getAll()
+        setIsLoadingGetProducts(false)
+
+        if (departments instanceof Error) {
+            return toast.error(departments.message, { position: 'top-center' })
+        }
+
+        setProductsDepartments(departments)
 
     }
 
@@ -264,7 +221,8 @@ function ProductsProvider({ children }: ChildrenProp) {
 
             productsDepartments,
 
-            getAllProducts,
+            getProductsHome,
+            getDepartments,
             getProductById,
             addProductInCart,
             addProductInFavorites,
@@ -278,7 +236,8 @@ function ProductsProvider({ children }: ChildrenProp) {
             isLoadingPurchase,
             isLoadingQuantProduct,
             isLoadingRemoveProduct,
-            isLoadingAddProduct
+            isLoadingAddProduct,
+            isLoadingGetProducts,
             
         }}>
             {children}

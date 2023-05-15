@@ -1,7 +1,7 @@
 import { create } from "./Create";
 import { getAll } from "./GetAll";
 
-export const DepartmentsServices = {
+export const ServicesDepartments = {
     getAll,
     create
 }
