@@ -1,10 +1,10 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DepartmentCardProps } from "../../types";
+import { IDepartment } from "../../types";
 import { MyImage } from "./MyImage";
 
-export function DepartmentCard({name, src, to}: DepartmentCardProps) {
+export function DepartmentCard({name, img, to}: Omit<IDepartment, 'uuid'>) {
 
     const [hover, setHover] = useState<boolean>(false);
 
@@ -35,7 +35,7 @@ export function DepartmentCard({name, src, to}: DepartmentCardProps) {
                     zIndex:1,
                 }}
             >
-                <MyImage alt={name} src={src} />
+                <MyImage alt={name} src={img} />
             </Box>
         </Box>
     );
