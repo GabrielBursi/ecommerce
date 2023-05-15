@@ -7,27 +7,30 @@ import { validation } from "../../shared/middleware";
 import { IDepartment } from "../../types";
 import { DepartmentsProviders } from "../../database/providers";
 
+type Body = {
+    departments: Omit<IDepartment, 'uuid'>[]
+}
 
-const bodySchemaValidation: yup.ObjectSchema<Omit<IDepartment, 'uuid'>> = yup.object({
-    name: yup.string().required(),
-    to: yup.string().required(),
-    img: yup.string().required(),
+const bodySchemaValidation: yup.ObjectSchema<Body> = yup.object({
+    departments: yup.array().required()
 })
 
 export const createDepartmentValidation = validation({
     body: bodySchemaValidation
 })
 
-export const Create = async (req: Request<{}, {}, Omit<IDepartment, 'uuid'>>, res: Response) => {
+export const Create = async (req: Request<{}, {}, Body>, res: Response) => {
 
-    const department = await DepartmentsProviders.createDepartment(req.body)
+    const { departments } = req.body
 
-    if (department instanceof Error)
+    const newDepartments = await DepartmentsProviders.createDepartment(departments)
+
+    if (newDepartments instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: department.message
+                default: newDepartments.message
             }
         });
 
-    return res.status(StatusCodes.OK).json({ department })
+    return res.status(StatusCodes.OK).json({ newDepartments })
 }
