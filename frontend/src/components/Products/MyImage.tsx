@@ -9,6 +9,8 @@ const MyImageMemo = ({ alt, height, width, src }: MyImageProps) => (
             src={src}
             height={height}
             width={width}
+            loading='lazy'
+            effect='blur'
         />
 );
 
