@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material"
 import { IProducts } from "../../types"
-import { MyImage } from "./MyImage"
+import { MyImage } from "../Products"
 
 export const MyRequestsList = ({ img, name, price, quant }: IProducts) => {
 

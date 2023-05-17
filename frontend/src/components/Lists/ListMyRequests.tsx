@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { Box, Divider, Paper, Typography } from "@mui/material"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { MyRequestsList } from "./MyRequestsList";
 import { IDelivery, IMyOrders } from "../../types";
-import { MyRequestsList } from "../Products";
 import { ResumeContext, ShoppingContext } from "../../contexts";
 
 export const ListMyRequests = ({ info, products, address }: IMyOrders) => {
