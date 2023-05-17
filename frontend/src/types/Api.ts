@@ -7,7 +7,12 @@ export interface IProducts {
     price: number | string,
     rating?: number,
     img: string,
-    quant?: number
+    quant?: number,
+}
+
+export interface IProductsCategory {
+    products: IProducts[],
+    totalCount: number
 }
 
 export interface ICartAPI {
