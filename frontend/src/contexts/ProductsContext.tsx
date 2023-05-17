@@ -7,8 +7,8 @@ import { LoginContext } from "./LoginContext";
 import { ShoppingContext } from "./ShoppingContext";
 
 interface ProductsContextData {
-    products: IProducts[],
-    setProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
+    productsHome: IProducts[],
+    setProductsHome: (v: IProducts[]) => void,
 
     productsDepartments: IDepartment[],
 
@@ -34,7 +34,7 @@ const ProductsContext = createContext({} as ProductsContextData)
 
 function ProductsProvider({ children }: ChildrenProp) {
 
-    const [products, setProducts] = useState<IProducts[]>([]); 
+    const [productsHome, setProductsHome] = useState<IProducts[]>([]); 
     const [productsDepartments, setProductsDepartments] = useState<IDepartment[]>([]);
 
     const [isLoadingQuantProduct, setIsLoadingQuantProduct] = useState(false);
@@ -50,14 +50,14 @@ function ProductsProvider({ children }: ChildrenProp) {
 
     async function getProductsHome(){
         setIsLoadingGetProducts(true)
-        const products = await ServicesProducts.getProductsHome()
+        const productsHome = await ServicesProducts.getProductsHome()
         setIsLoadingGetProducts(false)
 
-        if (products instanceof Error) {
-            return toast.error(products.message, {position: 'top-center'})
+        if (productsHome instanceof Error) {
+            return toast.error(productsHome.message, {position: 'top-center'})
         }
         
-        setProducts(products)
+        setProductsHome(productsHome)
 
     }
 
@@ -216,8 +216,8 @@ function ProductsProvider({ children }: ChildrenProp) {
 
     return (
         <ProductsContext.Provider value={{ 
-            products,
-            setProducts,
+            productsHome,
+            setProductsHome,
 
             productsDepartments,
 

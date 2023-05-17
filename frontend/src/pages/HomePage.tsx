@@ -3,7 +3,7 @@ import { useQueries } from "@tanstack/react-query";
 import { Box, Button, Typography } from "@mui/material";
 import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { LoginContext } from "../contexts";
+import { LoginContext, ProductsContext } from "../contexts";
 import {LayoutBase} from "../layouts";
 import { Carousel, DepartmentList } from "../components";
 import { ServicesDepartments, ServicesProducts } from "../services/api";
@@ -11,6 +11,7 @@ import { ServicesDepartments, ServicesProducts } from "../services/api";
 export function HomePage() {
 
     const { isLogged, setIsLogged } = useContext(LoginContext)
+    const { setProductsHome } = useContext(ProductsContext)
 
     const [products, departments] = useQueries({
         queries: [
@@ -18,6 +19,10 @@ export function HomePage() {
             { queryKey: ['departments'], queryFn: ServicesDepartments.getAll, staleTime: Infinity }
         ]
     })
+
+    if(!(products.data instanceof Error ) && products.data){
+        setProductsHome(products.data);
+    }
 
     return (
         <LayoutBase showResearchInput showUserInfo showBanner showTabBar showActions = {isLogged}>
