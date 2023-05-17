@@ -1,26 +1,30 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Skeleton } from "@mui/material";
 import { motion } from "framer-motion";
 import { ProductCard } from "./ProductCard";
-import { ProductsContext } from "../../contexts";
+import { ErrorComponent } from "../Error";
 import { MiniCardProduct } from "./MiniCardProduct";
+import { IProducts } from "../../types";
 
 interface CarouselProps {
-    showMiniCard?: boolean
+    showMiniCard?: boolean,
+    data: Error | undefined | IProducts[],
+    isLoading: boolean,
 }
 
-export function Carousel({ showMiniCard = false }: CarouselProps) {
+export function Carousel({ showMiniCard = false, data, isLoading }: CarouselProps) {
 
     const carousel = useRef<HTMLElement>()
     const [width, setWidth] = useState<number | string>(0);
 
-    const { products, isLoadingGetProducts } = useContext(ProductsContext)
-
     useEffect(() => {
         if(carousel.current)
         setWidth(carousel.current?.scrollWidth - carousel.current?.offsetWidth);
-        
     }, []);
+
+    if (data instanceof Error || !data ) {
+        return <ErrorComponent error={data?.message} />
+    }
 
     return (
         <Box
@@ -46,7 +50,7 @@ export function Carousel({ showMiniCard = false }: CarouselProps) {
                     height: '100%'
                 }}
             >
-                {isLoadingGetProducts ?
+                {isLoading ?
                     [1,2,3,4,5].map(item =>
                             <Skeleton
                                 key={item}
@@ -58,7 +62,7 @@ export function Carousel({ showMiniCard = false }: CarouselProps) {
                             />
                     )
                     :
-                    products.map(product => (
+                    data.map(product => (
                         <Box
                             key={product.uuid}
                             sx={{

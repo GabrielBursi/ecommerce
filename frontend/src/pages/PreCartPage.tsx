@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Grid, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { LoginContext, ShoppingContext } from "../contexts";
 import { LayoutBase } from "../layouts";
 import { Carousel, PreCartInfo } from "../components";
 import { IProducts } from "../types";
+import { ServicesProducts } from "../services/api";
 
 export function PreCartPage() {
     
@@ -20,6 +22,10 @@ export function PreCartPage() {
     const [productAddInCart, setProductAddInCart] = useState<IProducts>();
 
     const navigate = useNavigate()
+
+    const category = 'home'
+
+    const { data, isLoading } = useQuery({ queryKey: ['products-category'], queryFn: () => ServicesProducts.getProductsByCategory(category, 1, 20, 1, 999999) })
 
     useEffect(() => {
         if(!uuid){
@@ -55,14 +61,14 @@ export function PreCartPage() {
                                 <Typography color='primary' variant='h6' noWrap>
                                     PRODUTOS RELACIONADOS
                                 </Typography>
-                                <Carousel/>
+                                {!(data instanceof Error) && <Carousel data={data?.products} isLoading={isLoading} />}
                             </>
                             :
                             <Box height='85%' padding={2} component={Paper} elevation={10}>
                                 <Typography color='primary' variant={mdDown ? 'subtitle1' : 'h5'} noWrap>
                                     PRODUTOS RELACIONADOS
                                 </Typography>
-                                <Carousel/>
+                                {!(data instanceof Error) && <Carousel data={data?.products} isLoading={isLoading} />}
                             </Box>
                         }
                     </Grid>

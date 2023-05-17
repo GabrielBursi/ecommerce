@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Box, CircularProgress, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import SellIcon from '@mui/icons-material/Sell';
 import { ActionsProduct, ImagemZoom, NameProduct, Price, SearchCep } from ".";
@@ -6,6 +7,7 @@ import { Carousel } from "../Carousel";
 import { IProducts, MyImageProps } from "../../../types";
 import { ProductSelectedMobile } from "../../mobile";
 import { ProductsContext } from "../../../contexts";
+import { ServicesProducts } from "../../../services/api";
 
 
 interface ProductSelectedProps extends IProducts, MyImageProps {}
@@ -18,6 +20,10 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
     const lgDown = useMediaQuery(theme.breakpoints.down('lg'))
 
     const { isLoadingAddProduct, isLoadingRemoveProduct } = useContext(ProductsContext)
+
+    const category = 'home'
+
+    const { data, isLoading } = useQuery({ queryKey: ['products-category'], queryFn: () => ServicesProducts.getProductsByCategory(category, 1, 20, 1, 999999) })
 
     if(smDown)
     return <ProductSelectedMobile
@@ -70,7 +76,7 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
                         </Box>
                     </Box>
                     <Box width='620px' height='150px'>
-                        <Carousel showMiniCard />
+                        {!(data instanceof Error) && <Carousel showMiniCard data={data?.products} isLoading={isLoading} />}
                     </Box>
                 </Box>
             </Box>
