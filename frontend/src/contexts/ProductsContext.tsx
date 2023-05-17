@@ -28,6 +28,8 @@ interface ProductsContextData {
     isLoadingPurchase: boolean,
     isLoadingAddProduct: boolean,
     isLoadingGetProducts: boolean,
+
+    seeProduct: (uuid: string) => void,
 }
 
 const ProductsContext = createContext({} as ProductsContextData)
@@ -214,6 +216,11 @@ function ProductsProvider({ children }: ChildrenProp) {
         }
     }
 
+    function seeProduct(uuid: string) {
+        navigate(`/product/${uuid}`)
+    }
+
+
     return (
         <ProductsContext.Provider value={{ 
             productsHome,
@@ -239,6 +246,7 @@ function ProductsProvider({ children }: ChildrenProp) {
             isLoadingAddProduct,
             isLoadingGetProducts,
             
+            seeProduct,
         }}>
             {children}
         </ProductsContext.Provider>

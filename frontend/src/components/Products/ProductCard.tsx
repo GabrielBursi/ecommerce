@@ -22,7 +22,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { addProductInCart, addProductInFavorites, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInCart, addProductInFavorites, removeProductFavorited, seeProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     const navigate = useNavigate()
@@ -39,10 +39,6 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userShop?.favorites, userShop?.cart.products]);
 
-    function seeProduct(){
-        navigate(`/product/${uuid}`)
-    }
-
     if(mdDown)
     return <ProductCardMobile
                 img={img}
@@ -50,7 +46,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                 name={name}
                 uuid={uuid}
                 rating={rating}
-                seeProduct={seeProduct}
+                seeProduct={() => seeProduct(uuid)}
             />
 
     return (
@@ -81,7 +77,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                     />
                 </Box>
                 <Box
-                    onClick={seeProduct}
+                    onClick={() => seeProduct(uuid)}
                     sx={{
                         width: '100%', 
                         height:'160px',
@@ -92,7 +88,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                 >
                     <MyImage alt="123" src={img} width='110px' height='auto'/>
                 </Box>
-                <CardContent sx={{ paddingY: 0, height: 90 }} onClick={seeProduct}>
+                <CardContent sx={{ paddingY: 0, height: 90 }} onClick={() => seeProduct(uuid)}>
                     <Typography 
                         variant="body1" 
                         color="black" 
@@ -104,7 +100,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
                         {name}
                     </Typography>
                 </CardContent>
-                <CardContent sx={{paddingY: 0}} onClick={seeProduct}>
+                <CardContent sx={{paddingY: 0}} onClick={() => seeProduct(uuid)}>
                     <Typography variant="h5" color="primary" fontWeight='bold'>
                         {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </Typography>

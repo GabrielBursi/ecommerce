@@ -11,7 +11,7 @@ import { ProductsContext, ShoppingContext } from "../../contexts";
 
 export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts) {
 
-    const { addProductInCart, removeProductFavorited } = useContext(ProductsContext)
+    const { addProductInCart, removeProductFavorited, seeProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
     const [isAlreadyInCart, setIsAlreadyInCart] = useState<boolean>(false);
@@ -69,6 +69,7 @@ export function ListFavoriteMobile({ name, img, price, rating, uuid }: IProducts
                             fontWeight="bold"
                             overflow='hidden'
                             textOverflow="ellipsis"
+                            onClick={() => seeProduct(uuid)}
                         >
                             {name}
                         </Typography>

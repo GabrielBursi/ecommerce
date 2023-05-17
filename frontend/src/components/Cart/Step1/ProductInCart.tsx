@@ -12,10 +12,11 @@ import { ModalAction } from "../../Modal";
 export function ProductInCart({ uuid, img, name, price }: IProducts) {
 
     const { userShop } = useContext(ShoppingContext)
-    const { removeProductInCart, alterQuantProduct } = useContext(ProductsContext)
+    const { removeProductInCart, alterQuantProduct, seeProduct } = useContext(ProductsContext)
 
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [color, setColor] = useState(false);
 
     const productInUse = userShop?.cart.products.filter(product => product.uuid === uuid) || []
     const [product, setProduct] = useState<IProducts>(productInUse[0]);
@@ -45,10 +46,13 @@ export function ProductInCart({ uuid, img, name, price }: IProducts) {
                     component='h1'
                     variant='h6'
                     sx={{ cursor: 'pointer', wordBreak: 'break-word', display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
-                    color='black'
+                    color={!color ? 'black' : 'primary'}
                     fontWeight="bold"
                     overflow='hidden'
                     textOverflow="ellipsis"
+                    onMouseOver={() => setColor(true)}
+                    onMouseLeave={() => setColor(false)}
+                    onClick={() => seeProduct(uuid)}
                 >
                     {nameWithoutBrand}
                 </Typography>
