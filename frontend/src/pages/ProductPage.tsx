@@ -10,7 +10,7 @@ export function ProductPage() {
 
     const { uuid } = useParams<'uuid'>()
 
-    const { products } = useContext(ProductsContext)
+    const { getProductById } = useContext(ProductsContext)
     const { isLogged } = useContext(LoginContext)
 
     const [productSelectedInfo, setProductSelectedInfo] = useState<IProducts>();
@@ -19,9 +19,9 @@ export function ProductPage() {
         if(!uuid){
             return console.log('teste');
         }
-        const arrProductSelected = products.filter(product => product.uuid === uuid)
-        const [productSelected] = arrProductSelected
-        setProductSelectedInfo(productSelected)
+
+        (async () => await getProductById(uuid, setProductSelectedInfo))()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uuid]);
 
