@@ -1,107 +1,89 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
-import { Box, CircularProgress, Divider, Pagination } from "@mui/material";
-import { LoginContext } from "../contexts";
+import { Box, Divider, Pagination, Skeleton, useMediaQuery, useTheme } from "@mui/material";
+import { LoginContext, ProductsListContext } from "../contexts";
 import { LayoutBase } from "../layouts";
-import { Filter, ProductList } from "../components";
-import { IProducts } from "../types";
-import { TESTEgetAllProducts } from "../services/test";
+import { Limit, ProductList, SliderComponent } from "../components";
+import { ServicesProducts } from "../services/api";
+import { Category } from "../types";
 
 export function ListProductsPage() {
-    const { isLogged } = useContext(LoginContext)
 
-    const [filterPage, setFilterPage] = useState('20 por página');
-    const [filterNumberPerPage, setFilterNumberPerPage] = useState(Number(filterPage.split(' ')[0]));
-    const [productsList, setProductList] = useState<IProducts[]>([]);
-    const [totalCount, setTotalCount] = useState(0);
-    const [highestPrice, setHighestPrice] = useState(1);
-    const [lowestPrice, setLowestPrice] = useState(0);
-    const [priceFilter, setPriceFilter] = useState<number[]>([lowestPrice, highestPrice]);
-    const [isLoading, setIsLoading] = useState(false);
+    const theme = useTheme()
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const { isLogged } = useContext(LoginContext)
+    const { limit, priceFilter, setLimit, setFilterPerPage, productsList, totalCount, calculateMaxAndMinPrice, setProductsList, setTotalCount, filterPerPage } = useContext(ProductsListContext)
 
     const { product: category } = useParams<'product'>()
     const [searchParams, setSearchParams] = useSearchParams()
     const page = searchParams.get('page') || '1'
 
+    const onSuccess = () => {
+        if (data instanceof Error || !data) {
+            onError()
+            return
+        }
+
+        console.log(data);
+
+        setProductsList(data.products)
+        setTotalCount(data.totalCount)
+
+        calculateMaxAndMinPrice(data.products)
+    }
+
+    const onError = () => {
+        if (isError) {
+            alert('Ocorreu um erro com useQuery: ' + error) //* erro com o useQuery
+            return
+        }
+
+        if (data instanceof Error) {
+            alert('Ocorreu um erro com a API: ' + data.message); //* data é uma instância de Error ou undefined
+        }
+    }
+
+    const { data, isLoading, isError, error } = useQuery(
+        ['teste', category, limit, priceFilter, page, filterPerPage],
+        () => ServicesProducts.getProductsByCategory(category as Category, Number(page), limit, priceFilter[0], priceFilter[1])
+        , {
+            onSuccess,
+            onError,
+        }
+    )
+
     useEffect(() => {
-        getFilterProduct();
+        setFilterPerPage('20 por página')
+        setLimit(20)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterNumberPerPage, page, category]);
-
-    useEffect(() => {
-        setFilterPage('20 por página')
-        setFilterNumberPerPage(20)
     }, [category]);
-
-    const getFilterProduct = useCallback(async (lower?: number, higher?: number) => {
-        setIsLoading(true);
-        try {
-            const products = await TESTEgetAllProducts(false, true, undefined, filterNumberPerPage as 20 | 40 | 60 | 80 | 100, page, lower, higher);
-            if (typeof products === 'object' && 'data' in products && 'totalCount' in products) {
-                setProductList(products.data);
-                setTotalCount(products.totalCount);
-                if(!lower && !higher){
-                    calculeHighestPriceAndLowestPriceThanSet(products.data)
-                }
-            }
-        } catch (error) {
-            console.error(error);
-        }
-        setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filterNumberPerPage, page]);
-
-    const handleSliderEnd = useCallback((_: React.SyntheticEvent) => {
-        setTimeout(async () => {
-            getFilterProduct(priceFilter[0], priceFilter[1])
-        }, 2000); 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [priceFilter])
-
-    const calculeHighestPriceAndLowestPriceThanSet = useCallback((products: IProducts[]) => {
-        if(products.length > 0){
-            const menorValor = products.reduce((anterior, atual) => anterior.price < atual.price ? anterior : atual);
-            const maiorValor = products.reduce((anterior, atual) => anterior.price > atual.price ? anterior : atual);
-    
-            if (typeof menorValor.price === 'number' && typeof maiorValor.price === 'number') {
-                setHighestPrice(maiorValor.price)
-                setLowestPrice(menorValor.price)
-                setPriceFilter([menorValor.price, maiorValor.price])
-            }
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productsList]);
 
     return (
         <LayoutBase showResearchInput showUserInfo showTabBar showBanner showActions={isLogged}>
             <Box display='flex' justifyContent='center' alignItems='center' height='auto' paddingBottom={4}>
                 <Box width='90%' height='100%' display='flex' flexDirection='column' gap={2}>
-                    {isLoading ?
-                        <Box height='400px' width='100%' display='flex' justifyContent='center' alignItems='center'>
-                            <CircularProgress size='4rem' />
-                        </Box>
-                        :
-                        <>
-                            <Filter
-                                highestPrice={highestPrice}
-                                lowestPrice={lowestPrice}
-                                priceFilter={priceFilter}
-                                setPriceFilter={setPriceFilter}
-                                filterPage={filterPage}
-                                setFilterPage={setFilterPage}
-                                setFilterNumberPerPage={setFilterNumberPerPage}
-                                handleSliderEnd={handleSliderEnd}
-                            />
-                            <Divider />
-                            <ProductList products={productsList} />
-                        </>
-                    }
+                    <Box
+                        height='100px'
+                        display='flex'
+                        justifyContent={smDown ? 'center' : mdDown ? 'space-between' : 'center'}
+                        alignItems={smDown ? 'center' : 'end'} gap={smDown ? 0 : 2}
+                        flexDirection={smDown ? 'column' : 'row'}
+                        marginTop={smDown ? 1 : 0}
+                    >
+                        {isLoading ? <Skeleton width={smDown ? '100%' : mdDown ? '50%' : '30%'} height='65%' /> : <SliderComponent />}
+                        {isLoading ? <Skeleton width={smDown ? '100%' : mdDown ? '50%' : '30%'} height='65%' /> : <Limit />}
+                    </Box>
+                    <Divider />
+                    <ProductList products={productsList} />
                     <Box width='100%' display='flex' justifyContent='center' alignItems='center' margin={4}>
                         <Pagination
                             page={Number(page)}
-                            count={Math.ceil(totalCount / filterNumberPerPage)}
+                            count={Math.ceil(totalCount / limit)}
                             size='large'
-                            onChange={(_, newPage) => { 
+                            onChange={(_, newPage) => {
                                 setSearchParams({ page: newPage.toString() }, { replace: true })
                             }}
                         />
