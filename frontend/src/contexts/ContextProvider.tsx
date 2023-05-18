@@ -1,4 +1,4 @@
-import { DrawerContextProvider, LoginContextProvider, ProductsProvider, HeaderContextProvider, AddressContextProvider, ResumeContextProvider, ShoppingContextProvider } from './'
+import { DrawerContextProvider, LoginContextProvider, ProductsProvider, HeaderContextProvider, AddressContextProvider, ResumeContextProvider, ShoppingContextProvider, ProductsListProvider } from './'
 import { ChildrenProp } from "../types";
 
 export function ContextProvider({children}: ChildrenProp) {
@@ -10,7 +10,9 @@ export function ContextProvider({children}: ChildrenProp) {
                         <AddressContextProvider>
                             <ResumeContextProvider>
                                 <HeaderContextProvider>
-                                    {children}
+                                    <ProductsListProvider>
+                                        {children}
+                                    </ProductsListProvider>
                                 </HeaderContextProvider>
                             </ResumeContextProvider>
                         </AddressContextProvider>

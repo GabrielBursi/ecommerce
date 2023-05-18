@@ -5,5 +5,6 @@ export * from './ProductsContext'
 export * from './AddressContext'
 export * from './ResumeContext'
 export * from './ShoppingContext'
+export * from './ProductsListContext'
 
 export * from './ContextProvider'
