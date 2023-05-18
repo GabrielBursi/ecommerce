@@ -2,7 +2,7 @@ import { Locals, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup'
 
-import { IProducts } from "../../types";
+import { IProducts, Category } from "../../types";
 import { ProductsProviders } from "../../database/providers";
 import '../../shared/services/TraducoesYup'
 import { validation } from "../../shared/middleware";
@@ -14,9 +14,11 @@ interface Body {
     convert?: boolean
 }
 
+const arrayCategory = <Category[]>["TV", "cadeira gamer", "casa inteligente", "celular", "câmeras e drones", "espaço gamer", "geek", "hardware", "home", "monitor gamer", "mouse e teclado", "pc gamer", "periféricos", "serviços digitais e softwares", "tablets", "vídeo games", "áudio"]
+
 const bodySchemaValidation: yup.ObjectSchema<Body> = yup.object({
     query: yup.array().required(),
-    category: yup.string().required(),
+    category: yup.string().oneOf<Category>(arrayCategory).required(),
     page: yup.number(),
     convert: yup.boolean()
 })
@@ -34,7 +36,7 @@ export const AddProduct = async (req: Request<{}, {}, Body>, res: Response<{}, M
     const productsFormated = res.locals.newProductsWithPriceFormated
     const { category } = req.body
 
-    if(!productsFormated){
+    if (!productsFormated) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
                 default: 'Erro no processo de formatação do produto.'

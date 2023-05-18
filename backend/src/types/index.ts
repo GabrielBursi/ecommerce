@@ -84,3 +84,5 @@ export interface IFilterProducts {
         max: number
     }
 }
+
+export type Category = 'pc gamer' | 'monitor gamer' | 'cadeira gamer' | 'mouse e teclado' | 'celular' | 'vídeo games' | 'geek' | 'TV' | 'tablets' | 'hardware' | 'periféricos' | 'home' | 'áudio' | 'serviços digitais e softwares' | 'câmeras e drones' | 'casa inteligente' | 'espaço gamer'
