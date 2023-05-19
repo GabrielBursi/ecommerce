@@ -20,13 +20,13 @@ interface MyResponse extends Locals {
 export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}, MyResponse>, next: NextFunction) => {
     const { page, query, convert = false, category } = req.body;
 
-    const items: IProductsAPI[] = [];
+    const items: IProductsAPI[] = []; //* array começa vazio
 
     try {
         for (const queryItem of query) {
-            const productsApi = await Api(queryItem, page);
+            const productsApi = await Api(queryItem, page); //* retorna um array de produtos da API da Amazon para cada item da query
 
-            if (productsApi instanceof Error) {
+            if (productsApi instanceof Error) { //? se a API da Amazon estiver fora, vai ser usado um Array De Teste
                 const products = await ProductsProviders.createProduct(arrayTESTE, category)
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
@@ -40,10 +40,10 @@ export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}
                 continue 
             }
 
-            items.push(productsApi[0]);
+            items.push(productsApi[0]); //* adiciona o primeiro item do array retornado pela API no array de item
         }
 
-        res.locals.items = items;
+        res.locals.items = items; //! array com cada primeiro elemento retornado pela API da Amazon
         res.locals.convert = convert;
         next();
     } catch (err) {

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardHeader, CircularProgress, IconButton, Rating, Typography } from "@mui/material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -25,7 +24,6 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
     const { addProductInCart, addProductInFavorites, removeProductFavorited, seeProduct } = useContext(ProductsContext)
     const { userShop } = useContext(ShoppingContext)
 
-    const navigate = useNavigate()
 
     useEffect(() => {
         const productIsInCart = userShop?.cart.products.find(p => p.uuid === uuid)
@@ -50,7 +48,7 @@ export function ProductCard({ img, price, name, rating, width = 270, height = 39
             />
 
     return (
-        <Card sx={{ width: width, height: height }} elevation={hover ? 10 : 2} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+        <Card sx={{ width, height }} elevation={hover ? 10 : 2} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
             <CardActionArea>
                 <Box
                     sx={{
