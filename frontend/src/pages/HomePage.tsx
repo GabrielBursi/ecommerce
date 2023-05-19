@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import { useQueries } from "@tanstack/react-query";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ViewListIcon from '@mui/icons-material/ViewList';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { LoginContext, ProductsContext } from "../contexts";
-import {LayoutBase} from "../layouts";
+import { LayoutBase } from "../layouts";
 import { Carousel, DepartmentList } from "../components";
 import { ServicesDepartments, ServicesProducts } from "../services/api";
 
 export function HomePage() {
 
-    const { isLogged, setIsLogged } = useContext(LoginContext)
+    const { isLogged } = useContext(LoginContext)
     const { setProductsHome } = useContext(ProductsContext)
 
     const [products, departments] = useQueries({
@@ -20,13 +20,12 @@ export function HomePage() {
         ]
     })
 
-    if(!(products.data instanceof Error ) && products.data){
+    if (!(products.data instanceof Error) && products.data) {
         setProductsHome(products.data);
     }
 
     return (
-        <LayoutBase showResearchInput showUserInfo showBanner showTabBar showActions = {isLogged}>
-            <Button variant="contained" color="primary" onClick={() => setIsLogged(!isLogged)}>{isLogged ? 'Logout' : 'Login'}</Button>
+        <LayoutBase showResearchInput showUserInfo showBanner showTabBar showActions={isLogged}>
             <Box display='flex' justifyContent='center' alignItems='center' width='100%' height='auto'>
                 <Box display='flex' flexDirection='column' width='75%' height='100%' gap={2}>
                     <Box>
@@ -36,7 +35,7 @@ export function HomePage() {
                                 EM DESTAQUE
                             </Typography>
                         </Box>
-                        <Carousel data={products.data} isLoading={products.isLoading} /> 
+                        <Carousel data={products.data} isLoading={products.isLoading} />
                     </Box>
                     <Box
                         sx={{
@@ -50,7 +49,7 @@ export function HomePage() {
                             </Typography>
                         </Box>
                         <Box m={2}>
-                            <DepartmentList departments={departments}/>
+                            <DepartmentList departments={departments} />
                         </Box>
                     </Box>
                 </Box>
