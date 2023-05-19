@@ -1,26 +1,18 @@
 import { createContext, useState } from "react";
-import { ChildrenProp, IProducts, LimitProductsPerPage, LimitProductsPerPageString } from "../types";
+import { ChildrenProp, IProducts, LimitProductsPerPageString } from "../types";
 
 interface ProductsListContextData {
     calculateMaxAndMinPrice: (products: IProducts[]) => {
-        lowestPrice: number;
-        highestPrice: number;
+        lowest: number;
+        highest: number;
     },
 
     filterPerPage: LimitProductsPerPageString,
     setFilterPerPage: (v: LimitProductsPerPageString) => void,
-    limit: LimitProductsPerPage,
-    setLimit: (v: LimitProductsPerPage) => void,
 
     productsList: IProducts[],
     setProductsList: (v: IProducts[]) => void,
-    totalCount: number,
-    setTotalCount: (v: number) => void,
 
-    highestPrice: number,
-    setHighestPrice: (v: number) => void,
-    lowestPrice: number,
-    setLowestPrice: (v: number) => void,
     priceFilter: number[],
     setPriceFilter: (v: number[]) => void
 }
@@ -30,14 +22,10 @@ const ProductsListContext = createContext({} as ProductsListContextData)
 function ProductsListProvider({ children }: ChildrenProp) {
 
     const [filterPerPage, setFilterPerPage] = useState<LimitProductsPerPageString>('20 por página');
-    const [limit, setLimit] = useState<LimitProductsPerPage>(20);
 
     const [productsList, setProductsList] = useState<IProducts[]>([]);
-    const [totalCount, setTotalCount] = useState(0);
 
-    const [highestPrice, setHighestPrice] = useState(999999);
-    const [lowestPrice, setLowestPrice] = useState(0);
-    const [priceFilter, setPriceFilter] = useState<number[]>([lowestPrice, highestPrice]);
+    const [priceFilter, setPriceFilter] = useState<number[]>([0, 999999]);
 
     const calculateMaxAndMinPrice = (products: IProducts[]) => {
 
@@ -56,11 +44,9 @@ function ProductsListProvider({ children }: ChildrenProp) {
             }
         }
 
-        setLowestPrice(lowestPrice)
-        setHighestPrice(highestPrice)
-        setPriceFilter([lowestPrice, highestPrice])
+        setPriceFilter([Number(lowest.price), Number(highest.price)])
 
-        return { lowestPrice, highestPrice };
+        return { lowest: Number(lowest.price), highest: Number(highest.price) };
     };
 
     const formatPrice = (products: IProducts[]) => {
@@ -81,19 +67,11 @@ function ProductsListProvider({ children }: ChildrenProp) {
         <ProductsListContext.Provider value={{
             calculateMaxAndMinPrice,
             filterPerPage,
-            highestPrice,
-            limit,
-            lowestPrice,
             priceFilter,
             productsList,
             setFilterPerPage,
-            setHighestPrice,
-            setLimit,
-            setLowestPrice,
             setPriceFilter,
             setProductsList,
-            setTotalCount,
-            totalCount,
         }}>
             {children}
         </ProductsListContext.Provider>

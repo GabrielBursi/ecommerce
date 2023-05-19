@@ -1,7 +1,8 @@
 import { useContext } from 'react'
 import { Box, MenuItem, Paper, Select, SelectChangeEvent, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { ProductsListContext } from '../../../contexts'
-import { LimitProductsPerPage, LimitProductsPerPageString } from '../../../types'
+import { LimitProductsPerPageString } from '../../../types'
+import { useSearchParams } from 'react-router-dom'
 
 export const Limit = () => {
 
@@ -9,11 +10,21 @@ export const Limit = () => {
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
     const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const { setFilterPerPage, filterPerPage, setLimit } = useContext(ProductsListContext)
+    const { setFilterPerPage, filterPerPage } = useContext(ProductsListContext)
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    const page = searchParams.get('page') || '1'
+    const min = searchParams.get('min') || '1'
+    const max = searchParams.get('max') || '99999999'
 
     function handleChangePage(e: SelectChangeEvent) {
         setFilterPerPage(e.target.value as LimitProductsPerPageString)
-        setLimit(Number(filterPerPage.split(' ')[0]) as LimitProductsPerPage)
+        setSearchParams({ //! state atrasado
+            page,
+            limit: filterPerPage.split(' ')[0],
+            min,
+            max,
+        }, { replace: true })
     }
 
     return (
