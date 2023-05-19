@@ -15,7 +15,7 @@ export const getByCategory = async (category: string, filter: IFilterProducts) =
         const [products, totalCount] = await Promise.all([
             Products.find(query)
                 .skip(filter.skip)
-                .limit(filter.exibir)
+                .limit(filter.limit)
                 .exec(),
             Products.countDocuments(query),
         ]);

@@ -78,7 +78,7 @@ export interface IDelivery {
 
 export interface IFilterProducts {
     skip: number,
-    exibir: number,
+    limit: number,
     price: {
         min: number,
         max: number
