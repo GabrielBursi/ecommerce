@@ -9,6 +9,7 @@ import * as clearCart from './ClearCart'
 import * as excludeProductCart from './ExcludeProductInCart'
 import * as excludeProductFavorite from './ExcludeProductInFavorite'
 import * as quantProduct from './QuantProduct'
+import * as deleteCategory from './DeleteCategory'
 
 export const ProductsController = {
     ...getHomeProducts,
@@ -21,5 +22,6 @@ export const ProductsController = {
     ...excludeProductCart,
     ...excludeProductFavorite,
     ...quantProduct,
-    ...getProductsByCategory
+    ...getProductsByCategory,
+    ...deleteCategory
 }

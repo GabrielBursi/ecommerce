@@ -14,5 +14,6 @@ routerProducts.post('/cart/done', ensureAuthenticated, searchId, ProductsControl
 routerProducts.delete('/cart/clear', ensureAuthenticated, searchId, ProductsController.ClearCart) //* PRIVATE
 routerProducts.delete('/cart/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductCartValidation, ProductsController.ExcludeProductCart) //* PRIVATE
 routerProducts.delete('/favorite/remove/:id', ensureAuthenticated, searchId, ProductsController.excludeProductFavoriteValidation, ProductsController.ExcludeProductFavorite) //* PRIVATE
+routerProducts.delete('/products/:category', myAuth, ProductsController.deleteCategoryValidation, ProductsController.DeleteCategory) //* PRIVATE
 
 routerProducts.post('/products', myAuth, ProductsController.createProductValidation, fetchProducts, formatProducts, formatProductPrice, ProductsController.AddProduct) //* PRIVATE
