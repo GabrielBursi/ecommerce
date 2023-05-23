@@ -1,3 +1,4 @@
+import { getByName } from './GetByName';
 import * as getHome from './GetHome'
 import * as getById from './GetById'
 import * as addInCart from './AddCart'
@@ -23,5 +24,6 @@ export const ProductsProviders = {
     ...excludeFavorite,
     ...alterQuant,
     ...getByCategory,
-    ...deleteCategory
+    ...deleteCategory,
+    getByName
 }
