@@ -38,5 +38,5 @@ export const GetProductByName = async (req: Request<{}, {}, {},Query>, res: Resp
             }
         });
 
-    return res.status(StatusCodes.OK).json({ products })
+    return res.status(StatusCodes.OK).json(products)
 }
