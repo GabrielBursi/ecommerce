@@ -4,15 +4,14 @@ import { StatusCodes } from 'http-status-codes'
 import { Category } from "../../types"
 import { validation } from '../../shared/middleware'
 import { ProductsProviders } from '../../database/providers'
+import { categories } from '../../utils'
 
 interface Params {
     category?: Category
 }
 
-const arrayCategory = <Category[]>["TV", "cadeira gamer", "casa inteligente", "celular", "câmeras e drones", "espaço gamer", "geek", "hardware", "home", "monitor gamer", "mouse e teclado", "pc gamer", "periféricos", "serviços digitais e softwares", "tablets", "vídeo games", "áudio"]
-
 const paramsSchemaValidation: yup.ObjectSchema<Params> = yup.object({
-    category: yup.string().oneOf<Category>(arrayCategory).required(),
+    category: yup.string().oneOf<Category>(categories).required(),
 })
 
 export const deleteCategoryValidation = validation({

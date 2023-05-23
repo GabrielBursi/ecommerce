@@ -6,6 +6,7 @@ import { IProducts, Category } from "../../types";
 import { ProductsProviders } from "../../database/providers";
 import '../../shared/services/TraducoesYup'
 import { validation } from "../../shared/middleware";
+import { categories } from "../../utils";
 
 interface Body {
     query: string[],
@@ -14,11 +15,9 @@ interface Body {
     convert?: boolean
 }
 
-const arrayCategory = <Category[]>["TV", "cadeira gamer", "casa inteligente", "celular", "câmeras e drones", "espaço gamer", "geek", "hardware", "home", "monitor gamer", "mouse e teclado", "pc gamer", "periféricos", "serviços digitais e softwares", "tablets", "vídeo games", "áudio"]
-
 const bodySchemaValidation: yup.ObjectSchema<Body> = yup.object({
     query: yup.array().required(),
-    category: yup.string().oneOf<Category>(arrayCategory).required(),
+    category: yup.string().oneOf<Category>(categories).required(),
     page: yup.number(),
     convert: yup.boolean()
 })
