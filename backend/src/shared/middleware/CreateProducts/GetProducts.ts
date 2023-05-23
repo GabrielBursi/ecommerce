@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { IProductsAPI } from '../../../types';
 import { Api } from '../../services';
 import { ProductsProviders } from '../../../database/providers';
-import { arrayTESTE } from '../../../utils';
+import { arrayTESTE, assignRandomPrice } from '../../../utils';
 
 interface Body {
     page?: number, 
@@ -27,7 +27,7 @@ export const fetchProducts = async (req: Request<{}, {}, Body>, res: Response<{}
             const productsApi = await Api(queryItem, page); //* retorna um array de produtos da API da Amazon para cada item da query
 
             if (productsApi instanceof Error) { //? se a API da Amazon estiver fora, vai ser usado um Array De Teste
-                const products = await ProductsProviders.createProduct(arrayTESTE, category)
+                const products = await ProductsProviders.createProduct(assignRandomPrice(arrayTESTE), category)
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                     errors: {
                         default: productsApi.message
