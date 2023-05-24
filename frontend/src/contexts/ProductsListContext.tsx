@@ -10,9 +10,6 @@ interface ProductsListContextData {
     filterPerPage: LimitProductsPerPageString,
     setFilterPerPage: (v: LimitProductsPerPageString) => void,
 
-    productsList: IProducts[],
-    setProductsList: (v: IProducts[]) => void,
-
     priceFilter: number[],
     setPriceFilter: (v: number[]) => void
 }
@@ -23,14 +20,13 @@ function ProductsListProvider({ children }: ChildrenProp) {
 
     const [filterPerPage, setFilterPerPage] = useState<LimitProductsPerPageString>('20 por página');
 
-    const [productsList, setProductsList] = useState<IProducts[]>([]);
 
     const [priceFilter, setPriceFilter] = useState<number[]>([0, 999999]);
 
     const calculateMaxAndMinPrice = (products: IProducts[]) => {
 
         const productsFormated = formatPrice(products)
-
+        
         let lowest = productsFormated[0];
         let highest = productsFormated[0];
 
@@ -43,9 +39,7 @@ function ProductsListProvider({ children }: ChildrenProp) {
                 highest = productsFormated[i];
             }
         }
-
-        setPriceFilter([Number(lowest.price), Number(highest.price)])
-
+        
         return { lowest: Number(lowest.price), highest: Number(highest.price) };
     };
 
@@ -68,10 +62,8 @@ function ProductsListProvider({ children }: ChildrenProp) {
             calculateMaxAndMinPrice,
             filterPerPage,
             priceFilter,
-            productsList,
             setFilterPerPage,
             setPriceFilter,
-            setProductsList,
         }}>
             {children}
         </ProductsListContext.Provider>
