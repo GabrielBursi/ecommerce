@@ -8,6 +8,7 @@ export interface IProducts {
     rating?: number,
     img: string,
     quant?: number,
+    category?: Category
 }
 
 export interface IProductsCategory {
@@ -55,4 +56,4 @@ export interface IErrorAPI {
 
 export type LimitProductsPerPage = 20 | 40 | 60 | 80 | 100
 export type LimitProductsPerPageString = '20 por página' | '40 por página' | '60 por página' | '80 por página' | '100 por página'
-export type Category = 'pc gamer' | 'monitor gamer' | 'cadeira gamer' | 'mouse e teclado' | 'celular' | 'vídeo games' | 'geek' | 'TV' | 'tablets' | 'hardware' | 'periféricos' | 'home' | 'áudio' | 'serviços digitais e softwares' | 'câmeras e drones' | 'casa inteligente' | 'espaço gamer' | undefined
+export type Category = 'pc gamer' | 'monitor gamer' | 'cadeira gamer' | 'mouse e teclado' | 'celular' | 'vídeo games' | 'geek' | 'TV' | 'tablets' | 'hardware' | 'periféricos' | 'home' | 'áudio' | 'serviços digitais e softwares' | 'câmeras e drones' | 'casa inteligente' | 'espaço gamer' | string |undefined
