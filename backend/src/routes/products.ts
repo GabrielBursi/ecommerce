@@ -4,7 +4,7 @@ import { ensureAuthenticated, fetchProducts, formatProductPrice, formatProducts,
 
 export const routerProducts = Router()
 
-routerProducts.get('/products/:category', ProductsController.filterProductValidation, ProductsController.GetProductsByCategory)
+routerProducts.get('/products/:category', ProductsController.filterProductValidation, ProductsController.GetFilteredProductsList)
 routerProducts.get('/products', ProductsController.GetHomeProducts)
 routerProducts.get('/product/:id', ProductsController.getByIdValidation, ProductsController.GetProductById)
 routerProducts.get('/product', ProductsController.getByNameValidation, ProductsController.GetProductByName)

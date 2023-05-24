@@ -1,5 +1,4 @@
 import * as getHomeProducts from './GetHomeProducts'
-import * as getProductsByCategory from './GetProductsByCategory'
 import * as getProductById from './GetProductById'
 import * as addCart from './AddCart'
 import * as addFavorite from './AddFavorites'
@@ -11,6 +10,7 @@ import * as excludeProductFavorite from './ExcludeProductInFavorite'
 import * as quantProduct from './QuantProduct'
 import * as deleteCategory from './DeleteCategory'
 import * as getByName from './GetByName'
+import * as getFilteredProductsList from './GetFilteredProductsList'
 
 export const ProductsController = {
     ...getHomeProducts,
@@ -23,7 +23,7 @@ export const ProductsController = {
     ...excludeProductCart,
     ...excludeProductFavorite,
     ...quantProduct,
-    ...getProductsByCategory,
     ...deleteCategory,
-    ...getByName
+    ...getByName,
+    ...getFilteredProductsList
 }

@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 import { ProductsProviders } from "../../database/providers";
 import '../../shared/services/TraducoesYup'
-import { IFilterProducts } from "../../types";
+import { Category, IFilterProducts } from "../../types";
 import { validation } from "../../shared/middleware";
 
 interface Params {
@@ -34,7 +34,7 @@ export const filterProductValidation = validation({
     query: querySchemaValidation
 })
 
-export const GetProductsByCategory = async (req: Request<Params, {}, {}, Query>, res: Response) => {
+export const GetFilteredProductsList = async (req: Request<Params, {}, {}, Query>, res: Response) => {
 
     const { category } = req.params
     const { page = '1', min = '1', max = '9999999', limit = '20' } = req.query
@@ -56,7 +56,7 @@ export const GetProductsByCategory = async (req: Request<Params, {}, {}, Query>,
         }
     }
 
-    const products = await ProductsProviders.getByCategory(category || '', filter)
+    const products = await ProductsProviders.getListByFilters(category as Category || '', filter)
 
     if (products instanceof Error)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
