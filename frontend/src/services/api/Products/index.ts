@@ -1,3 +1,4 @@
+import { getFilteredList } from './GetFilteredProductsList';
 import { getByName } from './GetProductsByName';
 import * as getHome from './GetProductsHome'
 import * as getDepartments from '../Departments/GetAll'
@@ -9,7 +10,6 @@ import * as clear from './ClearCart'
 import * as excludeInCart from './ExcludeProductInCart'
 import * as excludeInFavorite from './ExcludeProductInFavorite'
 import * as alterQuant from './QuantProduct'
-import * as getCategory from './GetProductsByCategory'
 
 export const ServicesProducts = {
     ...getHome,
@@ -22,6 +22,6 @@ export const ServicesProducts = {
     ...excludeInCart,
     ...excludeInFavorite,
     ...alterQuant,
-    ...getCategory,
-    getByName
+    getFilteredList,
+    getByName,
 }
