@@ -12,7 +12,7 @@ import { ServicesProducts } from "../../../services/api";
 
 interface ProductSelectedProps extends IProducts, MyImageProps {}
 
-export function ProductSelected({ name, rating, alt, src, price, uuid, img }: ProductSelectedProps) {
+export function ProductSelected({ name, rating, alt, src, price, uuid, img, category }: ProductSelectedProps) {
 
     const theme = useTheme()
     const mdDown = useMediaQuery(theme.breakpoints.down('md'))
@@ -21,9 +21,11 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
 
     const { isLoadingAddProduct, isLoadingRemoveProduct } = useContext(ProductsContext)
 
-    const category = 'home'
+    const { data, isLoading } = useQuery(['products-category', category], () => ServicesProducts.getFilteredList(category, 1, 20, 1, 999999), {
+        staleTime: 20000
+    })
 
-    const { data, isLoading } = useQuery({ queryKey: ['products-category'], queryFn: () => ServicesProducts.getProductsByCategory(category, 1, 20, 1, 999999) })
+    console.log(data);
 
     if(smDown)
     return <ProductSelectedMobile
@@ -34,6 +36,7 @@ export function ProductSelected({ name, rating, alt, src, price, uuid, img }: Pr
                 price={price}
                 rating={rating}
                 name={name}
+                category={category}
             />
 
     return (

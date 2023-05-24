@@ -25,7 +25,7 @@ export function PreCartPage() {
 
     const category = 'home'
 
-    const { data, isLoading } = useQuery({ queryKey: ['products-category'], queryFn: () => ServicesProducts.getProductsByCategory(category, 1, 20, 1, 999999) })
+    const { data, isLoading } = useQuery({ queryKey: ['products-category'], queryFn: () => ServicesProducts.getFilteredList(category, 1, 20, 1, 999999) })
 
     useEffect(() => {
         if(!uuid){

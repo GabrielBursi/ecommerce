@@ -37,6 +37,7 @@ export function ProductPage() {
                     price={productSelectedInfo?.price || 0} 
                     rating={productSelectedInfo?.rating || 0} 
                     name={productSelectedInfo?.name || '' } 
+                    category={productSelectedInfo?.category || 'home'}
                 />
             </Box>
         </LayoutBase>

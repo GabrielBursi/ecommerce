@@ -10,11 +10,9 @@ import { ServicesProducts } from "../../../services/api";
 interface ProductSelectedProps extends IProducts, MyImageProps { }
 
 
-export function ProductSelectedMobile({ name, rating, alt, src, price, uuid, img }: ProductSelectedProps) {
+export function ProductSelectedMobile({ name, rating, alt, src, price, uuid, img, category }: ProductSelectedProps) {
 
-    const category = 'home'
-
-    const { data, isLoading } = useQuery({queryKey: ['products-category'], queryFn: () => ServicesProducts.getProductsByCategory(category, 1, 20, 1, 999999)})
+    const { data, isLoading } = useQuery({queryKey: ['products-category'], queryFn: () => ServicesProducts.getFilteredList(category, 1, 20, 1, 999999)})
 
     return (
         <Box component={Paper} width='100%' height='100%' padding={2} display='flex' flexDirection='column' gap={2}>
